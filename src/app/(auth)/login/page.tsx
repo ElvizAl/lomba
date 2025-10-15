@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen max-w-md mx-auto flex flex-col bg-[#FBFCFF] font-sans">
+    <div className="min-h-screen max-w-sm mx-auto flex flex-col bg-[#FBFCFF] font-sans">
       <div className=" flex my-5">
         <Image
           src="/logo.png"
@@ -23,7 +23,7 @@ export default function LoginPage() {
           <p className="text-lg text-[#868A92]">Selamat Datang Kembali</p>
         </div>
       </div>
-      <div className="flex flex-col gap-2 ml-6 mr-6 my-10">
+      <div className="flex flex-col gap-2 mx-6 my-10">
         <form>
           <Label htmlFor="email" className="text-sm font-medium mb-2">
             Alamat Email
@@ -59,13 +59,6 @@ export default function LoginPage() {
             >
               Masuk Sekarang
             </Button>
-          </div>
-
-          <div className="flex flex-col justify-center mt-6">
-            <span className="absolute border-t border-gray-300 w-full"></span>
-            <p className=" relative text-[12px] text-center text-[#868A92] font-semibold -top-0 ">
-              Atau masuk dengan
-            </p>
           </div>
 
           <div className="mt-6">
