@@ -1,7 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Fingerprint, KeyRound, MailOpen } from "lucide-react";
+
+import LoginForm from "@/components/auth/login-form";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -23,66 +21,16 @@ export default function LoginPage() {
           <p className="text-lg text-[#868A92]">Selamat Datang Kembali</p>
         </div>
       </div>
-      <div className="flex flex-col gap-2 mx-6 my-10">
-        <form>
-          <Label htmlFor="email" className="text-sm font-medium mb-2">
-            Alamat Email
-          </Label>
-          <div className="relative">
-            <Input
-              type="email"
-              placeholder="Masukkan alamat email Anda"
-              className="pl-12 py-5 bg-white border border-gray-300 shadow-sm focus:ring-1 focus:ring-gray-900 focus:border-gray-900"
-            />
-            <MailOpen className="absolute left-2.5 top-2.5 h-5 w-5 pointer-events-none text-black" />
-          </div>
-          <Label htmlFor="email" className="text-sm font-medium mb-2 mt-2">
-            Password
-          </Label>
-          <div className="relative">
-            <Input
-              type="email"
-              placeholder="Masukkan kata sandi Anda"
-              className="pl-12 py-5 bg-white border border-gray-300 shadow-sm focus:ring-1 focus:ring-gray-900 focus:border-gray-900"
-            />
-            <KeyRound className="absolute left-2.5 top-2.5 h-5 w-5 pointer-events-none text-black" />
-          </div>
-          <Link href="/lupa-password">
-            <p className="text-[12px] text-[#095CE6] font-semibold text-right mt-1">
-              Lupa Kata Sandi
-            </p>
+      
+      <LoginForm />
+
+      <div className="flex justify-center mt-4 mb-8">
+        <p className="text-sm text-[#868A92]">
+          Belum punya akun?{" "}
+          <Link href="/register" className="text-[#095CE6] font-semibold hover:underline">
+            Masuk di sini
           </Link>
-          <div className="mt-6">
-            <Button
-              type="submit"
-              size="lg"
-              className="w-full bg-[#095CE6] rounded-full py-4 font-semibold"
-            >
-              Masuk Sekarang
-            </Button>
-          </div>
-
-          {/* Separator */}
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-[#FBFCFF] text-gray-500">Atau Masuk dengan</span>
-            </div>
-          </div>
-
-          <div className="mt-6">
-            <Button
-              type="submit"
-              size="lg"
-              className="w-full bg-[#E6A709] rounded-full py-4 font-semibold"
-            >
-              <Fingerprint className="w-4 h-4" />
-              Sidik Jari
-            </Button>
-          </div>
-        </form>
+        </p>
       </div>
     </div>
   );

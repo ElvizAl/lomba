@@ -6,7 +6,7 @@ import { Home, Inbox, ChartNoAxesCombined, User } from "lucide-react";
 
 // Mobile Bottom Navigation Items
 const navigationItems = [
-  { name: "Home", href: "/", icon: Home },
+  { name: "Home", href: "/home", icon: Home },
   { name: "Analitik", href: "/analitik", icon: ChartNoAxesCombined },
   { name: "Inbox", href: "/inbox", icon: Inbox },
   { name: "Profile", href: "/profile", icon: User },
@@ -45,7 +45,7 @@ export default function MobileButton() {
                     </div>
                     <span
                       className={`text-xs font-medium transition-all duration-300 ${
-                        isActive ? "text-black font-semibold" : "text-white"
+                        isActive ? "text-white font-semibold" : "text-white"
                       }`}
                     >
                       {item.name}
