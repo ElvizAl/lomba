@@ -41,7 +41,7 @@ export default function Logout() {
     <button 
       onClick={handleLogout}
       disabled={isLoading}
-      className="w-full cursor-pointer bg-white border border-gray-200 rounded-md hover:bg-gray-50 transition-colors disabled:opacity-50"
+      className="w-full cursor-pointer bg-white border py-1 border-gray-200 rounded-md hover:bg-gray-50 transition-colors disabled:opacity-50"
     >
       <div className="flex items-center gap-4">
         <div className="w-8 h-8 ml-3 bg-blue-100 rounded-full flex items-center justify-center">

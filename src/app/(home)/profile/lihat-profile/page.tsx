@@ -31,7 +31,7 @@ export default function Profile() {
           <button 
             className=" text-black border rounded-md px-2 py-1 bg-white cursor-pointer border-black hover:bg-blue-50 text-[12px]"
           >
-            View Profile
+            ganti foto
           </button>
           </Link>
         </div>
