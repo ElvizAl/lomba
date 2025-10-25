@@ -25,9 +25,6 @@ export default function LoginPage() {
       <LoginForm />
 
       <div className="flex flex-col items-center mt-4 mb-8 space-y-2">
-        <Link href="/lupa-password" className="text-sm text-[#095CE6] font-semibold hover:underline">
-          Lupa Password?
-        </Link>
         <p className="text-sm text-[#868A92]">
           Belum punya akun?{" "}
           <Link href="/register" className="text-[#095CE6] font-semibold hover:underline">

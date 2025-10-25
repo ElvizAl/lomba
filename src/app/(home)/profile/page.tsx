@@ -7,7 +7,6 @@ import { Edit, Fingerprint, Lock } from "lucide-react";
 import Link from "next/link";
 
 export default function Profile() {
-  // Mock user data - replace with actual user data from context/API
   const user = {
     name: "Nabila",
     email: "nabila@example.com"
