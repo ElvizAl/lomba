@@ -21,7 +21,7 @@ export default function ProfileAvatar({
 
   const sizeClasses = {
     sm: "w-8 h-8 text-xs",
-    md: "w-16 h-16 text-lg",
+    md: "w-20 h-20 text-lg",
     lg: "w-24 h-24 text-2xl",
     xl: "w-32 h-32 text-3xl"
   };
