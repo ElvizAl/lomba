@@ -68,7 +68,7 @@ export default function Home() {
         />
         <div>
 
-          <h1 className="text-2xl font-bold ml-2">Hello, {user.name}</h1>
+          <h1 className="text-2xl font-bold ml-2">Hi, {user.name}</h1>
           <h1 className="text-sm font-semibold ml-2 text-gray-400">Yuk, pantau peforma keuangan Anda</h1>
         </div>
       </div>
