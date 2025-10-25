@@ -18,7 +18,7 @@ interface RegisterData {
 interface RegisterResponse {
     message: string;
     status: string;  // Misalnya: "success" atau "failure"
-    data: {
+    data?: {
       token: string;  // Token autentikasi JWT
       user: {
         id: string;  // ID pengguna
@@ -30,6 +30,9 @@ interface RegisterResponse {
         role: string;  // Peran pengguna (misalnya: "user", "admin")
       };
     };
+    // For OTP response
+    email?: string;
+    otp?: string;
   }
   
 
@@ -50,7 +53,6 @@ export default function RegisterForm() {
       ...prev,
       [name]: value
     }));
-    // Clear error when user starts typing
     if (error) setError("");
   };
 
@@ -95,15 +97,26 @@ export default function RegisterForm() {
         body: JSON.stringify(formData),
       });
 
-      const result: RegisterResponse = await response.json();
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        try {
+          const result: RegisterResponse = await response.json();
+    
+          console.log("Registration response:", result);
 
-      if (response.ok && result.status === "success") {
-        // Handle success
-        localStorage.setItem("authToken", result.data.token); // Menyimpan token
-        toast.success("Registrasi berhasil! Silakan login.");
-        router.push("/login");  // Mengalihkan ke halaman login
+          if (response.ok && result.status === "success") {
+            toast.success("Registrasi berhasil! Silakan verifikasi email Anda.");
+            router.push(`/otp?email=${encodeURIComponent(formData.email)}`);
+          } else {
+            setError(result.message || "Terjadi kesalahan saat registrasi");
+          }
+        } catch (jsonError) {
+          console.error("JSON parsing error:", jsonError);
+          setError("Terjadi kesalahan pada server. Silakan coba lagi.");
+        }
       } else {
-        setError(result.message || "Terjadi kesalahan saat registrasi");
+        console.error("Server returned non-JSON response");
+        setError("Server sedang mengalami masalah. Silakan coba lagi.");
       }
     } catch (error) {
       console.error("Registration error:", error);

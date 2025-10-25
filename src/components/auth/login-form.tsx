@@ -82,7 +82,6 @@ export default function LoginForm() {
       const result: LoginResponse = await response.json();
 
       if (response.ok && result.status === "success") {
-        // Handle success
         localStorage.setItem("authToken", result.data.token); // Menyimpan token
         toast.success("Registrasi berhasil! Silakan login.");
         router.push("/profile");  // Mengalihkan ke halaman login
