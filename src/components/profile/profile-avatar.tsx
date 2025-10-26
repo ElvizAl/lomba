@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 interface ProfileAvatarProps {
   src?: string;
@@ -46,10 +47,12 @@ export default function ProfileAvatar({
       className
     )}>
       {src && !imageError ? (
-        <img
+        <Image
           src={src}
           alt={name}
           className="w-full h-full rounded-full object-cover"
+          width={100}
+          height={100}
           onError={handleImageError}
         />
       ) : (
