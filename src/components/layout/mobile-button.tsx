@@ -7,7 +7,7 @@ import { Home, Inbox, ChartNoAxesCombined, User } from "lucide-react";
 // Mobile Bottom Navigation Items
 const navigationItems = [
   { name: "Beranda", href: "/home", icon: Home },
-  { name: "Laporan", href: "/report", icon: ChartNoAxesCombined },
+  { name: "Laporan", href: "/laporan", icon: ChartNoAxesCombined },
   { name: "Inbox", href: "/inbox", icon: Inbox },
   { name: "Profile", href: "/profile", icon: User },
 ];
