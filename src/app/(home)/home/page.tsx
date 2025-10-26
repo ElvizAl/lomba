@@ -14,35 +14,35 @@ interface User {
 const reports = [
   {
     name: "Arus Kas",
-    href: "/report",
+    href: "/laporan/arus-kas",
     icon: HandCoins,
   },
   {
     name: "Laba Rugi",
-    href: "/report",
+    href: "/laporan/laba-rugi",
     icon: ChartNoAxesColumn,
   },
   {
     name: "Neraca",
-    href: "/report",
+    href: "/laporan/neraca",
     icon: Scale,
   },
 ]
 
 const menus = [
   {
-    name: "Pemasukan",
-    href: "/income",
+    name: "Buat Pemasukan",
+    href: "/pemasukan",
     icon: BanknoteArrowUp,
   },
   {
-    name: "Pengeluaran",
-    href: "/outcome",
+    name: "Buat Pengeluaran",
+    href: "/pengeluaran",
     icon: BanknoteArrowDown,
   },
   {
-    name: "Transaksi",
-    href: "/transaction",
+    name: "Riwayat Transaksi",
+    href: "/riwayat",
     icon: ArrowLeftRight,
   },
 ]

@@ -6,24 +6,24 @@ import Link from "next/link";
 const reports = [
   {
     name: "Arus Kas",
-    href: "/report/cashflow",
+    href: "/laporan/arus-kas",
     icon: HandCoins,
   },
   {
     name: "Laba Rugi",
-    href: "/report/profit-and-loss",
+    href: "/laporan/laba-rugi",
     icon: ChartNoAxesColumn,
   },
   {
     name: "Neraca",
-    href: "/report/balance-sheet",
+    href: "/laporan/neraca",
     icon: Scale,
   },
 ]
 
 export default function Report() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <>
       <Navbar title="Laporan" />
       <div className="pt-5">
         <div className="mb-5">
@@ -50,6 +50,6 @@ export default function Report() {
           </Link>
         ))}
       </div>
-    </div>
+    </>
   );
 }

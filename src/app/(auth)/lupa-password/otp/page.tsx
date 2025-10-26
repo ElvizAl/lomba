@@ -38,7 +38,7 @@ export default function ForgotPasswordOTPPage() {
 
     try {
       const response = await fetch(
-        "http://95.217.188.76:3030/api/auth/password/forgot",
+        process.env.NEXT_PUBLIC_API_BASE_URL + "/api/auth/password/forgot",
         {
           method: "POST",
           headers: {
@@ -83,7 +83,7 @@ export default function ForgotPasswordOTPPage() {
 
     try {
       const response = await fetch(
-        "http://95.217.188.76:3030/api/auth/password/verify",
+        process.env.NEXT_PUBLIC_API_BASE_URL + "/api/auth/password/verify",
         {
           method: "POST",
           headers: {

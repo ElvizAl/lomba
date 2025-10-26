@@ -3,7 +3,7 @@ interface User {
 }
 
 export const getUserData = async (): Promise<User> => {
-  const response = await fetch("http://95.217.188.76:3030/api/user", {
+  const response = await fetch(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/user", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

@@ -83,7 +83,7 @@ export default function ChangePasswordPage() {
         return;
       }
 
-      const response = await fetch("http://95.217.188.76:3030/api/auth/password/change", {
+      const response = await fetch(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/auth/password/change", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

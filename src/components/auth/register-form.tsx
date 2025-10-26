@@ -89,7 +89,7 @@ export default function RegisterForm() {
     setError("");
 
     try {
-      const response = await fetch("http://95.217.188.76:3030/api/auth/register", {
+      const response = await fetch(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

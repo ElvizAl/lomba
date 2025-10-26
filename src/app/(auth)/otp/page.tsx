@@ -57,7 +57,7 @@ export default function OTPPage() {
 
     try {
       const response = await fetch(
-        "http://95.217.188.76:3030/api/auth/email/verify",
+        process.env.NEXT_PUBLIC_API_BASE_URL + "/api/auth/email/verify",
         {
           method: "POST",
           headers: {
@@ -103,7 +103,7 @@ export default function OTPPage() {
 
     try {
       const response = await fetch(
-        "http://95.217.188.76:3030/api/auth/email/send",
+        process.env.NEXT_PUBLIC_API_BASE_URL + "/api/auth/email/send",
         {
           method: "POST",
           headers: {
