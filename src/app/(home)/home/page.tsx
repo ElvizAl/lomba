@@ -5,6 +5,7 @@ import Image from "next/image";
 import { getUserData } from "@/utils/user";
 import { ArrowLeftRight, BanknoteArrowDown, BanknoteArrowUp, ChartNoAxesColumn, ChevronRight, HandCoins, Scale } from 'lucide-react';
 import Link from 'next/link';
+import { getHighlightInbox } from '@/utils/inbox';
 
 interface User {
   name: string;
@@ -51,6 +52,7 @@ export default function Home() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [hInbox, setHInbox] = useState<any>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -65,13 +67,54 @@ export default function Home() {
       }
     };
 
+    const fetchHInbox = async () => {
+      try {
+        const inboxData = await getHighlightInbox();
+        setHInbox(inboxData);
+      } catch (err) {
+        console.error('Error fetching inbox data:', err);
+        setError('Failed to load inbox data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchUser();
+    fetchHInbox();
   }, []);
 
   if (loading) {
     return (
       <div className="min-h-screen max-w-sm mx-auto flex items-center justify-center">
         Loading...
+      </div>
+    );
+  }
+
+  if (hInbox) {
+    return (
+      <div className="min-h-screen px-6 mx-auto flex items-center justify-center absolute top-0 left-0 right-0 bg-white z-50">
+        <div className="text-center">
+          <Image
+            src="/logo.png"
+            alt="Logo"
+            width={100}
+            height={100}
+            className="w-12 h-12 absolute top-20 left-6"
+            priority
+          />
+          <h1 className="text-2xl font-bold mb-4">{hInbox.title}</h1>
+          <p className='text-gray-400 text-lg'>{hInbox.content}</p>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 z-50 p-4">
+          <button
+            type="button"
+            onClick={e => setHInbox(null)}
+            className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full w-full transition-colors disabled:opacity-50'
+          >
+            Ok, Paham
+          </button>
+        </div>
       </div>
     );
   }
