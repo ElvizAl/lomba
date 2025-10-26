@@ -77,7 +77,7 @@ export default function ForgotPasswordPage() {
   return (
     <div className="min-h-screen max-w-sm mx-auto flex flex-col bg-[#FBFCFF] font-sans py-10">
       <div className="flex-1">
-        <div className="mb-6">
+        <div className="mb-6 p-4">
           <Link
             href="/login"
             className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700"
@@ -88,7 +88,7 @@ export default function ForgotPasswordPage() {
         </div>
 
         <div className="flex flex-col py-25">
-          <div className="text-center mb-4">
+          <div className="text-center mb-4 p-4">
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
               Lupa Password?
             </h1>

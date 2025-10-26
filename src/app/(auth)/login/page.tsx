@@ -12,7 +12,7 @@ export default function LoginPage() {
           alt="Logo"
           width={100}
           height={100}
-          className="w-20 h-20"
+          className="w-18 h-18"
         />
       </div>
       <div className="flex flex-col">

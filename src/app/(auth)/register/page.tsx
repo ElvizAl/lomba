@@ -5,13 +5,13 @@ import RegisterForm from "@/components/auth/register-form";
 export default function RegisterPage() {
   return (
     <div className="min-h-screen max-w-sm mx-auto flex flex-col bg-[#FBFCFF] font-sans">
-      <div className=" flex my-5">
+      <div className=" flex my-5 p-4">
         <Image
           src="/logo.png"
           alt="Logo"
           width={100}
           height={100}
-          className="w-20 h-20"
+          className="w-18 h-18"
         />
       </div>
       <div className="flex flex-col">
