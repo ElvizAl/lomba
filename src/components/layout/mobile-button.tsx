@@ -6,8 +6,8 @@ import { Home, Inbox, ChartNoAxesCombined, User } from "lucide-react";
 
 // Mobile Bottom Navigation Items
 const navigationItems = [
-  { name: "Home", href: "/home", icon: Home },
-  { name: "Analitik", href: "/analitik", icon: ChartNoAxesCombined },
+  { name: "Beranda", href: "/home", icon: Home },
+  { name: "Laporan", href: "/laporan", icon: ChartNoAxesCombined },
   { name: "Inbox", href: "/inbox", icon: Inbox },
   { name: "Profile", href: "/profile", icon: User },
 ];
@@ -35,7 +35,7 @@ export default function MobileButton() {
                   >
                     <div className="relative">
                       {isActive && (
-                        <div className="absolute -top-6 -left-[10px] -right-1 -bottom-1 w-10 bg-[#1444E3] rounded-full" />
+                        <div className="" />
                       )}
                       <Icon
                         className={`h-5 w-5 mb-1 text-white transition-all duration-300 ${

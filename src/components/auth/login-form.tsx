@@ -71,7 +71,7 @@ export default function LoginForm() {
     setError("");
 
     try {
-      const response = await fetch("http://95.217.188.76:3030/api/auth/login", {
+      const response = await fetch(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -82,10 +82,9 @@ export default function LoginForm() {
       const result: LoginResponse = await response.json();
 
       if (response.ok && result.status === "success") {
-        // Handle success
         localStorage.setItem("authToken", result.data.token); // Menyimpan token
         toast.success("Registrasi berhasil! Silakan login.");
-        router.push("/profile");  // Mengalihkan ke halaman login
+        router.push("/home");  // Mengalihkan ke halaman login
       } else {
         setError(result.message || "Terjadi kesalahan saat registrasi");
       }

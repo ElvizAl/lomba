@@ -6,7 +6,7 @@ interface Props {
 
 const Layout = ({ children }: Props) => {
     return (
-        <div className="min-h-screen flex flex-col">
+        <div className="min-h-screen flex flex-col mx-auto max-w-md bg-[#FBFCFF] font-sans px-4 pt-10">
             <MobileButton   />
             {children}
         </div>

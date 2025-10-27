@@ -1,0 +1,68 @@
+import { getCategory } from "@/utils/category";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { ChevronRightIcon } from "lucide-react";
+import { numberWithCommas } from "@/utils";
+
+export default function Kategori({ type, title, onClick }: { type: string; title: string; onClick: (item: any) => void }) {
+
+  const [data, setData] = useState<any>([]);
+  useEffect(() => {
+    const getData = async () => {
+      const data = await getCategory({
+        page: 1,
+        limit: 10,
+        name: "",
+        start_date: "",
+        end_date: "",
+      });
+
+      const groupedData = data.reduce((acc: any, item: any) => {
+        const type = item.type.charAt(0).toUpperCase() + item.type.slice(1);
+        if (!acc[type]) {
+          acc[type] = [];
+        }
+        acc[type].push(item);
+        return acc;
+      }, {});
+
+      setData(groupedData);
+    };
+    getData();
+  }, []);
+  return (
+    <>
+      <div className="mt-10">
+        <h1 className="text-xl font-bold">{title}</h1>
+        {/* Search bar */}
+        <div className="mt-5">
+          <input type="text" placeholder="Search" className="w-full border border-gray-300 rounded px-3 py-2" />
+        </div>
+        <div className="mt-5 mb-20">
+          {Object.entries(data).map(([key, value]: any) => (
+            <div key={key}>
+              <h2 className="text-lg font-bold mt-5">{key}</h2>
+              {value.map((item: any) => (
+                <div onClick={e => onClick(item)} className="block border-b py-3">
+                  <div className="flex justify-between items-center">
+                    <span key={item.id} className="font-semibold">{item.name}</span>
+                    <div className="flex">
+                      {type == 'riwayat' ? (
+                        <span>
+                          Rp {item.balance < 0 ? "(" : ""}
+                          {numberWithCommas(Math.abs(item.balance))}
+                          {item.balance < 0 ? ")" : ""}
+                        </span>
+                      ) : ''}
+                      <ChevronRightIcon />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}
