@@ -84,7 +84,7 @@ export default function LoginForm() {
       if (response.ok && result.status === "success") {
         localStorage.setItem("authToken", result.data.token); // Menyimpan token
         toast.success("Registrasi berhasil! Silakan login.");
-        router.push("/profile");  // Mengalihkan ke halaman login
+        router.push("/home");  // Mengalihkan ke halaman login
       } else {
         setError(result.message || "Terjadi kesalahan saat registrasi");
       }

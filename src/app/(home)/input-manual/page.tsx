@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Plus, X } from 'lucide-react';
 import { submitTransaction } from '@/utils/transaction';
 import { toast } from 'sonner';
-import router from 'next/router';
+import { useRouter } from 'next/navigation';
 
 interface InputItem {
     id: string;
@@ -26,10 +26,11 @@ const InputItem = ({
     removeItem: (id: string) => void;
     isLastItem: boolean;
 }) => {
+    const router = useRouter();
     return (
         <div className="relative flex items-start gap-3 bg-white p-4 rounded-lg shadow-sm border mb-3">
             <div className="flex-1 flex flex-col gap-3">
-                <div className="absolute right-4 top-4">
+                <div className="">
                     {!isLastItem && (
                         <button
                             type="button"
@@ -75,6 +76,7 @@ const InputItem = ({
 };
 
 const InputList = () => {
+    const router = useRouter();
     const [items, setItems] = useState<InputItem[]>([
         {
             id: '1',
@@ -136,7 +138,7 @@ const InputList = () => {
 
             toast.success("Transaksi berhasil disimpan");
 
-            router.push("/kategori/" + category.id);
+            router.push("/riwayat/" + category.id);
 
         } catch (error) {
             console.error("Error submitting transaction:", error);
