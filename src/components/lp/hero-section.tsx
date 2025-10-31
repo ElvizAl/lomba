@@ -5,6 +5,7 @@ import { useRef } from "react";
 import Image from "next/image";
 import FloatingIcons from "./floating-icons";
 import PhoneMockup from "./phone-mockup";
+import Link from "next/link";
 
 export default function HeroSection() {
   const ref = useRef<HTMLDivElement>(null);
@@ -47,12 +48,12 @@ export default function HeroSection() {
         </motion.p>
 
         <div className="flex gap-3 justify-center lg:justify-start">
-          <button className="px-5 py-3 bg-black text-white rounded-full hover:bg-gray-800 transition">
+          <Link href={"/login"} className="px-5 py-3 bg-black text-white rounded-full hover:bg-gray-800 transition">
             Buka Aplikasi
-          </button>
-          <button className="px-5 py-3 border border-gray-300 rounded-full hover:bg-gray-100 transition">
+          </Link>
+          <Link href={"/register"} className="px-5 py-3 border border-gray-300 rounded-full hover:bg-gray-100 transition">
             Daftar Gratis
-          </button>
+          </Link>
         </div>
       </div>
 

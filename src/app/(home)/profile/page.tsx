@@ -31,7 +31,7 @@ export default function Profile() {
   return (
     <>
       <Navbar title="Profile" />
-      <div className="flex flex-col items-center text-center my-5">
+      <div className="flex flex-col items-center text-center my-5 px-4">
         <ProfileAvatar
           name={user?.name}
           size="xl"

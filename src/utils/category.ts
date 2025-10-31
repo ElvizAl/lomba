@@ -6,15 +6,17 @@ export const getCategory = async ({
   name,
   start_date,
   end_date,
+  id,
 }: {
   page: number;
   limit: number;
   name: string;
   start_date: string;
   end_date: string;
+  id: string;
 }) => {
   const response = await fetch(
-    `${BASE_URL}/api/categories?page=${page}&limit=${limit}&name=${name}&start_date=${start_date}&end_date=${end_date}`,
+    `${BASE_URL}/api/categories?id=${id}&page=${page}&limit=${limit}&name=${name}&start_date=${start_date}&end_date=${end_date}`,
     {
       method: "GET",
       headers: {

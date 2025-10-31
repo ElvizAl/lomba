@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Navbar() {
     return (
         <nav className="flex justify-between items-center px-6 lg:px-20 py-4 fixed top-0 w-full z-50">
@@ -12,12 +14,12 @@ export default function Navbar() {
                 <li>Pricing</li>
             </ul>
             <div className="flex gap-3">
-                <button className="px-4 py-2 bg-black text-white rounded-full">
+                <Link href={"/login"} className="px-4 py-2 bg-black text-white rounded-full">
                     Buka Aplikasi
-                </button>
-                <button className="px-4 py-2 border border-gray-300 rounded-full">
+                </Link>
+                <Link href={"/register"} className="px-4 py-2 border border-gray-300 rounded-full">
                     Daftar Gratis
-                </button>
+                </Link>
             </div>
         </nav>
     );

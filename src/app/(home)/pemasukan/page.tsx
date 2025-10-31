@@ -9,14 +9,14 @@ import { useRouter } from 'next/navigation';
 export default function Pemasukan() {
     const router = useRouter();
     const onClick = (item: any) => {
-        localStorage.setItem("type", "debit");
+        localStorage.setItem("type", "credit");
         localStorage.setItem("kategori", JSON.stringify(item));
         router.push("/pindai-struk");
     }
     return (
-        <>
-            <Navbar title="Pilih Kategori" />
+        <div className="px-4">
+            <Navbar title="Buat Pemasukan" />
             <Kategori title="Pilih Kategori Transaksi" type="pemasukan" onClick={(item: any) => onClick(item)} />
-        </>
+        </div>
     );
 }

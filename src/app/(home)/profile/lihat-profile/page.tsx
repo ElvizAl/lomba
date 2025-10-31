@@ -12,7 +12,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FBFCFF] font-sans">
+    <div className="min-h-screen bg-[#FBFCFF] font-sans px-4">
       <Navbar title="Profile" />
       <div className="max-w-sm mx-auto flex flex-col px-4 py-6">
         <div className="flex flex-col items-center text-center mb-5">

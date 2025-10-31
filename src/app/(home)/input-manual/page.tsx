@@ -148,7 +148,7 @@ const InputList = () => {
     const isFormValid = items.some(item => item.keterangan && item.nominal && item.tanggal);
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 px-4">
             <Navbar title="Input Manual" />
             <div className="pt-6 pb-24">
                 <form onSubmit={handleSubmit} className='mt-6 max-w-md mx-auto'>

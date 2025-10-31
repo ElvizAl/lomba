@@ -22,7 +22,7 @@ export default function Inbox() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 px-4">
       <Navbar title="Notifikasi" />
       <div className="mt-7">
         {

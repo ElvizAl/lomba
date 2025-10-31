@@ -25,7 +25,7 @@ export default function Report() {
   return (
     <>
       <Navbar title="Laporan" />
-      <div className="pt-5">
+      <div className="pt-5 px-4">
         <div className="mb-5">
           <div className="bg-gradient-to-r from-blue-600 to-blue-400 rounded-xl shadow-sm p-6">
             <h2 className="text-sm font-semibold text-blue-200 mb-2">Saldo Kas</h2>

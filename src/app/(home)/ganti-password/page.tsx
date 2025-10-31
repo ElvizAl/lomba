@@ -124,7 +124,7 @@ export default function ChangePasswordPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FBFCFF] font-sans">
+    <div className="min-h-screen bg-[#FBFCFF] font-sans px-4">
       <Navbar title="Ganti Password" />
       <div className="max-w-sm mx-auto flex flex-col px-4 py-6">
         <div className="bg-white rounded-2xl shadow-sm p-6">

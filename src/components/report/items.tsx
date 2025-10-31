@@ -14,7 +14,7 @@ export const Items = ({ sections }: ItemsProps) => {
     return (
         <>
             {
-                sections.map((section) => (
+                sections.map((section) => section.section != 'Ringkasan' ? (
                     <div key={section.section}>
                         <h2 className="text-lg font-semibold">{section.section}</h2>
                         <div className="mt-2 bg-white rounded p-3 mb-3 shadow-sm">
@@ -22,14 +22,14 @@ export const Items = ({ sections }: ItemsProps) => {
                                 const isMin = item.amount < 0;
                                 return (
                                     <div key={item.item_name} className="flex justify-between items-center my-2">
-                                        <p>{item.item_name}</p>
-                                        <p className="text-right">Rp {(isMin ? "-" : "") + numberWithCommas(Math.abs(item.amount))}</p>
+                                        <p className={item.item_name.startsWith("Total") ? "font-bold" : ""}>{item.item_name}</p>
+                                        <p className={item.item_name.startsWith("Total") ? "font-bold text-right" : "text-right"}>Rp {(isMin ? "-" : "") + numberWithCommas(Math.abs(item.amount))}</p>
                                     </div>
                                 )
                             })}
                         </div>
                     </div>
-                ))
+                ) : null)
             }
         </>
     )
