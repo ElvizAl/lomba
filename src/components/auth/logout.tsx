@@ -3,16 +3,12 @@
 import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { useState } from "react";
 import HCard from "../ui/h-card";
 
 export default function Logout() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogout = async () => {
-    setIsLoading(true);
-
     try {
       const token = localStorage.getItem("authToken");
 
@@ -32,9 +28,6 @@ export default function Logout() {
       localStorage.removeItem("authToken");
       toast.success("Berhasil keluar dari akun");
       router.push("/login");
-
-    } finally {
-      setIsLoading(false);
     }
   };
 

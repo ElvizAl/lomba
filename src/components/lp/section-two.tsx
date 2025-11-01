@@ -1,7 +1,8 @@
 'use client';
 
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef, useEffect } from 'react';
+import { useRef } from 'react';
+import Image from 'next/image';
 
 export default function SectionTwo() {
   const ref = useRef<HTMLDivElement>(null);
@@ -42,7 +43,9 @@ export default function SectionTwo() {
           className="bg-white rounded-2xl shadow-xl overflow-hidden w-[350px] mx-auto"
         >
           <div className="relative">
-            <img
+            <Image
+              width={350}
+              height={350}
               src="/mockups/laporan-screen.png"
               alt="Laporan Glofin"
               className="rounded-[2rem] border border-gray-200 shadow-2xl w-full h-auto"

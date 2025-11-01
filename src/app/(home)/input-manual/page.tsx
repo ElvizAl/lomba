@@ -1,7 +1,7 @@
 "use client"
 import Navbar from '@/components/layout/navbar';
 import { useState } from 'react';
-import { Plus, X } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { submitTransaction } from '@/utils/transaction';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';

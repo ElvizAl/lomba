@@ -1,5 +1,4 @@
 import { getCategory } from "@/utils/category";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ChevronRightIcon } from "lucide-react";
 import { numberWithCommas } from "@/utils";
@@ -53,8 +52,8 @@ export default function Kategori({ type, title, onClick }: { type: string; title
           {Object.entries(data).map(([key, value]: any) => (
             <div key={key}>
               <h2 className="text-lg font-bold mt-5 px-4">{key}</h2>
-              {value.map((item: any) => (
-                <div onClick={e => onClick(item)} className="block border-b py-3 cursor-pointer px-4">
+              {value.map((item: any, i: number) => (
+                <div onClick={() => onClick(item)} key={i} className="block border-b py-3 cursor-pointer px-4">
                   <div className="flex justify-between items-center">
                     <span key={item.id} className="font-semibold">{item.name}</span>
                     <div className="flex">

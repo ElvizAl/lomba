@@ -2,7 +2,6 @@
 import HeroSection from "@/components/lp/hero-section";
 import SectionTwo from "@/components/lp/section-two";
 import Navbar from "@/components/lp/navbar";
-import ScrollWrapper from "@/components/lp/scroll-wrapper";
 import { Nunito } from "next/font/google";
 
 const nunito = Nunito({

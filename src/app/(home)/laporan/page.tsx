@@ -1,6 +1,6 @@
 "use client";
 import Navbar from "@/components/layout/navbar";
-import { ChevronRight, HandCoins, ChartNoAxesColumn, Scale } from "lucide-react";
+import { HandCoins, ChartNoAxesColumn, Scale } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getUserData } from "@/utils/user";
@@ -30,7 +30,6 @@ const reports = [
 export default function Report() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -40,7 +39,6 @@ export default function Report() {
         setUser(userData);
       } catch (err) {
         console.error('Error fetching user data:', err);
-        setError('Failed to load user data');
       } finally {
         setLoading(false);
       }

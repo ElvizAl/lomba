@@ -1,7 +1,6 @@
-// components/lp/scroll-wrapper.tsx
 'use client';
 
-import { useEffect, useRef, ReactNode } from 'react';
+import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollWrapperProps } from '@/types';

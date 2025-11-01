@@ -1,42 +1,43 @@
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const icons = [
-  { 
+  {
     src: "/svg/Group 68.svg",
     position: { x: -300, y: -240 },
     className: "w-18 h-18 lg:w-36 lg:h-36",
     duration: 4,
     delay: 0.2
   },
-  { 
+  {
     src: "/svg/Group 69.svg",
     position: { x: 220, y: -240 },
     className: "w-28 h-28 lg:w-36 lg:h-36",
     duration: 4.5,
     delay: 0.3
   },
-  { 
+  {
     src: "/svg/Group 70.svg",
     position: { x: -340, y: -60 },
     className: "w-18 h-18 lg:w-36 lg:h-36",
     duration: 4.2,
     delay: 0.1
   },
-  { 
+  {
     src: "/svg/Group 71.svg",
     position: { x: 270, y: 0 },
     className: "w-28 h-28 lg:w-36 lg:h-36",
     duration: 5,
     delay: 0.4
   },
-  { 
+  {
     src: "/svg/Group 69.svg",
     position: { x: -280, y: 240 },
     className: "w-28 h-28 lg:w-36 lg:h-36",
     duration: 4.8,
     delay: 0.2
   },
-  { 
+  {
     src: "/svg/Group 70.svg",
     position: { x: 180, y: 240 },
     className: "w-28 h-28 lg:w-36 lg:h-36",
@@ -58,7 +59,7 @@ export default function FloatingIcons() {
           <motion.div
             key={index}
             className={`absolute ${icon.className} z-0`}
-            initial={{ 
+            initial={{
               opacity: 0,
               x: icon.position.x,
               y: icon.position.y,
@@ -79,13 +80,13 @@ export default function FloatingIcons() {
               delay: icon.delay,
               opacity: { duration: 0.8, ease: "easeOut" },
               scale: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
-              x: { 
+              x: {
                 duration: 10 + Math.random() * 5,
                 ease: "easeInOut",
                 repeat: Infinity,
                 repeatType: "reverse"
               },
-              y: { 
+              y: {
                 duration: 8 + Math.random() * 4,
                 ease: "easeInOut",
                 repeat: Infinity,
@@ -99,7 +100,9 @@ export default function FloatingIcons() {
               willChange: 'transform, opacity'
             }}
           >
-            <img
+            <Image
+              width={100}
+              height={100}
               src={icon.src}
               alt=""
               className="w-full h-full object-contain"

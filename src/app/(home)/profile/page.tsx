@@ -2,7 +2,7 @@
 import Logout from "@/components/auth/logout";
 import Navbar from "@/components/layout/navbar";
 import ProfileAvatar from "@/components/profile/profile-avatar";
-import { Edit, Fingerprint, Lock } from "lucide-react";
+import { Fingerprint, Lock } from "lucide-react";
 import Link from "next/link";
 import { getUserData } from "@/utils/user";
 import { useEffect, useState } from "react";
@@ -29,16 +29,11 @@ const menus = [
 export default function Profile() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [avatarUrl, setAvatarUrl] = useState<string | undefined>(undefined);
 
   const fetchUser = async () => {
     try {
       const userData = await getUserData();
       setUser(userData);
-      if (userData?.user?.avatar) {
-        setAvatarUrl(userData.user.avatar);
-      }
     } catch (err) {
       console.error('Error fetching user data:', err);
       toast.error('Failed to load user data');
@@ -52,7 +47,6 @@ export default function Profile() {
   }, []);
 
   const handleAvatarUploadSuccess = (newAvatarUrl: string) => {
-    setAvatarUrl(newAvatarUrl);
     if (user) {
       setUser({
         ...user,
@@ -76,7 +70,7 @@ export default function Profile() {
       <div className="flex flex-col items-center text-center my-5 px-4">
         <div className="relative group">
           <ProfileAvatar
-            src={avatarUrl}
+            src={user?.user.avatar}
             name={user?.user.name}
             size="xl"
             className="mb-2"
@@ -97,7 +91,7 @@ export default function Profile() {
 
       <div className="space-y-4">
         {menus.map((menu, i) => (
-          <HCard menu={menu} i={menus.indexOf(menu)} key={menus.indexOf(menu)} />
+          <HCard menu={menu} i={menus.indexOf(menu)} key={i} />
         ))}
         <Logout />
       </div>

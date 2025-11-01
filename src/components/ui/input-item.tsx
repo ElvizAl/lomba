@@ -1,5 +1,4 @@
 import { InputItem as InputItemType } from "@/types";
-import { useRouter } from "next/navigation";
 import { X } from "lucide-react";
 
 const InputItem = ({
@@ -15,7 +14,6 @@ const InputItem = ({
     removeItem?: (id: string) => void;
     isLastItem: boolean;
 }) => {
-    const router = useRouter();
     return (
         <div className="relative flex items-start gap-3 bg-white p-4 rounded-lg shadow-sm border mb-3">
             <div className="flex-1 flex flex-col gap-3">

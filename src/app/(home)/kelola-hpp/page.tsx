@@ -10,7 +10,6 @@ import { ProductCost } from '@/types';
 
 export default function HPPPage() {
     const [productCosts, setProductCosts] = useState<ProductCost[]>([]);
-    const [originalItems, setOriginalItems] = useState<Record<string, ProductCost>>({});
     const [loading, setLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
 
@@ -18,12 +17,6 @@ export default function HPPPage() {
         try {
             const items = await getProductCosts();
             setProductCosts(items);
-
-            const itemsMap = items.reduce((acc: Record<string, ProductCost>, item: ProductCost) => {
-                acc[item.id] = item;
-                return acc;
-            }, {});
-            setOriginalItems(itemsMap);
         } catch (error) {
             console.error('Error fetching product costs:', error);
             toast.error('Gagal memuat data HPP');

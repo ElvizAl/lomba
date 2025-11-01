@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Image from "next/image";
 import { getUserData } from "@/utils/user";
-import { ArrowLeftRight, BanknoteArrowDown, BanknoteArrowUp, ChartNoAxesColumn, ChevronRight, HandCoins, Scale, Box } from 'lucide-react';
+import { ArrowLeftRight, BanknoteArrowDown, BanknoteArrowUp, ChartNoAxesColumn, HandCoins, Scale, Box } from 'lucide-react';
 import Link from 'next/link';
 import { getHighlightInbox, markAsRead } from '@/utils/inbox';
 import Loading from '@/components/ui/loading';
@@ -76,6 +76,7 @@ export default function Home() {
         const inboxData: InboxData = await getHighlightInbox();
         setHInbox(inboxData);
       } catch (err) {
+        console.error('Error fetching highlight inbox:', err);
       } finally {
         setLoading(false);
       }
@@ -85,7 +86,8 @@ export default function Home() {
     fetchHInbox();
   }, []);
 
-  const understand = () => {
+  const understand = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setHInbox(null);
     markAsRead(hInbox?.id || '');
   }
@@ -125,7 +127,7 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 right-0 z-50 p-4">
           <button
             type="button"
-            onClick={e => understand()}
+            onClick={e => understand(e)}
             className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full w-full transition-colors disabled:opacity-50'
           >
             Ok, Paham

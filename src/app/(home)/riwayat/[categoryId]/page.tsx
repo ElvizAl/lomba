@@ -8,8 +8,8 @@ import { format, type Locale } from 'date-fns';
 import { id } from 'date-fns/locale';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { ListFilter, Trash } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
+import { ListFilter, Trash, XIcon } from 'lucide-react';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Label } from '@/components/ui/label';
 import { DatePicker } from '@/components/ui/date-picker';
@@ -30,7 +30,6 @@ export default function Riwayat({ params }: { params: Promise<{ categoryId: stri
     const [loading, setLoading] = useState(true);
     const [selectedTransaction, setSelectedTransaction] = useState<Array<string>>([]);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-    const [isConfirming, setIsConfirming] = useState(false);
     const [filters, setFilters] = useState<{
         startDate: Date | null;
         endDate: Date | null;
@@ -89,7 +88,6 @@ export default function Riwayat({ params }: { params: Promise<{ categoryId: stri
             setLoading(true);
             setSelectedTransaction([]);
             setIsDeleteDialogOpen(false);
-            setIsConfirming(false);
             toast.success('Transaksi berhasil dihapus');
         } catch (error) {
             console.error('Error deleting transactions:', error);

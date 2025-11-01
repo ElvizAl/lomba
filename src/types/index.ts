@@ -79,7 +79,7 @@ export interface Transaction {
   id: string;
   note: string;
   amount: number;
-  type: 'debit' | 'credit';
+  type: "debit" | "credit";
   createdAt: string;
 }
 
@@ -129,7 +129,7 @@ export interface ScrollWrapperProps {
 export interface ProfileAvatarProps {
   src?: string;
   name?: string;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: "sm" | "md" | "lg" | "xl";
   className?: string;
   onChange?: (file: File) => void;
 }
@@ -145,15 +145,23 @@ export interface ApiResponse<T> {
   data?: T;
 }
 
-export interface LoginResponse extends ApiResponse<{ token: string; user: UserData }> {}
-export interface RegisterResponse extends Omit<ApiResponse<{ token: string; user: UserData }>, 'data'> {
+export interface LoginResponse
+  extends ApiResponse<{ token: string; user: UserData }> {
+  data: { token: string; user: UserData };
+}
+export interface RegisterResponse
+  extends Omit<ApiResponse<{ token: string; user: UserData }>, "data"> {
   data?: { token: string; user: UserData };
   email?: string;
   otp?: string;
 }
 
-export interface ChangePasswordResponse extends ApiResponse<{}> {}
-export interface ResetResponse extends ApiResponse<{}> {
+export interface ChangePasswordResponse
+  extends ApiResponse<Record<string, string>> {
+  data: Record<string, string>;
+}
+export interface ResetResponse extends ApiResponse<Record<string, string>> {
+  data: Record<string, string>;
   email?: string;
 }
 
@@ -166,5 +174,5 @@ export interface InboxData {
   updatedAt: string;
   metadata: {
     image: string;
-  }
+  };
 }

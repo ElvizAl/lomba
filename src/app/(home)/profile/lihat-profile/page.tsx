@@ -1,9 +1,6 @@
 "use client"
-import Logout from "@/components/auth/logout";
 import Navbar from "@/components/layout/navbar";
-import ProfileAvatar from "@/components/profile/profile-avatar";
-import { Edit, Fingerprint, Lock, Mail, UserIcon } from "lucide-react";
-import Link from "next/link";
+import { Mail, UserIcon } from "lucide-react";
 import { useState } from "react";
 import { getUserData, updateUserProfile } from "@/utils/user";
 import { useEffect } from "react";
@@ -18,7 +15,6 @@ export default function Profile() {
     name: '',
     email: ''
   });
-  const [avatarUrl, setAvatarUrl] = useState<string | undefined>(undefined);
 
   const fetchUser = async () => {
     try {
@@ -28,9 +24,6 @@ export default function Profile() {
         name: userData.user.name,
         email: userData.user.email
       });
-      if (userData?.user?.avatar) {
-        setAvatarUrl(userData.user.avatar);
-      }
     } catch (err) {
       console.error('Error fetching user data:', err);
       toast.error('Gagal memuat data pengguna');
