@@ -1,6 +1,6 @@
 "use client"
 import Navbar from '@/components/layout/navbar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Plus } from 'lucide-react';
 import { submitTransaction } from '@/utils/transaction';
 import { toast } from 'sonner';
@@ -77,6 +77,16 @@ const InputList = () => {
             console.error("Error submitting transaction:", error);
         }
     };
+
+    useEffect(() => {
+        const transaction = localStorage.getItem("transaction");
+        if (transaction) {
+            const parsedTransaction = JSON.parse(transaction);
+            setItems(parsedTransaction);
+        }
+
+        localStorage.removeItem("transaction");
+    }, []);
 
     const isFormValid = items.some(item => item.keterangan && item.nominal && item.tanggal);
 

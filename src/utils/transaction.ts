@@ -48,6 +48,25 @@ export const submitTransaction = async (transaction: any): Promise<any> => {
   return result.data.transaction;
 };
 
+export const scanTransaction = async (image: any): Promise<any> => {
+  const formData = new FormData();
+  formData.append("image", image);
+  const response = await fetch(`${BASE_URL}/api/transactions/scan`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to scan transaction");
+  }
+
+  const result = await response.json();
+  return result.data.items;
+};
+
 export const updateTransaction = async (transactions: any): Promise<any> => {
   const response = await fetch(`${BASE_URL}/api/transactions/update`, {
     method: "POST",

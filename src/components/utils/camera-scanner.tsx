@@ -5,6 +5,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { cn } from "@/lib/utils"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useRouter } from "next/navigation"
+import Loading from "../ui/loading"
+import { scanTransaction } from "@/utils/transaction"
 
 type CameraScannerProps = {
   className?: string
@@ -18,6 +20,7 @@ export default function CameraScanner({ className, onCapture, onPickFromGallery 
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const streamRef = useRef<MediaStream | null>(null)
   const trackRef = useRef<MediaStreamTrack | null>(null)
+  const [loading, setLoading] = useState(false)
   const [isReady, setIsReady] = useState(false)
   const [isTorchOn, setIsTorchOn] = useState(false)
   const [torchSupported, setTorchSupported] = useState(false)
@@ -166,23 +169,29 @@ export default function CameraScanner({ className, onCapture, onPickFromGallery 
   }, [])
 
   const onFilePicked = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0]
       if (!file) return
+      setLoading(true)
       const reader = new FileReader()
-      reader.onload = () => {
-        const dataUrl = String(reader.result || "")
-        setPreviewUrl(dataUrl)
+      const result = await scanTransaction(file)
 
-        const img = new Image()
-        img.crossOrigin = "anonymous"
-        img.onload = () => {
-          onPickFromGallery?.(file, dataUrl)
-        }
-        img.src = dataUrl
-      }
-      reader.readAsDataURL(file)
-      e.currentTarget.value = ""
+      localStorage.setItem("transaction", JSON.stringify(result))
+      router.push("/input-manual")
+      // reader.onload = () => {
+      //   const dataUrl = String(reader.result || "")
+      //   setPreviewUrl(dataUrl)
+
+      //   const img = new Image()
+      //   img.crossOrigin = "anonymous"
+      //   img.onload = () => {
+      //     onPickFromGallery?.(file, dataUrl)
+      //     setLoading(false)
+      //   }
+      //   img.src = dataUrl
+      // }
+      // reader.readAsDataURL(file)
+      // e.currentTarget.value = ""
     },
     [onPickFromGallery],
   )
@@ -230,6 +239,10 @@ export default function CameraScanner({ className, onCapture, onPickFromGallery 
       router.push("/input-manual")
     }
   }, [scanMode])
+
+  if (loading) {
+    return <Loading />
+  }
 
   return (
     <section className={cn("relative w-full h-screen bg-background", className)} aria-label="Kamera Scanner">

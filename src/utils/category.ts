@@ -15,8 +15,17 @@ export const getCategory = async ({
   end_date: string;
   id: string;
 }) => {
+  const queryParams = new URLSearchParams();
+
+  if (id) queryParams.append("id", id);
+  if (page) queryParams.append("page", String(page));
+  if (limit) queryParams.append("limit", String(limit));
+  if (name) queryParams.append("name", name);
+  if (start_date) queryParams.append("start_date", start_date);
+  if (end_date) queryParams.append("end_date", end_date);
+
   const response = await fetch(
-    `${BASE_URL}/api/categories?id=${id}&page=${page}&limit=${limit}&name=${name}&start_date=${start_date}&end_date=${end_date}`,
+    `${BASE_URL}/api/categories?${queryParams.toString()}`,
     {
       method: "GET",
       headers: {
