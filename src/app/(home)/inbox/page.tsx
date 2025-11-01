@@ -2,7 +2,7 @@
 import Navbar from "@/components/layout/navbar";
 import { useState } from "react";
 import { useEffect } from "react";
-import { getInbox } from "@/utils/inbox";
+import { getInbox, markAsRead } from "@/utils/inbox";
 import Image from "next/image";
 import Loading from "@/components/ui/loading";
 
@@ -15,6 +15,11 @@ export default function Inbox() {
       try {
         const inboxData = await getInbox();
         setInboxes(inboxData);
+        inboxData.forEach((inbox: any) => {
+          if (!inbox.is_read) {
+            markAsRead(inbox.id);
+          }
+        });
       } catch (error) {
         console.error("Error fetching inbox:", error);
       } finally {
@@ -39,15 +44,21 @@ export default function Inbox() {
             inboxes.map((inbox: any) => (
 
               <div key={inbox.id} className="">
-                <small className="text-gray-500">
-                  {new Date(inbox.createdAt).toLocaleDateString('id-ID', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric',
-                    hour: 'numeric',
-                    minute: 'numeric',
-                  })}
-                </small>
+                {/* red dots */}
+                <div className="flex items-center">
+                  {!inbox.is_read ? (
+                    <div className="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
+                  ) : null}
+                  <small className="text-gray-500">
+                    {new Date(inbox.createdAt).toLocaleDateString('id-ID', {
+                      day: 'numeric',
+                      month: 'short',
+                      year: 'numeric',
+                      hour: 'numeric',
+                      minute: 'numeric',
+                    })}
+                  </small>
+                </div>
                 <div className="flex border rounded-lg bg-white p-4 mb-4 ">
                   <Image
                     src="/logo.png"
@@ -65,7 +76,20 @@ export default function Inbox() {
               </div>
             ))
           ) : (
-            <p>No messages found</p>
+            <div className="flex items-center justify-center h-80">
+              <div className="flex flex-col items-center">
+
+                <Image
+                  src="/img/noted.png"
+                  alt="Noted"
+                  width={100}
+                  height={100}
+                  className="w-64"
+                  priority
+                />
+                <p className="text-gray-500 mt-2 text-xl font-bold">Tidak ada notifikasi</p>
+              </div>
+            </div>
           )
         }
       </div>

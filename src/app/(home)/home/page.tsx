@@ -5,7 +5,7 @@ import Image from "next/image";
 import { getUserData } from "@/utils/user";
 import { ArrowLeftRight, BanknoteArrowDown, BanknoteArrowUp, ChartNoAxesColumn, ChevronRight, HandCoins, Scale, Box } from 'lucide-react';
 import Link from 'next/link';
-import { getHighlightInbox } from '@/utils/inbox';
+import { getHighlightInbox, markAsRead } from '@/utils/inbox';
 import Loading from '@/components/ui/loading';
 import HCard from '@/components/ui/h-card';
 
@@ -84,8 +84,6 @@ export default function Home() {
         const inboxData = await getHighlightInbox();
         setHInbox(inboxData);
       } catch (err) {
-        console.error('Error fetching inbox data:', err);
-        setError('Failed to load inbox data');
       } finally {
         setLoading(false);
       }
@@ -94,6 +92,11 @@ export default function Home() {
     fetchUser();
     fetchHInbox();
   }, []);
+
+  const understand = () => {
+    setHInbox(null);
+    markAsRead(hInbox.id);
+  }
 
   if (loading) {
     return (
@@ -130,7 +133,7 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 right-0 z-50 p-4">
           <button
             type="button"
-            onClick={e => setHInbox(null)}
+            onClick={e => understand()}
             className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full w-full transition-colors disabled:opacity-50'
           >
             Ok, Paham
