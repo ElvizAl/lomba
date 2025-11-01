@@ -1,23 +1,14 @@
 "use client"
-import Navbar from '@/components/layout/navbar';
-import { useState } from 'react';
-import { Plus, X } from 'lucide-react';
-import { submitTransaction } from '@/utils/transaction';
-import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
-import InputItem from '@/components/ui/input-item';
-import { InputItem as InputItemType } from '@/types';
+import Navbar from "@/components/layout/navbar";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { InputItem as InputItemType, Transaction } from "@/types";
+import InputItem from "@/components/ui/input-item";
+import { updateTransaction } from "@/utils/transaction";
 
-const InputList = () => {
+export default function Edit() {
     const router = useRouter();
-    const [items, setItems] = useState<InputItemType[]>([
-        {
-            id: '1',
-            keterangan: '',
-            nominal: '',
-            tanggal: new Date().toISOString().split('T')[0] // Set default to today
-        }
-    ]);
+    const [items, setItems] = useState<InputItemType[]>([]);
 
     const updateItem = (id: string, field: string, value: string) => {
         setItems(prevItems =>
@@ -25,22 +16,6 @@ const InputList = () => {
                 item.id === id ? { ...item, [field]: value } : item
             )
         );
-    };
-
-    const addItem = () => {
-        const newItem = {
-            id: Date.now().toString(),
-            keterangan: '',
-            nominal: '',
-            tanggal: new Date().toISOString().split('T')[0]
-        };
-        setItems([...items, newItem]);
-    };
-
-    const removeItem = (id: string) => {
-        if (items.length > 1) {
-            setItems(items.filter(item => item.id !== id));
-        }
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -52,6 +27,7 @@ const InputList = () => {
 
             const transactions = items.map(item => (
                 {
+                    id: item.id,
                     type: type,
                     category: category.id,
                     note: item.keterangan,
@@ -60,23 +36,30 @@ const InputList = () => {
                 }
             ))
 
-            submitTransaction(transactions);
-
-            setItems([{
-                id: '1',
-                keterangan: '',
-                nominal: '',
-                tanggal: new Date().toISOString().split('T')[0]
-            }]);
-
-            toast.success("Transaksi berhasil disimpan");
+            updateTransaction(transactions);
 
             router.push("/riwayat/" + category.id);
-
         } catch (error) {
             console.error("Error submitting transaction:", error);
         }
     };
+
+    useEffect(() => {
+        (
+            async () => {
+                const transactions = await JSON.parse(localStorage.getItem("selectedTransaction") || "[]");
+                const displayItems = await transactions.map((transaction: Transaction) => {
+                    return {
+                        id: transaction.id,
+                        keterangan: transaction.note,
+                        nominal: transaction.amount.toString(),
+                        tanggal: transaction.date
+                    }
+                })
+                setItems(displayItems)
+            }
+        )()
+    }, [])
 
     const isFormValid = items.some(item => item.keterangan && item.nominal && item.tanggal);
 
@@ -92,20 +75,10 @@ const InputList = () => {
                                 id={item.id}
                                 item={item}
                                 updateItem={updateItem}
-                                removeItem={removeItem}
                                 isLastItem={index === items.length - 1}
                             />
                         ))}
                     </div>
-
-                    <button
-                        type="button"
-                        onClick={addItem}
-                        className='flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-blue-600 border border-blue-600 px-4 py-3 rounded-full w-full transition-colors'
-                    >
-                        <Plus className="w-5 h-5" />
-                        Tambahkan Item
-                    </button>
 
                     <div className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-white border-t">
                         <button
@@ -121,7 +94,3 @@ const InputList = () => {
         </div>
     );
 };
-
-export default function InputManual() {
-    return <InputList />;
-}

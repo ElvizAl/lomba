@@ -1,8 +1,18 @@
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export const getTransaction = async (params: any) => {
+  const queryParams = new URLSearchParams();
+
+  if (params.categoryId) queryParams.append("category_id", params.categoryId);
+  if (params.page) queryParams.append("page", params.page);
+  if (params.limit) queryParams.append("limit", params.limit);
+  if (params.note) queryParams.append("note", params.note);
+  if (params.id) queryParams.append("id", params.id);
+  if (params.start_date) queryParams.append("start_date", params.start_date);
+  if (params.end_date) queryParams.append("end_date", params.end_date);
+
   const response = await fetch(
-    `${BASE_URL}/api/transactions?category_id=${params.categoryId}&page=${params.page}&limit=${params.limit}&note=${params.note}&start_date=${params.start_date}&end_date=${params.end_date}`,
+    `${BASE_URL}/api/transactions?${queryParams.toString()}`,
     {
       method: "GET",
       headers: {
@@ -36,4 +46,40 @@ export const submitTransaction = async (transaction: any): Promise<any> => {
 
   const result = await response.json();
   return result.data.transaction;
+};
+
+export const updateTransaction = async (transactions: any): Promise<any> => {
+  const response = await fetch(`${BASE_URL}/api/transactions/update`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+    },
+    body: JSON.stringify(transactions),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to update transaction");
+  }
+
+  const result = await response.json();
+  return result.data;
+};
+
+export const deleteTransaction = async (transactionId: Array<string>) => {
+  const response = await fetch(`${BASE_URL}/api/transactions/delete`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+    },
+    body: JSON.stringify(transactionId),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete transaction");
+  }
+
+  const result = await response.json();
+  return result.data;
 };

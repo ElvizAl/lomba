@@ -1,28 +1,36 @@
 "use client"
 import Navbar from '@/components/layout/navbar';
 import React, { useEffect, useState } from 'react';
-import { getTransaction, submitTransaction } from '@/utils/transaction';
+import { deleteTransaction, getTransaction } from '@/utils/transaction';
 import { getCategory } from '@/utils/category';
 import { numberWithCommas } from '@/utils';
-import { format, parseISO, type Locale } from 'date-fns';
+import { format, type Locale } from 'date-fns';
 import { id } from 'date-fns/locale';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Badge, ListFilter, X, XIcon } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { ListFilter, Trash } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Label } from '@/components/ui/label';
 import { DatePicker } from '@/components/ui/date-picker';
 import Loading from '@/components/ui/loading';
 import { Transaction } from '@/types';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 export default function Riwayat({ params }: { params: Promise<{ categoryId: string }> }) {
     const { categoryId } = React.use(params)
 
+    const router = useRouter();
+
     const [category, setCategory] = useState({ name: "", balance: 0, total_debit: 0, total_kredit: 0 });
-  
+
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [selectedTransaction, setSelectedTransaction] = useState<Array<string>>([]);
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+    const [isConfirming, setIsConfirming] = useState(false);
     const [filters, setFilters] = useState<{
         startDate: Date | null;
         endDate: Date | null;
@@ -62,6 +70,50 @@ export default function Riwayat({ params }: { params: Promise<{ categoryId: stri
         loadCategory()
         loadTransactions()
     }, [])
+
+    const selectTransaction = (e: React.MouseEvent<HTMLDivElement>) => {
+        const card = e.currentTarget;
+        const transactionId = card.dataset.id as string;
+
+        setSelectedTransaction(prevIds => {
+            const isSelected = prevIds.includes(transactionId);
+            return isSelected
+                ? prevIds.filter(id => id !== transactionId)
+                : [...prevIds, transactionId];
+        });
+    }
+
+    const handleDeleteTransactions = async () => {
+        try {
+            await deleteTransaction(selectedTransaction);
+            setLoading(true);
+            setSelectedTransaction([]);
+            setIsDeleteDialogOpen(false);
+            setIsConfirming(false);
+            toast.success('Transaksi berhasil dihapus');
+        } catch (error) {
+            console.error('Error deleting transactions:', error);
+            toast.error('Gagal menghapus transaksi');
+        }
+        setLoading(false);
+        loadTransactions();
+    };
+
+    const editTransactions = () => {
+        const selectedTransactions = transactions.filter((transaction) => selectedTransaction.includes(transaction.id));
+        localStorage.setItem('selectedTransaction', JSON.stringify(selectedTransactions));
+        router.push(`/riwayat/edit`);
+    }
+
+    useEffect(() => {
+        const cards = document.querySelectorAll('[data-id]');
+        cards.forEach(card => {
+            const isSelected = selectedTransaction.includes(card.dataset.id || '');
+            card.classList.toggle('bg-blue-100', isSelected);
+            card.classList.toggle('bg-white', !isSelected);
+            card.dataset.select = String(isSelected);
+        });
+    }, [selectedTransaction]);
 
     useEffect(() => {
         loadTransactions()
@@ -135,7 +187,7 @@ export default function Riwayat({ params }: { params: Promise<{ categoryId: stri
                                         endDate={filters.endDate}
                                         maxDate={filters.endDate || new Date()}
                                         placeholderText="Pilih tanggal awal"
-                                        className="w-full"
+                                        className="w-1/2"
                                     />
                                 </div>
                                 <div className="flex-1 space-y-2">
@@ -196,7 +248,7 @@ export default function Riwayat({ params }: { params: Promise<{ categoryId: stri
             <div className="px-4">
                 {
                     transactions.length ? transactions.map((transaction, i) => (
-                        <div className='rounded bg-white mb-3 p-4' key={i}>
+                        <div className='rounded bg-white mb-3 p-4 border' key={i} data-select='false' data-id={transaction.id} onClick={e => selectTransaction(e)}>
                             <div className="flex justify-between items-center">
                                 <div>
                                     <h5 className="font-medium text-gray-900">{transaction.note}</h5>
@@ -221,6 +273,57 @@ export default function Riwayat({ params }: { params: Promise<{ categoryId: stri
                     )
                 }
             </div>
+            <div className="fixed bottom-0 left-0 right-0 z-50 px-4 pb-4 pt-4 bg-white border-t">
+                <div className='flex items-center gap-2'>
+                    <button
+                        onClick={() => editTransactions()}
+                        className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full w-full transition-colors disabled:opacity-50'
+                        disabled={selectedTransaction.length === 0}
+                    >
+                        Edit Transaksi ({selectedTransaction.length})
+                    </button>
+                    <button
+                        type="submit"
+                        className='bg-red-600 hover:bg-red-700 text-white px-3 py-3 rounded-full transition-colors disabled:opacity-50'
+                        disabled={selectedTransaction.length === 0}
+                        onClick={() => setIsDeleteDialogOpen(true)}
+                    >
+                        <Trash />
+                    </button>
+                </div>
+            </div>
+
+            <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+                <AlertDialogContent className="sm:max-w-md rounded-2xl">
+                    <AlertDialogHeader>
+                        <AlertDialogTitle className='text-center'>
+                            Hapus Transaksi
+                        </AlertDialogTitle>
+                        <AlertDialogDescription className="text-center">
+                            Apakah Anda yakin ingin menghapus {selectedTransaction.length} transaksi yang dipilih?
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter className="flex sm:justify-center gap-2">
+                        <div className="flex">
+                            <AlertDialogCancel
+                                className="w-1/2"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setIsConfirming(false);
+                                }}
+                            >
+                                Kembali
+                            </AlertDialogCancel>
+                            <AlertDialogAction
+                                className="w-1/2 bg-blue-600 hover:bg-blue-700"
+                                onClick={handleDeleteTransactions}
+                            >
+                                Ya, Hapus
+                            </AlertDialogAction>
+                        </div>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </div>
     );
 };
