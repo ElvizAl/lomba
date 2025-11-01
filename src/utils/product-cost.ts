@@ -1,13 +1,9 @@
 "use client";
+
+import { ProductCost } from "@/types";
+
 const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-interface ProductCost {
-  id: string;
-  name: string;
-  cost: string;
-  created_at: string;
-  updated_at: string;
-}
 
 export const getProductCosts = async () => {
   const token = localStorage.getItem("authToken");

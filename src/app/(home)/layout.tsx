@@ -1,9 +1,5 @@
 import MobileButton from "@/components/layout/mobile-button";
 
-interface Props {
-    children: React.ReactNode;
-    noPadding?: boolean;
-}
 
 const Layout = ({ children }: Props) => {
     return (

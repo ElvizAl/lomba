@@ -12,22 +12,6 @@ import {
 import { Loader2, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
-interface OTPResponse {
-  message: string;
-  status: string;
-  data?: {
-    token: string;
-    user: {
-      id: string;
-      name: string;
-      email: string;
-      createdAt: string;
-      updatedAt: string;
-      last_login: string | null;
-      role: string;
-    };
-  };
-}
 
 export default function OTPPage() {
   const router = useRouter();

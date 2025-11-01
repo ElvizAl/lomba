@@ -2,13 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
-
-interface NavbarProps {
-  title: string;
-  showBackButton?: boolean;
-  onBackClick?: () => void;
-  className?: string;
-}
+import { NavbarProps } from "@/types";
 
 export default function Navbar({
   title,

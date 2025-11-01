@@ -4,24 +4,17 @@ import { getBalanceSheet } from "@/utils/report";
 import { useEffect, useState } from "react";
 import { Items } from "@/components/report/items";
 import Loading from "@/components/ui/loading";
-
-interface BalanceSheet {
-    section: string;
-    items: {
-        item_name: string;
-        amount: number;
-    }[];
-}
+import { ReportSection } from "@/types";
 
 export default function BalanceSheet() {
-    const [balanceSheet, setBalanceSheet] = useState<BalanceSheet[]>([]);
+    const [balanceSheet, setBalanceSheet] = useState<ReportSection[]>([]);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
-        getBalanceSheet().then((data: BalanceSheet[]) => {
-            setBalanceSheet(data || []);
-        }).finally(() => {
+        (async () => {
+            const data: ReportSection[] = await getBalanceSheet()
+            setBalanceSheet(data);
             setLoading(false);
-        });
+        })();
     }, []);
 
     if (loading) {

@@ -5,17 +5,18 @@ import { useEffect } from "react";
 import { getInbox, markAsRead } from "@/utils/inbox";
 import Image from "next/image";
 import Loading from "@/components/ui/loading";
+import { InboxData } from "@/types";
 
 export default function Inbox() {
   const [loading, setLoading] = useState(true);
-  const [inboxes, setInboxes] = useState([]);
+  const [inboxes, setInboxes] = useState<InboxData[]>([]);
 
   useEffect(() => {
     const fetchInbox = async () => {
       try {
         const inboxData = await getInbox();
         setInboxes(inboxData);
-        inboxData.forEach((inbox: any) => {
+        inboxData.forEach((inbox: InboxData) => {
           if (!inbox.is_read) {
             markAsRead(inbox.id);
           }
@@ -41,7 +42,7 @@ export default function Inbox() {
       <div className="mt-7">
         {
           inboxes.length > 0 ? (
-            inboxes.map((inbox: any) => (
+            inboxes.map((inbox: InboxData) => (
 
               <div key={inbox.id} className="">
                 {/* red dots */}
@@ -61,7 +62,7 @@ export default function Inbox() {
                 </div>
                 <div className="flex border rounded-lg bg-white p-4 mb-4 ">
                   <Image
-                    src="/logo.png"
+                    src={"/img/" + (inbox.metadata?.image || 'noted.png')}
                     alt="Logo"
                     width={100}
                     height={100}
@@ -80,7 +81,7 @@ export default function Inbox() {
               <div className="flex flex-col items-center">
 
                 <Image
-                  src="/img/noted.png"
+                  src={"/img/noted.png"}
                   alt="Noted"
                   width={100}
                   height={100}

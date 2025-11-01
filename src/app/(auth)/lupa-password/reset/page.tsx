@@ -9,15 +9,7 @@ import { Label } from "@/components/ui/label";
 import { ArrowLeft, KeyRound, Eye, EyeOff, Loader2 } from "lucide-react";
 import Link from "next/link";
 
-interface ResetPasswordData {
-  password: string;
-  password_confirmation: string;
-}
 
-interface ResetResponse {
-  message: string;
-  status: string;
-}
 
 export default function ResetPasswordPage() {
   const router = useRouter();

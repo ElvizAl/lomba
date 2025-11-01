@@ -6,14 +6,7 @@ import { Plus, Trash } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { getProductCosts, saveProductCosts } from '@/utils/product-cost';
-
-interface ProductCost {
-    id: string;
-    name: string;
-    cost: string;
-    created_at: string;
-    updated_at: string;
-}
+import { ProductCost } from '@/types';
 
 export default function HPPPage() {
     const [productCosts, setProductCosts] = useState<ProductCost[]>([]);
@@ -85,11 +78,8 @@ export default function HPPPage() {
     const saveAll = async () => {
         setIsSaving(true);
         try {
-            const updatedProductCosts = productCosts.map((cost) => {
-                delete cost.id;
-                delete cost.created_at;
-                delete cost.updated_at;
-                return cost;
+            const updatedProductCosts: ProductCost[] = productCosts.map((cost: ProductCost) => {
+                return { name: cost.name, cost: cost.cost };
             });
             await saveProductCosts(updatedProductCosts);
             toast.success("Data HPP berhasil disimpan");
@@ -126,7 +116,7 @@ export default function HPPPage() {
                     <div className="text-center py-12 bg-white rounded-lg shadow-sm border">
                         <p className="text-gray-500">Belum ada data HPP</p>
                         <p className="text-sm text-gray-400 mt-2">
-                            Klik tombol "Tambah HPP" untuk menambahkan data baru
+                            Klik tombol &quot;Tambah HPP&quot; untuk menambahkan data baru
                         </p>
                     </div>
                 ) : (

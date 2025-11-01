@@ -1,18 +1,11 @@
-interface ReportItem {
-  item_name: string;
-  amount: number;
-}
+import { ReportSection } from "@/types";
 
-export interface ReportFormat {
-  section: string;
-  items: ReportItem[];
-}
 
 type ReportType = "balance-sheet" | "cashflow" | "profit-and-loss";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-async function fetchReport(type: ReportType): Promise<ReportFormat> {
+async function fetchReport(type: ReportType): Promise<ReportSection> {
   const token =
     typeof window !== "undefined" ? localStorage.getItem("authToken") : "";
 
@@ -33,10 +26,10 @@ async function fetchReport(type: ReportType): Promise<ReportFormat> {
   return result.data;
 }
 
-export const getBalanceSheet = (): Promise<ReportFormat> =>
+export const getBalanceSheet = (): Promise<ReportSection> =>
   fetchReport("balance-sheet");
 
-export const getCashFlow = (): Promise<ReportFormat> => fetchReport("cashflow");
+export const getCashFlow = (): Promise<ReportSection> => fetchReport("cashflow");
 
-export const getProfitAndLoss = (): Promise<ReportFormat> =>
+export const getProfitAndLoss = (): Promise<ReportSection> =>
   fetchReport("profit-and-loss");

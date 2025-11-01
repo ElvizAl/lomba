@@ -12,14 +12,7 @@ import {
 import { Loader2, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
-interface OTPResponse {
-  message: string;
-  status: string;
-  data?: {
-    resetToken: string;
-  };
-  token?: string;
-}
+
 
 export default function ForgotPasswordOTPPage() {
   const router = useRouter();

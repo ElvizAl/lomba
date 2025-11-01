@@ -8,15 +8,7 @@ import Link from 'next/link';
 import { getHighlightInbox, markAsRead } from '@/utils/inbox';
 import Loading from '@/components/ui/loading';
 import HCard from '@/components/ui/h-card';
-
-interface User {
-  user: {
-    name: string;
-  },
-  cash: {
-    balance: number;
-  }
-}
+import { User, InboxData } from '@/types';
 
 
 const reports = [
@@ -64,7 +56,7 @@ export default function Home() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [hInbox, setHInbox] = useState<any>(null);
+  const [hInbox, setHInbox] = useState<InboxData | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -81,7 +73,7 @@ export default function Home() {
 
     const fetchHInbox = async () => {
       try {
-        const inboxData = await getHighlightInbox();
+        const inboxData: InboxData = await getHighlightInbox();
         setHInbox(inboxData);
       } catch (err) {
       } finally {
@@ -95,7 +87,7 @@ export default function Home() {
 
   const understand = () => {
     setHInbox(null);
-    markAsRead(hInbox.id);
+    markAsRead(hInbox?.id || '');
   }
 
   if (loading) {

@@ -13,19 +13,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from '@/components/ui/label';
 import { DatePicker } from '@/components/ui/date-picker';
 import Loading from '@/components/ui/loading';
+import { Transaction } from '@/types';
 
 export default function Riwayat({ params }: { params: Promise<{ categoryId: string }> }) {
     const { categoryId } = React.use(params)
 
     const [category, setCategory] = useState({ name: "", balance: 0, total_debit: 0, total_kredit: 0 });
-    interface Transaction {
-        id: string;
-        note: string;
-        amount: number;
-        type: 'debit' | 'credit';
-        createdAt: string;
-    }
-
+  
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [loading, setLoading] = useState(true);

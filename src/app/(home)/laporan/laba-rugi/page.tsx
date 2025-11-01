@@ -4,24 +4,17 @@ import { getProfitAndLoss } from "@/utils/report";
 import { useEffect, useState } from "react";
 import { Items } from "@/components/report/items";
 import Loading from "@/components/ui/loading";
-
-interface profitAndLossFormat {
-    section: string;
-    items: {
-        item_name: string;
-        amount: number;
-    }[];
-}
+import { ReportSection } from "@/types";
 
 export default function ProfitAndLoss() {
-    const [profitAndLoss, setProfitAndLoss] = useState<profitAndLossFormat[]>([]);
+    const [profitAndLoss, setProfitAndLoss] = useState<ReportSection[]>([]);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
-        getProfitAndLoss().then((data: profitAndLossFormat[]) => {
-            setProfitAndLoss(data || []);
-        }).finally(() => {
+        (async () => {
+            const data: ReportSection[] = await getProfitAndLoss()
+            setProfitAndLoss(data);
             setLoading(false);
-        });
+        })();
     }, []);
 
     if (loading) {

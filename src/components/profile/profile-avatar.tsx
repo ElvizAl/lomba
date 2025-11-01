@@ -6,13 +6,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { uploadAvatar } from "@/utils/user";
 import { toast } from "sonner";
-
-interface ProfileAvatarProps {
-  src?: string;
-  name?: string;
-  size?: "sm" | "md" | "lg" | "xl";
-  className?: string;
-}
+import { ProfileAvatarProps } from "@/types";
 
 export default function ProfileAvatar({ 
   src, 

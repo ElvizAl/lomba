@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 
 export default function Pemasukan() {
     const router = useRouter();
-    const onClick = (item: any) => {
+    const onClick = (item) => {
         localStorage.setItem("type", "credit");
         localStorage.setItem("kategori", JSON.stringify(item));
         router.push("/pindai-struk");

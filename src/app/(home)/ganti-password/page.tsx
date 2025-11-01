@@ -9,16 +9,6 @@ import { Label } from "@/components/ui/label";
 import Navbar from "@/components/layout/navbar";
 import { KeyRound, Eye, EyeOff, Loader2 } from "lucide-react";
 
-interface ChangePasswordData {
-  currentPassword: string;
-  newPassword: string;
-  confirmPassword: string;
-}
-
-interface ChangePasswordResponse {
-  message: string;
-  status: string;
-}
 
 export default function ChangePasswordPage() {
   const router = useRouter();

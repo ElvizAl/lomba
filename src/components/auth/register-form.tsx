@@ -7,34 +7,8 @@ import { KeyRound, MailOpen, Store, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { RegisterData, RegisterFormat } from "@/types";
 
-interface RegisterData {
-  name: string;
-  email: string;
-  password: string;
-  password_confirmation: string;
-}
-
-interface RegisterResponse {
-    message: string;
-    status: string;  // Misalnya: "success" atau "failure"
-    data?: {
-      token: string;  // Token autentikasi JWT
-      user: {
-        id: string;  // ID pengguna
-        name: string;  // Nama pengguna
-        email: string;  // Email pengguna
-        createdAt: string;  // Waktu pembuatan akun (ISO string)
-        updatedAt: string;  // Waktu pembaruan akun (ISO string)
-        last_login: string | null;  // Terakhir kali login (bisa null)
-        role: string;  // Peran pengguna (misalnya: "user", "admin")
-      };
-    };
-    // For OTP response
-    email?: string;
-    otp?: string;
-  }
-  
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -100,7 +74,7 @@ export default function RegisterForm() {
       const contentType = response.headers.get("content-type");
       if (contentType && contentType.includes("application/json")) {
         try {
-          const result: RegisterResponse = await response.json();
+          const result: RegisterFormat = await response.json();
     
           console.log("Registration response:", result);
 

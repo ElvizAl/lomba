@@ -9,17 +9,7 @@ import { useEffect, useState } from "react";
 import Loading from "@/components/ui/loading";
 import { toast } from "sonner";
 import HCard from "@/components/ui/h-card";
-
-interface User {
-  user: {
-    name: string;
-    avatar?: string;
-  };
-  cash: {
-    balance: number;
-    id: string;
-  };
-}
+import { User } from "@/types";
 
 const menus = [
   {

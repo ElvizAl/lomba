@@ -1,13 +1,8 @@
+import { ReportSection } from "@/types";
 import { numberWithCommas } from "@/utils";
 
 interface ItemsProps {
-    sections: {
-        section: string;
-        items: {
-            item_name: string;
-            amount: number;
-        }[];
-    }[];
+    sections: ReportSection[];
 }
 
 export const Items = ({ sections }: ItemsProps) => {

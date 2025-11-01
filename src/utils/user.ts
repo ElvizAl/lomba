@@ -1,14 +1,5 @@
-interface User {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-  cash: {
-    balance: number;
-    id: string;
-  };
-}
+import { UpdateProfileData, User } from "@/types";
+
 
 const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -29,11 +20,6 @@ export const getUserData = async (): Promise<User> => {
   const result = await response.json();
   return result.data;
 };
-
-export interface UpdateProfileData {
-  name: string;
-  email: string;
-}
 
 export const updateUserProfile = async (data: UpdateProfileData): Promise<User> => {
   const response = await fetch(`${baseURL}/api/user/update`, {

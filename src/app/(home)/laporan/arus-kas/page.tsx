@@ -8,6 +8,7 @@ import 'jspdf-autotable';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Loading from "@/components/ui/loading";
+import { ReportSection } from "@/types";
 
 // Extend jsPDF with autoTable
 declare module 'jspdf' {
@@ -16,15 +17,7 @@ declare module 'jspdf' {
     }
 }
 
-interface cashflowFormat {
-    section: string;
-    items: {
-        item_name: string;
-        amount: number;
-    }[];
-}
-
-const generatePDF = (cashflowData: cashflowFormat[]) => {
+const generatePDF = (cashflowData: ReportSection[]) => {
     const doc = new jsPDF();
     const currentDate = format(new Date(), 'dd MMMM yyyy', { locale: id });
 
@@ -169,7 +162,7 @@ const generatePDF = (cashflowData: cashflowFormat[]) => {
 };
 
 export default function CashFlow() {
-    const [cashflow, setCashflow] = useState<cashflowFormat[]>([]);
+    const [cashflow, setCashflow] = useState<ReportSection[]>([]);
     const [isGenerating, setIsGenerating] = useState(false);
     const [loading, setLoading] = useState(true);
 

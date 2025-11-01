@@ -7,29 +7,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { LoginData, LoginResponse } from "@/types";
 
-interface LoginData {
-  email: string;
-  password: string;
-}
-
-interface LoginResponse {
-  message: string;
-  status: string; // Misalnya: "success" atau "failure"
-  data: {
-    token: string; // Token autentikasi JWT
-    user: {
-      id: string; // ID pengguna
-      name: string; // Nama pengguna
-      email: string; // Email pengguna
-      fingerprint_hash: string | null; // Hash sidik jari (bisa null)
-      createdAt: string; // Waktu pembuatan akun (ISO string)
-      updatedAt: string; // Waktu pembaruan akun (ISO string)
-      last_login: string | null; // Terakhir kali login (bisa null)
-      role: string; // Peran pengguna (misalnya: "user", "admin")
-    };
-  };
-}
 
 export default function LoginForm() {
   const router = useRouter();
@@ -82,11 +61,11 @@ export default function LoginForm() {
       const result: LoginResponse = await response.json();
 
       if (response.ok && result.status === "success") {
-        localStorage.setItem("authToken", result.data.token); // Menyimpan token
+        localStorage.setItem("authToken", result.data?.token || ""); // Menyimpan token
         toast.success("Registrasi berhasil! Silakan login.");
         router.push("/home");  // Mengalihkan ke halaman login
       } else {
-        setError(result.message || "Terjadi kesalahan saat registrasi");
+        setError(result?.message || "Terjadi kesalahan saat registrasi");
       }
     } catch (error) {
       console.error("Registration error:", error);

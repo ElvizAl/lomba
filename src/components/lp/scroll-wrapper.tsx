@@ -4,12 +4,10 @@
 import { useEffect, useRef, ReactNode } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ScrollWrapperProps } from '@/types';
 
 gsap.registerPlugin(ScrollTrigger);
 
-interface ScrollWrapperProps {
-  children: ReactNode;
-}
 
 export default function ScrollWrapper({ children }: ScrollWrapperProps) {
   const containerRef = useRef<HTMLDivElement>(null);

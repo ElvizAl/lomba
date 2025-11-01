@@ -8,18 +8,7 @@ import { useState } from "react";
 import { getUserData, updateUserProfile } from "@/utils/user";
 import { useEffect } from "react";
 import { toast } from "sonner";
-
-interface User {
-  user: {
-    name: string;
-    email: string;
-    avatar?: string;
-  };
-  cash: {
-    balance: number;
-    id: string;
-  };
-}
+import { User } from "@/types";
 
 export default function Profile() {
   const [user, setUser] = useState<User | null>(null);

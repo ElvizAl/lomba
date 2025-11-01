@@ -7,16 +7,7 @@ import { getUserData } from "@/utils/user";
 import Loading from "@/components/ui/loading";
 import { numberWithCommas } from "@/utils";
 import HCard from "@/components/ui/h-card";
-
-interface User {
-  user: {
-    name: string;
-  };
-  cash: {
-    balance: number;
-    id: string;
-  };
-}
+import { User } from "@/types";
 
 const reports = [
   {

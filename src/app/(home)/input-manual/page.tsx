@@ -6,12 +6,6 @@ import { submitTransaction } from '@/utils/transaction';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
-interface InputItem {
-    id: string;
-    keterangan: string;
-    nominal: string;
-    tanggal: string;
-}
 
 const InputItem = ({
     id,
