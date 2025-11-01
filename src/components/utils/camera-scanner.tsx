@@ -4,6 +4,7 @@ import type React from "react"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { cn } from "@/lib/utils"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useRouter } from "next/navigation"
 
 type CameraScannerProps = {
   className?: string
@@ -12,6 +13,7 @@ type CameraScannerProps = {
 }
 
 export default function CameraScanner({ className, onCapture, onPickFromGallery }: CameraScannerProps) {
+  const router = useRouter()
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const streamRef = useRef<MediaStream | null>(null)
@@ -24,7 +26,7 @@ export default function CameraScanner({ className, onCapture, onPickFromGallery 
   const [isFlashing, setIsFlashing] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null)
-  const [scanMode, setScanMode] = useState<"truck" | "manual">("truck")
+  const [scanMode, setScanMode] = useState<"struck" | "manual">("struck")
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   const constraints = useMemo(
@@ -68,7 +70,7 @@ export default function CameraScanner({ className, onCapture, onPickFromGallery 
             videoEl.removeEventListener("playing", onPlaying)
             videoEl.removeEventListener("pause", onPause)
           }
-          ;(videoEl as any).__v0_cleanup = cleanup
+            ; (videoEl as any).__v0_cleanup = cleanup
         }
         const [track] = stream.getVideoTracks()
         trackRef.current = track
@@ -198,7 +200,7 @@ export default function CameraScanner({ className, onCapture, onPickFromGallery 
       const videoEl = videoRef.current
       if (videoEl) {
         videoEl.srcObject = newStream
-        await videoEl.play().catch(() => {})
+        await videoEl.play().catch(() => { })
       }
       const [newTrack] = newStream.getVideoTracks()
       trackRef.current = newTrack
@@ -207,7 +209,7 @@ export default function CameraScanner({ className, onCapture, onPickFromGallery 
       const caps: any = typeof newTrack.getCapabilities === "function" ? newTrack.getCapabilities() : {}
       setTorchSupported(!!caps?.torch)
       setIsTorchOn(false)
-    } catch (err) {}
+    } catch (err) { }
   }, [])
 
   useEffect(() => {
@@ -215,7 +217,7 @@ export default function CameraScanner({ className, onCapture, onPickFromGallery 
       if (document.visibilityState === "visible") {
         const v = videoRef.current
         if (v && v.paused) {
-          v.play().catch(() => {})
+          v.play().catch(() => { })
         }
       }
     }
@@ -223,16 +225,22 @@ export default function CameraScanner({ className, onCapture, onPickFromGallery 
     return () => document.removeEventListener("visibilitychange", onVis)
   }, [])
 
+  useEffect(() => {
+    if (scanMode === "manual") {
+      router.push("/input-manual")
+    }
+  }, [scanMode])
+
   return (
     <section className={cn("relative w-full h-screen bg-background", className)} aria-label="Kamera Scanner">
       <Tabs
         value={scanMode}
-        onValueChange={(value) => setScanMode(value as "truck" | "manual")}
-        className="absolute top-0 left-0 right-0 z-10 mt-5 text-center justify-center items-center"
+        onValueChange={(value) => setScanMode(value as "struck" | "manual")}
+        className="absolute top-20 left-0 right-0 z-10 mt-5 text-center justify-center items-center"
       >
         <TabsList className="w-64 rounded-full bg-white border-b border-foreground/10">
-          <TabsTrigger value="truck" className="flex-1">
-            Scan Truk
+          <TabsTrigger value="struck" className="flex-1">
+            Scan Struk
           </TabsTrigger>
           <TabsTrigger value="manual" className="flex-1">
             Manual
@@ -283,7 +291,7 @@ export default function CameraScanner({ className, onCapture, onPickFromGallery 
           </div>
         )}
 
-        <div className="absolute bottom-20 left-0 right-0 flex items-center justify-between gap-6 px-4">
+        <div className="absolute bottom-20 left-0 right-0 flex items-center justify-around gap-6 px-4">
           <button
             type="button"
             onClick={toggleTorch}
