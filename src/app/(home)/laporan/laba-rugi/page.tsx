@@ -3,6 +3,7 @@ import Navbar from "@/components/layout/navbar";
 import { getProfitAndLoss } from "@/utils/report";
 import { useEffect, useState } from "react";
 import { Items } from "@/components/report/items";
+import Loading from "@/components/ui/loading";
 
 interface profitAndLossFormat {
     section: string;
@@ -14,11 +15,21 @@ interface profitAndLossFormat {
 
 export default function ProfitAndLoss() {
     const [profitAndLoss, setProfitAndLoss] = useState<profitAndLossFormat[]>([]);
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
         getProfitAndLoss().then((data: profitAndLossFormat[]) => {
             setProfitAndLoss(data || []);
+        }).finally(() => {
+            setLoading(false);
         });
     }, []);
+
+    if (loading) {
+    return (
+      <Loading />
+    );
+  }
+
     return (
         <div className="min-h-screen bg-gray-50 px-4">
             <Navbar title="Laba Rugi" />

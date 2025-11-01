@@ -3,10 +3,12 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ChevronRightIcon } from "lucide-react";
 import { numberWithCommas } from "@/utils";
+import Loading from "@/components/ui/loading";
 
 export default function Kategori({ type, title, onClick }: { type: string; title: string; onClick: (item: any) => void }) {
 
   const [data, setData] = useState<any>([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const getData = async () => {
       const data = await getCategory({
@@ -28,9 +30,17 @@ export default function Kategori({ type, title, onClick }: { type: string; title
       }, {});
 
       setData(groupedData);
+      setLoading(false);
     };
     getData();
   }, []);
+
+  if (loading) {
+    return (
+      <Loading />
+    );
+  }
+
   return (
     <>
       <div className="mt-10">

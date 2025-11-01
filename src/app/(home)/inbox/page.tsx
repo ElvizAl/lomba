@@ -4,9 +4,10 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { getInbox } from "@/utils/inbox";
 import Image from "next/image";
+import Loading from "@/components/ui/loading";
 
 export default function Inbox() {
-
+  const [loading, setLoading] = useState(true);
   const [inboxes, setInboxes] = useState([]);
 
   useEffect(() => {
@@ -16,10 +17,18 @@ export default function Inbox() {
         setInboxes(inboxData);
       } catch (error) {
         console.error("Error fetching inbox:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchInbox();
   }, []);
+
+  if (loading) {
+    return (
+      <Loading />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 px-4">

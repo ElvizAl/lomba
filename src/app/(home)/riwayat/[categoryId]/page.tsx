@@ -12,6 +12,7 @@ import { Badge, ListFilter, X, XIcon } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { DatePicker } from '@/components/ui/date-picker';
+import Loading from '@/components/ui/loading';
 
 export default function Riwayat({ params }: { params: Promise<{ categoryId: string }> }) {
     const { categoryId } = React.use(params)
@@ -27,6 +28,7 @@ export default function Riwayat({ params }: { params: Promise<{ categoryId: stri
 
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [filters, setFilters] = useState<{
         startDate: Date | null;
         endDate: Date | null;
@@ -60,6 +62,7 @@ export default function Riwayat({ params }: { params: Promise<{ categoryId: stri
                 id: categoryId
             })
             setCategory(data[0])
+            setLoading(false);
         }
 
         loadCategory()
@@ -69,6 +72,12 @@ export default function Riwayat({ params }: { params: Promise<{ categoryId: stri
     useEffect(() => {
         loadTransactions()
     }, [filters])
+
+    if (loading) {
+        return (
+            <Loading />
+        );
+    }
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -202,7 +211,7 @@ export default function Riwayat({ params }: { params: Promise<{ categoryId: stri
                                     </p>
                                 </div>
                                 <div className="text-right">
-                                    <p className={`font-medium text-green-600`}>
+                                    <p className={`font-medium text-sm text-green-600`}>
                                         Rp {(transaction.type === 'credit' ? '(' : '') + numberWithCommas(transaction.amount) + (transaction.type === 'credit' ? ')' : '')}
                                     </p>
                                     <p className="text-sm text-gray-500">

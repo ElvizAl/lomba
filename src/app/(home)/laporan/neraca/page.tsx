@@ -3,6 +3,7 @@ import Navbar from "@/components/layout/navbar";
 import { getBalanceSheet } from "@/utils/report";
 import { useEffect, useState } from "react";
 import { Items } from "@/components/report/items";
+import Loading from "@/components/ui/loading";
 
 interface BalanceSheet {
     section: string;
@@ -14,11 +15,21 @@ interface BalanceSheet {
 
 export default function BalanceSheet() {
     const [balanceSheet, setBalanceSheet] = useState<BalanceSheet[]>([]);
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
         getBalanceSheet().then((data: BalanceSheet[]) => {
             setBalanceSheet(data || []);
+        }).finally(() => {
+            setLoading(false);
         });
     }, []);
+
+    if (loading) {
+    return (
+      <Loading />
+    );
+  }
+
     return (
         <div className="min-h-screen bg-gray-50 px-4">
             <Navbar title="Neraca" />

@@ -7,6 +7,7 @@ import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
+import Loading from "@/components/ui/loading";
 
 // Extend jsPDF with autoTable
 declare module 'jspdf' {
@@ -170,10 +171,13 @@ const generatePDF = (cashflowData: cashflowFormat[]) => {
 export default function CashFlow() {
     const [cashflow, setCashflow] = useState<cashflowFormat[]>([]);
     const [isGenerating, setIsGenerating] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         getCashFlow().then((data: any) => {
             setCashflow(data || []);
+        }).finally(() => {
+            setLoading(false);
         });
     }, []);
 
@@ -188,6 +192,13 @@ export default function CashFlow() {
             setIsGenerating(false);
         }
     };
+
+    if (loading) {
+    return (
+      <Loading />
+    );
+  }
+
     return (
         <div className="min-h-screen bg-gray-50 px-4">
             <Navbar title="Arus Kas" />

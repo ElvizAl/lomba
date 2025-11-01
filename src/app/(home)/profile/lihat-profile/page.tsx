@@ -1,69 +1,144 @@
-
+"use client"
 import Logout from "@/components/auth/logout";
 import Navbar from "@/components/layout/navbar";
 import ProfileAvatar from "@/components/profile/profile-avatar";
-import { Edit, Fingerprint, Lock } from "lucide-react";
+import { Edit, Fingerprint, Lock, Mail, UserIcon } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import { getUserData, updateUserProfile } from "@/utils/user";
+import { useEffect } from "react";
+import { toast } from "sonner";
+
+interface User {
+  user: {
+    name: string;
+    email: string;
+    avatar?: string;
+  };
+  cash: {
+    balance: number;
+    id: string;
+  };
+}
 
 export default function Profile() {
-  const user = {
-    name: "Nabila",
-    email: "nabila@example.com"
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: ''
+  });
+  const [avatarUrl, setAvatarUrl] = useState<string | undefined>(undefined);
+
+  const fetchUser = async () => {
+    try {
+      const userData = await getUserData();
+      setUser(userData);
+      setFormData({
+        name: userData.user.name,
+        email: userData.user.email
+      });
+      if (userData?.user?.avatar) {
+        setAvatarUrl(userData.user.avatar);
+      }
+    } catch (err) {
+      console.error('Error fetching user data:', err);
+      toast.error('Gagal memuat data pengguna');
+    } finally {
+      setLoading(false);
+    }
   };
 
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [id]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user) return;
+
+    try {
+      setIsSubmitting(true);
+      const updatedUser = await updateUserProfile({
+        name: formData.name,
+        email: formData.email
+      });
+
+      setUser(updatedUser);
+      toast.success('Profil berhasil diperbarui');
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      toast.error(error instanceof Error ? error.message : 'Gagal memperbarui profil');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-[#FBFCFF] font-sans px-4">
-      <Navbar title="Profile" />
-      <div className="max-w-sm mx-auto flex flex-col px-4 py-6">
-        <div className="flex flex-col items-center text-center mb-5">
-          <ProfileAvatar 
-            name={user.name} 
-            size="md" 
-            className="mb-2"
-          />
-          <div className="flex items-center justify-center text-center gap-2 mb-2">
-            <h2 className="text-2xl ml-4 font-bold text-gray-900">{user.name}</h2>
-            <button className="p-1 hover:bg-gray-100 rounded-full">
-              <Edit className="w-4 h-4 text-gray-500" />
+    <form onSubmit={handleSubmit} className="min-h-screen bg-[#FBFCFF] font-sans">
+      <Navbar title="Profil Saya" />
+      <div className="bg-white pt-6 pb-4 px-4 mb-4">
+        <div className="">
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Nama Usaha</label>
+          <div className="flex border-b border-gray-300 items-center gap-2">
+            <UserIcon className="w-6 h-6 text-gray-500" />
+            <input
+              type="text"
+              id="name"
+              className="w-full px-3 py-2 border-0 focus:outline-none focus:border-blue-500"
+              value={formData.name}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div className="mt-6">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <div className="flex border-b border-gray-300 items-center gap-2">
+              <Mail className="w-6 h-6 text-gray-500" />
+              <input
+                type="email"
+                id="email"
+                className="w-full px-3 py-2 border-0 focus:outline-none focus:border-blue-500"
+                value={formData.email}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <small className="text-xs text-gray-500">Perubahan email memerlukan verifikasi ulang</small>
+          </div>
+          <div className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-white border-t">
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full w-full transition-colors disabled:opacity-50 flex justify-center items-center gap-2'
+            >
+              {isSubmitting ? (
+                <>
+                  <span className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white"></span>
+                  Menyimpan...
+                </>
+              ) : 'Simpan'}
             </button>
           </div>
-          <Link href="/profile/lihat-profile">
-          <button 
-            className=" text-black border rounded-md px-2 py-1 bg-white cursor-pointer border-black hover:bg-blue-50 text-[12px]"
-          >
-            ganti foto
-          </button>
-          </Link>
-        </div>
-
-        <div className="space-y-4">
-          <div className="bg-white border border-gray-200 rounded-md py-1  hover:bg-gray-50 transition-colors">
-            <div className="flex items-center gap-4">
-              <div className="w-8 h-8 ml-3 bg-blue-100 rounded-full flex items-center justify-center">
-                <Fingerprint className="w-5 h-5 text-blue-600" />
-              </div>
-              <div className="flex flex-col">
-                <h3 className="font-semibold text-gray-900">Daftarkan Sidik Jari</h3>
-                <p className="text-[12px] text-gray-500">Masuk Dengan Sidik Jari</p>
-              </div>
-            </div>
-          </div>
-          <Link href="/ganti-password" className="block">
-            <div className="bg-white border border-gray-200 rounded-md py-1 hover:bg-gray-50 transition-colors">
-              <div className="flex items-center gap-4">
-                <div className="w-8 h-8 ml-3 bg-blue-100 rounded-full flex items-center justify-center">
-                  <Lock className="w-5 h-5 text-blue-600" />
-                </div>
-                <div className="flex flex-col">
-                  <h3 className="font-semibold text-gray-900">Kata Sandi</h3>
-                  <p className="text-[12px] text-gray-500">Ubah Kata Sandi Akun Anda</p>
-                </div>
-              </div>
-            </div>
-          </Link>
-          <Logout />
         </div>
       </div>
-    </div>
+    </form>
   );
 }

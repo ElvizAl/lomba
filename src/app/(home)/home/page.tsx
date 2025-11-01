@@ -7,9 +7,15 @@ import { ArrowLeftRight, BanknoteArrowDown, BanknoteArrowUp, ChartNoAxesColumn, 
 import Link from 'next/link';
 import { getHighlightInbox } from '@/utils/inbox';
 import Loading from '@/components/ui/loading';
+import HCard from '@/components/ui/h-card';
 
 interface User {
-  name: string;
+  user: {
+    name: string;
+  },
+  cash: {
+    balance: number;
+  }
 }
 
 
@@ -30,7 +36,7 @@ const reports = [
     icon: Scale,
   },
   {
-    name: 'Kelola Hpp',
+    name: 'Hpp',
     href: '/kelola-hpp',
     icon: Box
   }
@@ -110,7 +116,7 @@ export default function Home() {
           <div className="flex flex-col items-center">
 
             <Image
-              src={"/img/" + hInbox?.metadata?.image}
+              src={"/img/" + (hInbox?.metadata?.image || 'noted.png')}
               alt="Image"
               width={100}
               height={100}
@@ -163,7 +169,7 @@ export default function Home() {
         />
         <div>
 
-          <h1 className="text-2xl font-bold ml-2">Hi, {user.name}</h1>
+          <h1 className="text-2xl font-bold ml-2">Hi, {user.user.name}</h1>
           <h1 className="text-sm font-semibold ml-2 text-gray-400">Yuk, pantau peforma keuangan Anda</h1>
         </div>
       </div>
@@ -188,15 +194,7 @@ export default function Home() {
         <h4 className='font-bold'>Aktifitas Keuangan</h4>
         {
           menus.map((menu, i) => (
-            <Link href={menu.href} className='bg-white px-4 py-3 hover:bg-gray-100 rounded border flex items-center justify-between mb-4' key={i}>
-              <div className="flex items-center">
-                <div className='bg-gray-50 rounded-full p-3'>
-                  <menu.icon className="w-6 h-6 text-blue-600" />
-                </div>
-                <h6 className='font-semibold text-sm ml-2'>{menu.name}</h6>
-              </div>
-              <ChevronRight className="w-6 h-6" />
-            </Link>
+           <HCard menu={menu} i={i} key={i} />
           ))
         }
       </div>

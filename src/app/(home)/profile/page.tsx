@@ -6,42 +6,95 @@ import { Edit, Fingerprint, Lock } from "lucide-react";
 import Link from "next/link";
 import { getUserData } from "@/utils/user";
 import { useEffect, useState } from "react";
+import Loading from "@/components/ui/loading";
+import { toast } from "sonner";
+import HCard from "@/components/ui/h-card";
 
 interface User {
-  name: string;
+  user: {
+    name: string;
+    avatar?: string;
+  };
+  cash: {
+    balance: number;
+    id: string;
+  };
 }
+
+const menus = [
+  {
+    name: "Sidik Jari",
+    href: "/profile/sidik-jari",
+    description: "Ganti sidik jari Anda",
+    icon: Fingerprint,
+  },
+  {
+    name: "Kata Sandi",
+    href: "/ganti-password",
+    description: "Ganti kata sandi Anda",
+    icon: Lock,
+  },
+]
 
 export default function Profile() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [avatarUrl, setAvatarUrl] = useState<string | undefined>(undefined);
+
+  const fetchUser = async () => {
+    try {
+      const userData = await getUserData();
+      setUser(userData);
+      if (userData?.user?.avatar) {
+        setAvatarUrl(userData.user.avatar);
+      }
+    } catch (err) {
+      console.error('Error fetching user data:', err);
+      toast.error('Failed to load user data');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const userData = await getUserData();
-        setUser(userData);
-      } catch (err) {
-        console.error('Error fetching user data:', err);
-      }
-    };
     fetchUser();
   }, []);
+
+  const handleAvatarUploadSuccess = (newAvatarUrl: string) => {
+    setAvatarUrl(newAvatarUrl);
+    if (user) {
+      setUser({
+        ...user,
+        user: {
+          ...user.user,
+          avatar: newAvatarUrl
+        }
+      });
+    }
+  };
+
+  if (loading) {
+    return (
+      <Loading />
+    );
+  }
 
   return (
     <>
       <Navbar title="Profile" />
       <div className="flex flex-col items-center text-center my-5 px-4">
-        <ProfileAvatar
-          name={user?.name}
-          size="xl"
-          className="mb-2"
-        />
+        <div className="relative group">
+          <ProfileAvatar
+            src={avatarUrl}
+            name={user?.user.name}
+            size="xl"
+            className="mb-2"
+            onUploadSuccess={handleAvatarUploadSuccess}
+          />
+        </div>
         <div className="flex items-center justify-center text-center gap-2 mb-2">
-          <h2 className="text-2xl ml-4 font-bold text-gray-900">{user?.name}</h2>
-          <button className="p-1 hover:bg-gray-100 rounded-full">
-            <Edit className="w-4 h-4 text-gray-500" />
-          </button>
+          <h2 className="text-2xl ml-4 font-bold text-gray-900">{user?.user.name}</h2>
         </div>
         <Link href="/profile/lihat-profile">
           <button
@@ -53,30 +106,9 @@ export default function Profile() {
       </div>
 
       <div className="space-y-4">
-        <div className="bg-white border border-gray-200 rounded-md py-1  hover:bg-gray-50 transition-colors">
-          <div className="flex items-center gap-4">
-            <div className="w-8 h-8 ml-3 bg-blue-100 rounded-full flex items-center justify-center">
-              <Fingerprint className="w-5 h-5 text-blue-600" />
-            </div>
-            <div className="flex flex-col">
-              <h3 className="font-semibold text-gray-900">Daftarkan Sidik Jari</h3>
-              <p className="text-[12px] text-gray-500">Masuk Dengan Sidik Jari</p>
-            </div>
-          </div>
-        </div>
-        <Link href="/ganti-password" className="block">
-          <div className="bg-white border border-gray-200 rounded-md py-1 hover:bg-gray-50 transition-colors">
-            <div className="flex items-center gap-4">
-              <div className="w-8 h-8 ml-3 bg-blue-100 rounded-full flex items-center justify-center">
-                <Lock className="w-5 h-5 text-blue-600" />
-              </div>
-              <div className="flex flex-col">
-                <h3 className="font-semibold text-gray-900">Kata Sandi</h3>
-                <p className="text-[12px] text-gray-500">Ubah Kata Sandi Akun Anda</p>
-              </div>
-            </div>
-          </div>
-        </Link>
+        {menus.map((menu, i) => (
+          <HCard menu={menu} i={menus.indexOf(menu)} key={menus.indexOf(menu)} />
+        ))}
         <Logout />
       </div>
     </>

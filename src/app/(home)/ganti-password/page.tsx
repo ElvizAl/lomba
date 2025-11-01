@@ -83,15 +83,16 @@ export default function ChangePasswordPage() {
         return;
       }
 
-      const response = await fetch(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/auth/password/change", {
+      const response = await fetch(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/user/change-password", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({
-          currentPassword: formData.currentPassword,
-          newPassword: formData.newPassword,
+          current_password: formData.currentPassword,
+          new_password: formData.newPassword,
+          confirm_password: formData.confirmPassword,
         }),
       });
 
@@ -124,18 +125,9 @@ export default function ChangePasswordPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FBFCFF] font-sans px-4">
+    <div className="min-h-screen bg-[#FBFCFF] font-sans px-4 pt-5">
       <Navbar title="Ganti Password" />
-      <div className="max-w-sm mx-auto flex flex-col px-4 py-6">
-        <div className="bg-white rounded-2xl shadow-sm p-6">
-          <div className="text-center mb-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-2">
-              Ganti Password
-            </h2>
-            <p className="text-gray-600 text-sm">
-              Masukkan password lama dan password baru Anda
-            </p>
-          </div>
+     
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -236,7 +228,5 @@ export default function ChangePasswordPage() {
             </Button>
           </form>
         </div>
-      </div>
-    </div>
   );
 }

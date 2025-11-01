@@ -1,7 +1,22 @@
-
+"use client";
 import Navbar from "@/components/layout/navbar";
 import { ChevronRight, HandCoins, ChartNoAxesColumn, Scale } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { getUserData } from "@/utils/user";
+import Loading from "@/components/ui/loading";
+import { numberWithCommas } from "@/utils";
+import HCard from "@/components/ui/h-card";
+
+interface User {
+  user: {
+    name: string;
+  };
+  cash: {
+    balance: number;
+    id: string;
+  };
+}
 
 const reports = [
   {
@@ -22,6 +37,33 @@ const reports = [
 ]
 
 export default function Report() {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const userData: User = await getUserData();
+        console.log(userData);
+        setUser(userData);
+      } catch (err) {
+        console.error('Error fetching user data:', err);
+        setError('Failed to load user data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  if (loading) {
+    return (
+      <Loading />
+    );
+  }
+
   return (
     <>
       <Navbar title="Laporan" />
@@ -29,25 +71,15 @@ export default function Report() {
         <div className="mb-5">
           <div className="bg-gradient-to-r from-blue-600 to-blue-400 rounded-xl shadow-sm p-6">
             <h2 className="text-sm font-semibold text-blue-200 mb-2">Saldo Kas</h2>
-            <h2 className="text-2xl font-semibold text-white mb-4">Rp. 0</h2>
+            <h2 className="text-2xl font-semibold text-white mb-4">Rp {numberWithCommas(user?.cash?.balance || 0)}</h2>
           </div>
           <div className="bg-white rounded mx-3 shadow-sm flex justify-between items-center text-sm -mt-5 px-6 py-3">
             <h6>Cek Riwayat</h6>
-            <Link href="" className="text-blue-600 hover:text-blue-700">Lihat Disini</Link>
+            <Link href={"/riwayat/" + user?.cash?.id} className="text-blue-600 hover:text-blue-700">Lihat Disini</Link>
           </div>
         </div>
         {reports.map((report) => (
-          <Link href={report.href} className="bg-white rounded-lg px-3 py-3 border block mb-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <div className="bg-gray-50 p-2 rounded">
-                  <report.icon className="w-8 h-8 text-blue-600" />
-                </div>
-                <h2 className="text-sm font-semibold ml-3">{report.name}</h2>
-              </div>
-              <ChevronRight className="w-6 h-6" />
-            </div>
-          </Link>
+          <HCard menu={report} i={reports.indexOf(report)} key={reports.indexOf(report)} />
         ))}
       </div>
     </>
