@@ -4,8 +4,12 @@ import { ProductCost } from "@/types";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
+interface ProductCostPayload {
+  name: string;
+  cost: string;
+}
 
-export const getProductCosts = async () => {
+export const getProductCosts = async (): Promise<ProductCost[]> => {
   const token = localStorage.getItem("authToken");
   const response = await fetch(`${baseUrl}/api/product-costs`, {
     headers: {
@@ -23,7 +27,7 @@ export const getProductCosts = async () => {
   return items;
 };
 
-export const saveProductCosts = async (productCosts: ProductCost[]) => {
+export const saveProductCosts = async (productCosts: ProductCostPayload[]) => {
   const token = localStorage.getItem("authToken");
   const response = await fetch(`${baseUrl}/api/product-costs`, {
     method: "POST",

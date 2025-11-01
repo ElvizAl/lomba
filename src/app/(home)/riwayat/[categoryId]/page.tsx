@@ -1,6 +1,6 @@
 "use client"
 import Navbar from '@/components/layout/navbar';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { deleteTransaction, getTransaction } from '@/utils/transaction';
 import { getCategory } from '@/utils/category';
 import { numberWithCommas } from '@/utils';
@@ -38,7 +38,7 @@ export default function Riwayat({ params }: { params: Promise<{ categoryId: stri
         endDate: null
     });
 
-    const loadTransactions = async () => {
+    const loadTransactions = useCallback(async () => {
         const data = await getTransaction({
             page: 1,
             limit: 10,
@@ -48,11 +48,9 @@ export default function Riwayat({ params }: { params: Promise<{ categoryId: stri
             categoryId: categoryId
         })
         setTransactions(data)
-    }
+    }, [categoryId, filters.startDate, filters.endDate])
 
     useEffect(() => {
-
-
         const loadCategory = async () => {
             const data = await getCategory({
                 page: 1,
@@ -67,8 +65,11 @@ export default function Riwayat({ params }: { params: Promise<{ categoryId: stri
         }
 
         loadCategory()
+    }, [categoryId])
+
+    useEffect(() => {
         loadTransactions()
-    }, [])
+    }, [loadTransactions])
 
     const selectTransaction = (e: React.MouseEvent<HTMLDivElement>) => {
         const card = e.currentTarget;
@@ -106,16 +107,14 @@ export default function Riwayat({ params }: { params: Promise<{ categoryId: stri
     useEffect(() => {
         const cards = document.querySelectorAll('[data-id]');
         cards.forEach(card => {
-            const isSelected = selectedTransaction.includes(card.dataset.id || '');
-            card.classList.toggle('bg-blue-100', isSelected);
-            card.classList.toggle('bg-white', !isSelected);
-            card.dataset.select = String(isSelected);
+            const htmlElement = card as HTMLElement;
+            const isSelected = selectedTransaction.includes(htmlElement.dataset.id || '');
+            htmlElement.classList.toggle('bg-blue-100', isSelected);
+            htmlElement.classList.toggle('bg-white', !isSelected);
+            htmlElement.dataset.select = String(isSelected);
         });
     }, [selectedTransaction]);
 
-    useEffect(() => {
-        loadTransactions()
-    }, [filters])
 
     if (loading) {
         return (
@@ -307,7 +306,7 @@ export default function Riwayat({ params }: { params: Promise<{ categoryId: stri
                                 className="w-1/2"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    setIsConfirming(false);
+                                    setIsDeleteDialogOpen(false);
                                 }}
                             >
                                 Kembali

@@ -11,7 +11,7 @@ export default function ProfitAndLoss() {
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         (async () => {
-            const data: ReportSection[] = await getProfitAndLoss()
+            const data = await getProfitAndLoss()
             setProfitAndLoss(data);
             setLoading(false);
         })();

@@ -11,7 +11,7 @@ export default function BalanceSheet() {
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         (async () => {
-            const data: ReportSection[] = await getBalanceSheet()
+            const data = await getBalanceSheet()
             setBalanceSheet(data);
             setLoading(false);
         })();

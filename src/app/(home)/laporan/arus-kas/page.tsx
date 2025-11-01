@@ -167,7 +167,7 @@ export default function CashFlow() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        getCashFlow().then((data: any) => {
+        getCashFlow().then((data) => {
             setCashflow(data || []);
         }).finally(() => {
             setLoading(false);

@@ -71,7 +71,7 @@ export default function HPPPage() {
     const saveAll = async () => {
         setIsSaving(true);
         try {
-            const updatedProductCosts: ProductCost[] = productCosts.map((cost: ProductCost) => {
+            const updatedProductCosts = productCosts.map((cost: ProductCost) => {
                 return { name: cost.name, cost: cost.cost };
             });
             await saveProductCosts(updatedProductCosts);
