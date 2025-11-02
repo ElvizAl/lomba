@@ -21,8 +21,8 @@ export default function Navbar({
   };
 
   return (
-    <div className={`bg-white px-4 py-3 fixed top-0 z-50 left-0 w-full ${className}`}>
-      <div className="relative flex items-center justify-between">
+    <div className={`fixed top-0 z-50 left-0 w-full ${className}`}>
+      <div className="relative flex items-center justify-between max-w-md bg-white px-4 py-3 mx-auto">
         {showBackButton && (
           <button
             onClick={handleBackClick}

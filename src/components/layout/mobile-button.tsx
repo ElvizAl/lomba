@@ -17,9 +17,9 @@ export default function MobileButton() {
 
   return (
     <>
-      <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden">
-        <div className="bg-[#1444E3] h-14">
-          <div className="max-w-md mx-auto">
+      <div className="fixed bottom-0 left-0 right-0 z-50">
+        <div className="h-14">
+          <div className="max-w-md bg-[#1444E3] mx-auto">
             <nav className="flex items-center justify-center text-center py-1">
               {navigationItems.map((item) => {
                 const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
@@ -29,24 +29,21 @@ export default function MobileButton() {
                   <Link
                     key={item.name}
                     href={item.href}
-                    className={`flex flex-col items-center justify-center min-w-0 flex-1 py-2 px-1 transition-all duration-300 ${
-                      isActive ? "text-white transform scale-110" : "text-blue-400 hover:text-gray-200"
-                    }`}
+                    className={`flex flex-col items-center justify-center min-w-0 flex-1 py-2 px-1 transition-all duration-300 ${isActive ? "text-white transform scale-110" : "text-blue-400 hover:text-gray-200"
+                      }`}
                   >
                     <div className="relative">
                       {isActive && (
                         <div className="" />
                       )}
                       <Icon
-                        className={`h-5 w-5 mb-1 text-white transition-all duration-300 ${
-                          isActive ? "stroke-2 drop-shadow-lg" : "stroke-1.5"
-                        }`}
+                        className={`h-5 w-5 mb-1 text-white transition-all duration-300 ${isActive ? "stroke-2 drop-shadow-lg" : "stroke-1.5"
+                          }`}
                       />
                     </div>
                     <span
-                      className={`text-xs font-medium transition-all duration-300 ${
-                        isActive ? "text-white font-semibold" : "text-white"
-                      }`}
+                      className={`text-xs font-medium transition-all duration-300 ${isActive ? "text-white font-semibold" : "text-white"
+                        }`}
                     >
                       {item.name}
                     </span>

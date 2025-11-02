@@ -52,7 +52,7 @@ export default function Report() {
       <Loading />
     );
   }
-
+  
   return (
     <>
       <Navbar title="Laporan" />
@@ -60,7 +60,7 @@ export default function Report() {
         <div className="mb-5">
           <div className="bg-gradient-to-r from-blue-600 to-blue-400 rounded-xl shadow-sm p-6">
             <h2 className="text-sm font-semibold text-blue-200 mb-2">Saldo Kas</h2>
-            <h2 className="text-2xl font-semibold text-white mb-4">Rp {numberWithCommas(user?.cash?.balance || 0)}</h2>
+            <h2 className="text-2xl font-semibold text-white mb-4">Rp {numberWithCommas(Math.abs(user?.cash?.balance || 0))}</h2>
           </div>
           <div className="bg-white rounded mx-3 shadow-sm flex justify-between items-center text-sm -mt-5 px-6 py-3">
             <h6>Cek Riwayat</h6>
