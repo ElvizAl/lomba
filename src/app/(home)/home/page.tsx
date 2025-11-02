@@ -100,38 +100,44 @@ export default function Home() {
 
   if (hInbox) {
     return (
-      <div className="min-h-screen px-6 mx-auto flex items-center justify-center absolute top-0 left-0 right-0 bg-white z-50">
-        <div className="text-center">
-          <Image
-            src="/logo.png"
-            alt="Logo"
-            width={100}
-            height={100}
-            className="w-12 h-12 absolute top-20 left-6"
-            priority
-          />
-          <div className="flex flex-col items-center">
+      <div className="px-6 mx-auto absolute top-0 left-0 right-0 bg-white z-50">
+        <div className="max-w-md mx-auto  flex items-center justify-center min-h-screen">
+          <div className="text-center">
+            <div className="w-12 h-12 relative -top-20">
+              <Image
+                src="/logo.png"
+                alt="Logo"
+                width={100}
+                height={100}
+                className="w-full"
+                priority
+              />
+            </div>
+            <div className="flex flex-col items-center">
 
-            <Image
-              src={"/img/" + (hInbox?.metadata?.image || 'noted.png')}
-              alt="Image"
-              width={100}
-              height={100}
-              className="w-68"
-              priority
-            />
-            <h1 className="text-2xl font-bold mb-4">{hInbox.title}</h1>
-            <p className='text-gray-400 text-lg'>{hInbox.content}</p>
+              <Image
+                src={"/img/" + (hInbox?.metadata?.image || 'noted.png')}
+                alt="Image"
+                width={100}
+                height={100}
+                className="w-68"
+                priority
+              />
+              <h1 className="text-2xl font-bold mb-4">{hInbox.title}</h1>
+              <p className='text-gray-400 text-lg'>{hInbox.content}</p>
+            </div>
           </div>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 z-50 p-4">
-          <button
-            type="button"
-            onClick={e => understand(e)}
-            className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full w-full transition-colors disabled:opacity-50'
-          >
-            Ok, Paham
-          </button>
+          <div className="absolute bottom-0 left-0 right-0 z-50 p-4">
+            <div className="max-w-md mx-auto">
+              <button
+                type="button"
+                onClick={e => understand(e)}
+                className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full w-full transition-colors disabled:opacity-50'
+              >
+                Ok, Paham
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -191,7 +197,7 @@ export default function Home() {
         <h4 className='font-bold'>Aktifitas Keuangan</h4>
         {
           menus.map((menu, i) => (
-           <HCard menu={menu} i={i} key={i} />
+            <HCard menu={menu} i={i} key={i} />
           ))
         }
       </div>

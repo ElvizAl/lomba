@@ -7,9 +7,11 @@ import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import InputItem from '@/components/ui/input-item';
 import { InputItem as InputItemType } from '@/types';
+import BottomButton from '@/components/ui/bottom-button';
 
 const InputList = () => {
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
     const [items, setItems] = useState<InputItemType[]>([
         {
             id: '1',
@@ -47,6 +49,7 @@ const InputList = () => {
         e.preventDefault();
 
         try {
+            setIsLoading(true);
             const category = JSON.parse(localStorage.getItem("kategori") || "{}");
             const type = localStorage.getItem("type");
 
@@ -75,6 +78,8 @@ const InputList = () => {
 
         } catch (error) {
             console.error("Error submitting transaction:", error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -117,15 +122,12 @@ const InputList = () => {
                         Tambahkan Item
                     </button>
 
-                    <div className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-white border-t">
-                        <button
-                            type="submit"
-                            className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full w-full transition-colors disabled:opacity-50'
-                            disabled={!isFormValid}
-                        >
-                            Simpan Semua
-                        </button>
-                    </div>
+                    <BottomButton
+                        isSubmitting={isLoading}
+                        isFormValid={isFormValid}
+                        text="Simpan Semua"
+                        type="submit"
+                    />
                 </form>
             </div>
         </div>

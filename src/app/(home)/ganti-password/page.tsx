@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Navbar from "@/components/layout/navbar";
 import { KeyRound, Eye, EyeOff, Loader2 } from "lucide-react";
+import BottomButton from "@/components/ui/bottom-button";
 
 interface ChangePasswordData {
   currentPassword: string;
@@ -35,6 +36,7 @@ export default function ChangePasswordPage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -68,7 +70,7 @@ export default function ChangePasswordPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
 
     setIsLoading(true);
@@ -76,7 +78,7 @@ export default function ChangePasswordPage() {
 
     try {
       const token = localStorage.getItem("authToken");
-      
+
       if (!token) {
         setError("Anda harus login terlebih dahulu");
         router.push("/login");
@@ -127,106 +129,91 @@ export default function ChangePasswordPage() {
   return (
     <div className="min-h-screen bg-[#FBFCFF] font-sans px-4 pt-5">
       <Navbar title="Ganti Password" />
-     
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <Label htmlFor="currentPassword" className="text-sm font-medium mb-2">
-                Password Lama
-              </Label>
-              <div className="relative">
-                <Input
-                  type={showCurrentPassword ? "text" : "password"}
-                  name="currentPassword"
-                  value={formData.currentPassword}
-                  onChange={handleInputChange}
-                  placeholder="Masukkan password lama"
-                  className="pl-12 pr-12 py-5 bg-white border border-gray-300 shadow-sm focus:ring-1 focus:ring-gray-900 focus:border-gray-900"
-                  disabled={isLoading}
-                />
-                <KeyRound className="absolute left-2.5 top-2.5 h-5 w-5 pointer-events-none text-black" />
-                <button
-                  type="button"
-                  onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                  className="absolute right-2.5 top-2.5 text-gray-500 hover:text-gray-700"
-                >
-                  {showCurrentPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-            </div>
 
-            <div>
-              <Label htmlFor="newPassword" className="text-sm font-medium mb-2">
-                Password Baru
-              </Label>
-              <div className="relative">
-                <Input
-                  type={showNewPassword ? "text" : "password"}
-                  name="newPassword"
-                  value={formData.newPassword}
-                  onChange={handleInputChange}
-                  placeholder="Masukkan password baru"
-                  className="pl-12 pr-12 py-5 bg-white border border-gray-300 shadow-sm focus:ring-1 focus:ring-gray-900 focus:border-gray-900"
-                  disabled={isLoading}
-                />
-                <KeyRound className="absolute left-2.5 top-2.5 h-5 w-5 pointer-events-none text-black" />
-                <button
-                  type="button"
-                  onClick={() => setShowNewPassword(!showNewPassword)}
-                  className="absolute right-2.5 top-2.5 text-gray-500 hover:text-gray-700"
-                >
-                  {showNewPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-            </div>
-
-            <div>
-              <Label htmlFor="confirmPassword" className="text-sm font-medium mb-2">
-                Konfirmasi Password Baru
-              </Label>
-              <div className="relative">
-                <Input
-                  type={showConfirmPassword ? "text" : "password"}
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                  placeholder="Konfirmasi password baru"
-                  className="pl-12 pr-12 py-5 bg-white border border-gray-300 shadow-sm focus:ring-1 focus:ring-gray-900 focus:border-gray-900"
-                  disabled={isLoading}
-                />
-                <KeyRound className="absolute left-2.5 top-2.5 h-5 w-5 pointer-events-none text-black" />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-2.5 top-2.5 text-gray-500 hover:text-gray-700"
-                >
-                  {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-            </div>
-
-            {error && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-md">
-                <p className="text-sm text-red-600">{error}</p>
-              </div>
-            )}
-
-            <Button
-              type="submit"
-              size="lg"
-              className="w-full bg-[#095CE6] rounded-full py-4 font-semibold disabled:opacity-50"
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div>
+          <Label htmlFor="currentPassword" className="text-sm font-medium mb-2">
+            Password Lama
+          </Label>
+          <div className="relative">
+            <Input
+              type={showCurrentPassword ? "text" : "password"}
+              name="currentPassword"
+              value={formData.currentPassword}
+              onChange={handleInputChange}
+              placeholder="Masukkan password lama"
+              className="pl-12 pr-12 py-5 bg-white border border-gray-300 shadow-sm focus:ring-1 focus:ring-gray-900 focus:border-gray-900"
               disabled={isLoading}
+            />
+            <KeyRound className="absolute left-2.5 top-2.5 h-5 w-5 pointer-events-none text-black" />
+            <button
+              type="button"
+              onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+              className="absolute right-2.5 top-2.5 text-gray-500 hover:text-gray-700"
             >
-              {isLoading ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Mengubah Password...
-                </>
-              ) : (
-                "Ubah Password"
-              )}
-            </Button>
-          </form>
+              {showCurrentPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+            </button>
+          </div>
         </div>
+
+        <div>
+          <Label htmlFor="newPassword" className="text-sm font-medium mb-2">
+            Password Baru
+          </Label>
+          <div className="relative">
+            <Input
+              type={showNewPassword ? "text" : "password"}
+              name="newPassword"
+              value={formData.newPassword}
+              onChange={handleInputChange}
+              placeholder="Masukkan password baru"
+              className="pl-12 pr-12 py-5 bg-white border border-gray-300 shadow-sm focus:ring-1 focus:ring-gray-900 focus:border-gray-900"
+              disabled={isLoading}
+            />
+            <KeyRound className="absolute left-2.5 top-2.5 h-5 w-5 pointer-events-none text-black" />
+            <button
+              type="button"
+              onClick={() => setShowNewPassword(!showNewPassword)}
+              className="absolute right-2.5 top-2.5 text-gray-500 hover:text-gray-700"
+            >
+              {showNewPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <Label htmlFor="confirmPassword" className="text-sm font-medium mb-2">
+            Konfirmasi Password Baru
+          </Label>
+          <div className="relative">
+            <Input
+              type={showConfirmPassword ? "text" : "password"}
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleInputChange}
+              placeholder="Konfirmasi password baru"
+              className="pl-12 pr-12 py-5 bg-white border border-gray-300 shadow-sm focus:ring-1 focus:ring-gray-900 focus:border-gray-900"
+              disabled={isLoading}
+            />
+            <KeyRound className="absolute left-2.5 top-2.5 h-5 w-5 pointer-events-none text-black" />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute right-2.5 top-2.5 text-gray-500 hover:text-gray-700"
+            >
+              {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+            </button>
+          </div>
+        </div>
+
+        {error && (
+          <div className="p-3 bg-red-50 border border-red-200 rounded-md">
+            <p className="text-sm text-red-600">{error}</p>
+          </div>
+        )}
+        <BottomButton isSubmitting={isLoading} type="submit" text="Ubah Password" />
+      </form>
+    </div>
   );
 }

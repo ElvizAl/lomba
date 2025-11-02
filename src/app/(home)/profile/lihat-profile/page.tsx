@@ -6,6 +6,7 @@ import { getUserData, updateUserProfile } from "@/utils/user";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { User } from "@/types";
+import BottomButton from "@/components/ui/bottom-button";
 
 export default function Profile() {
   const [user, setUser] = useState<User | null>(null);
@@ -105,20 +106,7 @@ export default function Profile() {
             </div>
             <small className="text-xs text-gray-500">Perubahan email memerlukan verifikasi ulang</small>
           </div>
-          <div className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-white border-t">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full w-full transition-colors disabled:opacity-50 flex justify-center items-center gap-2'
-            >
-              {isSubmitting ? (
-                <>
-                  <span className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white"></span>
-                  Menyimpan...
-                </>
-              ) : 'Simpan'}
-            </button>
-          </div>
+         <BottomButton isSubmitting={isSubmitting} text="Simpan" />
         </div>
       </div>
     </form>
