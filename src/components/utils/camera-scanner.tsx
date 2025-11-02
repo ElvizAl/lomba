@@ -223,7 +223,7 @@ export default function CameraScanner({ className, onCapture }: CameraScannerPro
       const mappedResult = result.map((item: any) => ({
         keterangan: item.name,
         nominal: item.total,
-        tanggal: item.date,
+        tanggal: item.date?.split("T")[0],
       }))
       localStorage.setItem("transaction", JSON.stringify(mappedResult))
 
