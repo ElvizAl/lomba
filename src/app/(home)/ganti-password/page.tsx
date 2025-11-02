@@ -67,6 +67,17 @@ export default function ChangePasswordPage() {
     return true;
   };
 
+  const isFormValid = (): boolean => {
+    return !!(
+      formData.currentPassword &&
+      formData.newPassword &&
+      formData.confirmPassword &&
+      formData.newPassword.length >= 8 &&
+      formData.currentPassword !== formData.newPassword &&
+      formData.newPassword === formData.confirmPassword
+    );
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -211,7 +222,7 @@ export default function ChangePasswordPage() {
             <p className="text-sm text-red-600">{error}</p>
           </div>
         )}
-        <BottomButton isSubmitting={isLoading} type="submit" text="Ubah Password" />
+        <BottomButton isSubmitting={isLoading} isFormValid={isFormValid()} type="submit" text="Ubah Password" />
       </form>
     </div>
   );
