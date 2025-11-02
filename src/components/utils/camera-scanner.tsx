@@ -84,8 +84,8 @@ export default function CameraScanner({ className, onCapture }: CameraScannerPro
 
           videoEl.srcObject = stream
 
-          const onPlaying = () => {}
-          const onPause = () => {}
+          const onPlaying = () => { }
+          const onPause = () => { }
           videoEl.addEventListener("playing", onPlaying)
           videoEl.addEventListener("pause", onPause)
 
@@ -97,7 +97,7 @@ export default function CameraScanner({ className, onCapture }: CameraScannerPro
             videoEl.removeEventListener("playing", onPlaying)
             videoEl.removeEventListener("pause", onPause)
           }
-          ;(videoEl as any).__v0_cleanup = cleanup
+            ; (videoEl as any).__v0_cleanup = cleanup
         }
         const [track] = stream.getVideoTracks()
         trackRef.current = track
@@ -177,6 +177,9 @@ export default function CameraScanner({ className, onCapture }: CameraScannerPro
     canvas.toBlob(
       async (blob) => {
         if (!blob) return
+        
+        handleScan(blob as File)
+
         const dataUrl = canvas.toDataURL("image/jpeg", 0.92)
         setPreviewUrl(dataUrl)
         onCapture?.(blob, dataUrl)
@@ -195,10 +198,8 @@ export default function CameraScanner({ className, onCapture }: CameraScannerPro
       const file = e.target.files?.[0]
       if (!file) return
       setLoading(true)
-      const result = await scanTransaction(file)
 
-      localStorage.setItem("transaction", JSON.stringify(result))
-      router.push("/input-manual")
+      handleScan(file)
       // reader.onload = () => {
       //   const dataUrl = String(reader.result || "")
       //   setPreviewUrl(dataUrl)
@@ -217,6 +218,17 @@ export default function CameraScanner({ className, onCapture }: CameraScannerPro
     [router],
   )
 
+  const handleScan = async (file: File) => {
+    const result = await scanTransaction(file)
+    const mappedResult = result.map((item: any) => ({
+      keterangan: item.name,
+      nominal: item.total,
+      tanggal: item.date,
+    }))
+    localStorage.setItem("transaction", JSON.stringify(mappedResult))
+
+    router.push("/input-manual")
+  }
 
   useEffect(() => {
     const onVis = () => {
