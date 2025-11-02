@@ -177,7 +177,7 @@ export default function CameraScanner({ className, onCapture }: CameraScannerPro
     canvas.toBlob(
       async (blob) => {
         if (!blob) return
-        
+
         handleScan(blob as File)
 
         const dataUrl = canvas.toDataURL("image/jpeg", 0.92)
@@ -197,8 +197,6 @@ export default function CameraScanner({ className, onCapture }: CameraScannerPro
     async (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0]
       if (!file) return
-      setLoading(true)
-
       handleScan(file)
       // reader.onload = () => {
       //   const dataUrl = String(reader.result || "")
@@ -219,15 +217,23 @@ export default function CameraScanner({ className, onCapture }: CameraScannerPro
   )
 
   const handleScan = async (file: File) => {
-    const result = await scanTransaction(file)
-    const mappedResult = result.map((item: any) => ({
-      keterangan: item.name,
-      nominal: item.total,
-      tanggal: item.date,
-    }))
-    localStorage.setItem("transaction", JSON.stringify(mappedResult))
+    setLoading(true)
+    try {
+      const result = await scanTransaction(file)
+      const mappedResult = result.map((item: any) => ({
+        keterangan: item.name,
+        nominal: item.total,
+        tanggal: item.date,
+      }))
+      localStorage.setItem("transaction", JSON.stringify(mappedResult))
 
-    router.push("/input-manual")
+      router.push("/input-manual")
+    } catch (err) {
+      setLoading(false)
+      console.log(err)
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -329,7 +335,7 @@ export default function CameraScanner({ className, onCapture }: CameraScannerPro
               torchSupported
                 ? isTorchOn
                   ? "bg-primary text-primary-foreground border-primary"
-                  : "bg-background/80 text-foreground border-foreground/30"
+                  : "bg-white text-foreground border-foreground/30"
                 : "bg-muted text-muted-foreground cursor-not-allowed border-muted",
             )}
             title={torchSupported ? "Flash" : "Flash tidak didukung pada perangkat ini"}
@@ -360,7 +366,7 @@ export default function CameraScanner({ className, onCapture }: CameraScannerPro
             type="button"
             onClick={openGallery}
             aria-label="Buka galeri"
-            className="inline-flex h-12 w-12 items-center justify-center rounded-full border-2 bg-background/80 text-foreground border-foreground/30"
+            className="inline-flex h-12 w-12 items-center justify-center rounded-full border-2 bg-white text-foreground border-foreground/30"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
