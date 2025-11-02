@@ -7,6 +7,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useRouter } from "next/navigation"
 import Loading from "../ui/loading"
 import { scanTransaction } from "@/utils/transaction"
+import Image from "next/image"
 
 type CameraScannerProps = {
   className?: string
@@ -14,21 +15,18 @@ type CameraScannerProps = {
   onPickFromGallery?: (file: File, dataUrl: string) => void
 }
 
-export default function CameraScanner({ className, onCapture, onPickFromGallery }: CameraScannerProps) {
+export default function CameraScanner({ className, onCapture }: CameraScannerProps) {
   const router = useRouter()
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const streamRef = useRef<MediaStream | null>(null)
   const trackRef = useRef<MediaStreamTrack | null>(null)
   const [loading, setLoading] = useState(false)
-  const [isReady, setIsReady] = useState(false)
   const [isTorchOn, setIsTorchOn] = useState(false)
   const [torchSupported, setTorchSupported] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [isFlashing, setIsFlashing] = useState(false)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null)
   const [scanMode, setScanMode] = useState<"struck" | "manual">("struck")
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
@@ -44,15 +42,41 @@ export default function CameraScanner({ className, onCapture, onPickFromGallery 
     [],
   )
 
+  const switchToDevice = useCallback(async (deviceId: string) => {
+    try {
+      trackRef.current?.stop()
+      streamRef.current?.getTracks().forEach((t) => t.stop())
+
+      const newStream = await navigator.mediaDevices.getUserMedia({
+        video: { deviceId: { exact: deviceId } },
+        audio: false,
+      })
+      streamRef.current = newStream
+      const videoEl = videoRef.current
+      if (videoEl) {
+        videoEl.srcObject = newStream
+        await videoEl.play().catch(() => { })
+      }
+      const [newTrack] = newStream.getVideoTracks()
+      trackRef.current = newTrack
+
+      const caps: any = typeof newTrack.getCapabilities === "function" ? newTrack.getCapabilities() : {}
+      setTorchSupported(!!caps?.torch)
+      setIsTorchOn(false)
+    } catch (err) {
+      console.log(err)
+    }
+  }, [])
+
   useEffect(() => {
     let isMounted = true
+    const videoEl = videoRef.current
     async function init() {
       try {
         setError(null)
         const stream = await navigator.mediaDevices.getUserMedia(constraints)
         if (!isMounted) return
         streamRef.current = stream
-        const videoEl = videoRef.current
         if (videoEl) {
           videoEl.setAttribute("playsinline", "")
           videoEl.setAttribute("webkit-playsinline", "")
@@ -60,8 +84,8 @@ export default function CameraScanner({ className, onCapture, onPickFromGallery 
 
           videoEl.srcObject = stream
 
-          const onPlaying = () => setIsPlaying(true)
-          const onPause = () => setIsPlaying(false)
+          const onPlaying = () => {}
+          const onPause = () => {}
           videoEl.addEventListener("playing", onPlaying)
           videoEl.addEventListener("pause", onPause)
 
@@ -73,7 +97,7 @@ export default function CameraScanner({ className, onCapture, onPickFromGallery 
             videoEl.removeEventListener("playing", onPlaying)
             videoEl.removeEventListener("pause", onPause)
           }
-            ; (videoEl as any).__v0_cleanup = cleanup
+          ;(videoEl as any).__v0_cleanup = cleanup
         }
         const [track] = stream.getVideoTracks()
         trackRef.current = track
@@ -92,14 +116,10 @@ export default function CameraScanner({ className, onCapture, onPickFromGallery 
           const currentDeviceId = typeof track.getSettings === "function" ? track.getSettings().deviceId : undefined
           if (preferred && preferred.deviceId && preferred.deviceId !== currentDeviceId) {
             await switchToDevice(preferred.deviceId)
-          } else {
-            setSelectedDeviceId(currentDeviceId || null)
           }
         } catch {
           // diamkan jika enumerateDevices gagal
         }
-
-        setIsReady(true)
       } catch (e: any) {
         setError(e?.message || "Gagal mengakses kamera")
       }
@@ -107,17 +127,19 @@ export default function CameraScanner({ className, onCapture, onPickFromGallery 
     init()
     return () => {
       isMounted = false
-      const v = videoRef.current as any
-      if (v?.__v0_cleanup) {
-        v.__v0_cleanup()
-        delete v.__v0_cleanup
+      if (videoEl) {
+        const v = videoEl as any
+        if (v?.__v0_cleanup) {
+          v.__v0_cleanup()
+          delete v.__v0_cleanup
+        }
       }
       trackRef.current?.stop()
       streamRef.current?.getTracks().forEach((t) => t.stop())
       streamRef.current = null
       trackRef.current = null
     }
-  }, [constraints])
+  }, [constraints, switchToDevice])
 
   const toggleTorch = useCallback(async () => {
     const track = trackRef.current
@@ -173,7 +195,6 @@ export default function CameraScanner({ className, onCapture, onPickFromGallery 
       const file = e.target.files?.[0]
       if (!file) return
       setLoading(true)
-      const reader = new FileReader()
       const result = await scanTransaction(file)
 
       localStorage.setItem("transaction", JSON.stringify(result))
@@ -193,33 +214,9 @@ export default function CameraScanner({ className, onCapture, onPickFromGallery 
       // reader.readAsDataURL(file)
       // e.currentTarget.value = ""
     },
-    [onPickFromGallery],
+    [router],
   )
 
-  const switchToDevice = useCallback(async (deviceId: string) => {
-    try {
-      trackRef.current?.stop()
-      streamRef.current?.getTracks().forEach((t) => t.stop())
-
-      const newStream = await navigator.mediaDevices.getUserMedia({
-        video: { deviceId: { exact: deviceId } },
-        audio: false,
-      })
-      streamRef.current = newStream
-      const videoEl = videoRef.current
-      if (videoEl) {
-        videoEl.srcObject = newStream
-        await videoEl.play().catch(() => { })
-      }
-      const [newTrack] = newStream.getVideoTracks()
-      trackRef.current = newTrack
-      setSelectedDeviceId(deviceId)
-
-      const caps: any = typeof newTrack.getCapabilities === "function" ? newTrack.getCapabilities() : {}
-      setTorchSupported(!!caps?.torch)
-      setIsTorchOn(false)
-    } catch (err) { }
-  }, [])
 
   useEffect(() => {
     const onVis = () => {
@@ -238,7 +235,7 @@ export default function CameraScanner({ className, onCapture, onPickFromGallery 
     if (scanMode === "manual") {
       router.push("/input-manual")
     }
-  }, [scanMode])
+  }, [scanMode, router])
 
   if (loading) {
     return <Loading />
@@ -287,11 +284,15 @@ export default function CameraScanner({ className, onCapture, onPickFromGallery 
         {previewUrl && (
           <div className="absolute inset-0 grid place-items-center bg-black/40 backdrop-blur-sm">
             <div className="relative w-4/5 max-w-sm">
-              <img
-                src={previewUrl || "/placeholder.svg"}
-                alt="Hasil jepretan"
-                className="w-full rounded-lg border-4 border-primary object-contain"
-              />
+              <div className="relative w-full aspect-square rounded-lg border-4 border-primary overflow-hidden">
+                <Image
+                  src={previewUrl}
+                  alt="Hasil jepretan"
+                  fill
+                  className="object-contain"
+                  unoptimized
+                />
+              </div>
               <button
                 type="button"
                 onClick={() => setPreviewUrl(null)}

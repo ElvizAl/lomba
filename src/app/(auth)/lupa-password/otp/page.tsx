@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -12,9 +12,7 @@ import {
 import { Loader2, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
-
-
-export default function ForgotPasswordOTPPage() {
+function ForgotPasswordOTPContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [otp, setOtp] = useState("");
@@ -92,7 +90,7 @@ export default function ForgotPasswordOTPPage() {
       const contentType = response.headers.get("content-type");
       if (contentType && contentType.includes("application/json")) {
         try {
-          const result: OTPResponse = await response.json();
+          const result = await response.json();
           console.log("OTP verification response:", result);
 
           if (response.ok && result.status === "success") {
@@ -198,5 +196,19 @@ export default function ForgotPasswordOTPPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ForgotPasswordOTPPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen max-w-sm mx-auto flex flex-col bg-[#FBFCFF] font-sans py-10">
+        <div className="flex-1 flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-gray-500" />
+        </div>
+      </div>
+    }>
+      <ForgotPasswordOTPContent />
+    </Suspense>
   );
 }

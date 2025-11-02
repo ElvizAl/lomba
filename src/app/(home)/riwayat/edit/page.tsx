@@ -53,7 +53,7 @@ export default function Edit() {
                         id: transaction.id,
                         keterangan: transaction.note,
                         nominal: transaction.amount.toString(),
-                        tanggal: transaction.date
+                        tanggal: transaction.createdAt
                     }
                 })
                 setItems(displayItems)
