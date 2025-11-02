@@ -45,6 +45,15 @@ export default function Profile() {
     }));
   };
 
+  const isFormValid = (): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return !!(
+      formData.name.trim() &&
+      formData.email.trim() &&
+      emailRegex.test(formData.email)
+    );
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
@@ -106,7 +115,7 @@ export default function Profile() {
             </div>
             <small className="text-xs text-gray-500">Perubahan email memerlukan verifikasi ulang</small>
           </div>
-         <BottomButton isSubmitting={isSubmitting} text="Simpan" />
+         <BottomButton isSubmitting={isSubmitting} isFormValid={isFormValid()} text="Simpan" />
         </div>
       </div>
     </form>

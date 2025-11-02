@@ -153,6 +153,27 @@ export default function CameraScanner({ className, onCapture }: CameraScannerPro
     }
   }, [torchSupported, isTorchOn])
 
+
+  const handleScan = useCallback(async (file: File) => {
+    setLoading(true)
+    try {
+      const result = await scanTransaction(file)
+      const mappedResult = result.map((item: any) => ({
+        keterangan: item.name,
+        nominal: item.total,
+        tanggal: item.date?.split("T")[0],
+      }))
+      localStorage.setItem("transaction", JSON.stringify(mappedResult))
+
+      router.push("/input-manual")
+    } catch (err) {
+      setLoading(false)
+      console.log(err)
+    } finally {
+      setLoading(false)
+    }
+  }, [router])
+
   const flashOverlay = useCallback(() => {
     setIsFlashing(true)
     setTimeout(() => setIsFlashing(false), 120)
@@ -187,7 +208,7 @@ export default function CameraScanner({ className, onCapture }: CameraScannerPro
       "image/jpeg",
       0.92,
     )
-  }, [onCapture, torchSupported, flashOverlay])
+  }, [onCapture, torchSupported, flashOverlay, handleScan])
 
   const openGallery = useCallback(() => {
     fileInputRef.current?.click()
@@ -213,28 +234,8 @@ export default function CameraScanner({ className, onCapture }: CameraScannerPro
       // reader.readAsDataURL(file)
       // e.currentTarget.value = ""
     },
-    [router],
+    [handleScan],
   )
-
-  const handleScan = async (file: File) => {
-    setLoading(true)
-    try {
-      const result = await scanTransaction(file)
-      const mappedResult = result.map((item: any) => ({
-        keterangan: item.name,
-        nominal: item.total,
-        tanggal: item.date?.split("T")[0],
-      }))
-      localStorage.setItem("transaction", JSON.stringify(mappedResult))
-
-      router.push("/input-manual")
-    } catch (err) {
-      setLoading(false)
-      console.log(err)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   useEffect(() => {
     const onVis = () => {

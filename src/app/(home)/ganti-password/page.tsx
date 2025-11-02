@@ -3,11 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Navbar from "@/components/layout/navbar";
-import { KeyRound, Eye, EyeOff, Loader2 } from "lucide-react";
+import { KeyRound, Eye, EyeOff } from "lucide-react";
 import BottomButton from "@/components/ui/bottom-button";
 
 interface ChangePasswordData {
@@ -66,6 +65,17 @@ export default function ChangePasswordPage() {
       return false;
     }
     return true;
+  };
+
+  const isFormValid = (): boolean => {
+    return !!(
+      formData.currentPassword &&
+      formData.newPassword &&
+      formData.confirmPassword &&
+      formData.newPassword.length >= 8 &&
+      formData.currentPassword !== formData.newPassword &&
+      formData.newPassword === formData.confirmPassword
+    );
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -212,7 +222,7 @@ export default function ChangePasswordPage() {
             <p className="text-sm text-red-600">{error}</p>
           </div>
         )}
-        <BottomButton isSubmitting={isLoading} type="submit" text="Ubah Password" />
+        <BottomButton isSubmitting={isLoading} isFormValid={isFormValid()} type="submit" text="Ubah Password" />
       </form>
     </div>
   );
