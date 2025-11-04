@@ -58,8 +58,9 @@ export default function Riwayat({ params }: { params: Promise<{ categoryId: stri
                 name: "",
                 start_date: "",
                 end_date: "",
-                id: categoryId
-            })
+                id: categoryId,
+                state: "riwayat"
+            } )
             setCategory(data[0])
             setLoading(false);
         }
