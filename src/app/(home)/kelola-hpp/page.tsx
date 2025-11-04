@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { getProductCosts, saveProductCosts } from '@/utils/product-cost';
 import { ProductCost } from '@/types';
+import BottomButton from '@/components/ui/bottom-button';
 
 export default function HPPPage() {
     const [productCosts, setProductCosts] = useState<ProductCost[]>([]);
@@ -184,23 +185,12 @@ export default function HPPPage() {
                     Tambahkan Item
                 </button>
 
-                <div className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-white border-t">
-                    <button
-                        type="button"
-                        onClick={saveAll}
-                        disabled={isSaving}
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full w-full transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
-                    >
-                        {isSaving ? (
-                            <>
-                                <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white"></div>
-                                Menyimpan...
-                            </>
-                        ) : (
-                            'Simpan Semua'
-                        )}
-                    </button>
-                </div>
+                <BottomButton
+                    onSubmit={saveAll}
+                    isSubmitting={isSaving}
+                    isFormValid={true}
+                    text="Simpan Semua"
+                />
             </div>
         </div>
     );

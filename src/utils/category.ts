@@ -7,6 +7,7 @@ export const getCategory = async ({
   start_date,
   end_date,
   id,
+  state,
 }: {
   page: number;
   limit: number;
@@ -14,6 +15,7 @@ export const getCategory = async ({
   start_date: string;
   end_date: string;
   id: string;
+  state: string;
 }) => {
   const queryParams = new URLSearchParams();
 
@@ -23,6 +25,7 @@ export const getCategory = async ({
   if (name) queryParams.append("name", name);
   if (start_date) queryParams.append("start_date", start_date);
   if (end_date) queryParams.append("end_date", end_date);
+  if (state) queryParams.append("state", state);
 
   const response = await fetch(
     `${BASE_URL}/api/categories?${queryParams.toString()}`,

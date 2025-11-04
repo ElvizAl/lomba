@@ -64,8 +64,8 @@ function OTPContent() {
           console.log("OTP verification response:", result);
 
           if (response.ok && result.status === "success") {
-            toast.success("Verifikasi OTP berhasil! Silakan login.");
-            router.push("/login");
+            toast.success("Verifikasi OTP berhasil!.");
+            router.push("/home");
           } else {
             setError(result.message || "Kode OTP tidak valid");
           }

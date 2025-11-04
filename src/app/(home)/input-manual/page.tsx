@@ -17,7 +17,8 @@ const InputList = () => {
             id: '1',
             keterangan: '',
             nominal: '',
-            tanggal: new Date().toISOString().split('T')[0] // Set default to today
+            jumlah: '',
+            tanggal: new Date().toISOString().split('T')[0]
         }
     ]);
 
@@ -34,6 +35,7 @@ const InputList = () => {
             id: Date.now().toString(),
             keterangan: '',
             nominal: '',
+            jumlah: '',
             tanggal: new Date().toISOString().split('T')[0]
         };
         setItems([...items, newItem]);
@@ -53,15 +55,19 @@ const InputList = () => {
             const category = JSON.parse(localStorage.getItem("kategori") || "{}");
             const type = localStorage.getItem("type");
 
-            const transactions = items.map(item => (
-                {
+            const transactions = items.map(item => {
+                const quantity = Number(item.jumlah) || 1;
+                const unitPrice = Number(item.nominal) || 0;
+
+                return {
                     type: type,
                     category: category.id,
                     note: item.keterangan,
-                    amount: Number(item.nominal),
+                    amount: unitPrice,
+                    qty: quantity,
                     date: item.tanggal,
-                }
-            ))
+                };
+            })
 
             submitTransaction(transactions);
 
@@ -69,6 +75,7 @@ const InputList = () => {
                 id: '1',
                 keterangan: '',
                 nominal: '',
+                jumlah: '',
                 tanggal: new Date().toISOString().split('T')[0]
             }]);
 
@@ -78,6 +85,7 @@ const InputList = () => {
 
         } catch (error) {
             console.error("Error submitting transaction:", error);
+            toast.error("Gagal menyimpan transaksi");
         } finally {
             setIsLoading(false);
         }

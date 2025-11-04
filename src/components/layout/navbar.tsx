@@ -26,7 +26,7 @@ export default function Navbar({
         {showBackButton && (
           <button
             onClick={handleBackClick}
-            className="mr-3 p-1 hover:bg-gray-100 rounded-full transition-colors"
+            className="mr-3 p-1 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
             aria-label="Kembali"
           >
             <ChevronLeft className="w-6 h-6 text-gray-700" />

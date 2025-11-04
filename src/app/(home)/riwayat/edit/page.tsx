@@ -32,6 +32,7 @@ export default function Edit() {
                     category: category.id,
                     note: item.keterangan,
                     amount: Number(item.nominal),
+                    qty: Number(item.jumlah),
                     date: item.tanggal,
                 }
             ))
@@ -52,8 +53,9 @@ export default function Edit() {
                     return {
                         id: transaction.id,
                         keterangan: transaction.note,
-                        nominal: transaction.amount.toString(),
-                        tanggal: transaction.createdAt
+                        nominal: (transaction.amount / transaction.qty).toString(),
+                        tanggal: transaction.createdAt,
+                        jumlah: transaction.qty.toString()
                     }
                 })
                 setItems(displayItems)

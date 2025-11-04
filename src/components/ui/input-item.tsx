@@ -43,19 +43,47 @@ const InputItem = ({
                 <input
                     type="text"
                     value={item.keterangan}
-                    placeholder='Keterangan'
+                    placeholder='Keterangan / Nama Barang'
                     onChange={(e) => updateItem(id, 'keterangan', e.target.value)}
                     className='w-full p-2 border-b focus:outline-none focus:border-blue-500'
                 />
-                <div className="relative">
-                    <span className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-500">Rp</span>
-                    <input
-                        type="text"
-                        value={item.nominal ? new Intl.NumberFormat('id-ID').format(Number(item.nominal)) : ''}
-                        placeholder='0'
-                        onChange={(e) => updateItem(id, 'nominal', e.target.value.replace(/\D/g, ''))}
-                        className='w-full p-2 pl-8 border-b focus:outline-none focus:border-blue-500 text-right text-lg font-medium'
-                    />
+                <div className="flex gap-4">
+                    <div className="relative w-1/4">
+                        <label className="text-xs font-bold" htmlFor="jumlah">Jumlah</label>
+                        <input
+                            type="text"
+                            value={item.jumlah}
+                            placeholder='0'
+                            onChange={(e) => updateItem(id, 'jumlah', e.target.value.replace(/\D/g, ''))}
+                            className='w-full p-2 border rounded focus:outline-none focus:border-blue-500 text-right text-sm font-medium'
+                        />
+                    </div>
+                    <div className="relative">
+                        <label className="text-xs font-bold" htmlFor="nominal">Nominal Satuan</label>
+                        <div className="flex items-center border rounded">
+                            <span className="text-gray-500 p-2">Rp</span>
+                            <input
+                                type="text"
+                                value={item.nominal ? new Intl.NumberFormat('id-ID').format(Number(item.nominal)) : ''}
+                                placeholder='0'
+                                onChange={(e) => updateItem(id, 'nominal', e.target.value.replace(/\D/g, ''))}
+                                className='w-full p-2 pl-8 focus:outline-none focus:border-blue-500 text-right text-sm font-medium'
+                            />
+                        </div>
+                    </div>
+                    <div className="relative">
+                        <label className="text-xs font-bold" htmlFor="nominal">Total Nominal</label>
+                        <div className="flex items-center border rounded bg-gray-50">
+                            <span className="text-gray-500 p-2">Rp</span>
+                            <input
+                                type="text"
+                                value={item.nominal && item.jumlah ? new Intl.NumberFormat('id-ID').format(Number(item.nominal) * Number(item.jumlah)) : ''}
+                                placeholder='0'
+                                readOnly={true}
+                                className='w-full p-2 bg-gray-50 focus:outline-none focus:border-blue-500 text-right text-sm font-medium'
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

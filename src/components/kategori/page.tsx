@@ -16,7 +16,8 @@ export default function Kategori({ type, title, onClick }: { type: string; title
         name: "",
         start_date: "",
         end_date: "",
-        id: ""
+        id: "",
+        state: type,
       });
 
       const groupedData = data.reduce((acc: any, item: any) => {

@@ -56,7 +56,7 @@ export default function RegisterForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
 
     setIsLoading(true);
@@ -75,9 +75,7 @@ export default function RegisterForm() {
       if (contentType && contentType.includes("application/json")) {
         try {
           const result: RegisterFormat = await response.json();
-    
-          console.log("Registration response:", result);
-
+          localStorage.setItem("authToken", result.data?.token || "");
           if (response.ok && result.status === "success") {
             toast.success("Registrasi berhasil! Silakan verifikasi email Anda.");
             router.push(`/otp?email=${encodeURIComponent(formData.email)}`);

@@ -28,7 +28,7 @@ const reports = [
     icon: Scale,
   },
   {
-    name: 'Hpp',
+    name: 'HPP',
     href: '/kelola-hpp',
     icon: Box
   }

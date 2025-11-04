@@ -79,6 +79,7 @@ export interface Transaction {
   id: string;
   note: string;
   amount: number;
+  qty: number;
   type: "debit" | "credit";
   createdAt: string;
 }
@@ -87,6 +88,7 @@ export interface InputItem {
   id: string;
   keterangan: string;
   nominal: string;
+  jumlah: string;
   tanggal: string;
 }
 
