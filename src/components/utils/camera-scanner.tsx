@@ -160,7 +160,7 @@ export default function CameraScanner({ className, onCapture }: CameraScannerPro
       const result = await scanTransaction(file)
       const mappedResult = result.map((item: any) => ({
         keterangan: item.name,
-        nominal: item.total,
+        nominal: item.amount,
         jumlah: item.qty,
         tanggal: item.date?.split("T")[0],
       }))
