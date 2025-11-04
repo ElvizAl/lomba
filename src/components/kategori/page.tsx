@@ -33,7 +33,7 @@ export default function Kategori({ type, title, onClick }: { type: string; title
       setLoading(false);
     };
     getData();
-  }, []);
+  });
 
   if (loading) {
     return (

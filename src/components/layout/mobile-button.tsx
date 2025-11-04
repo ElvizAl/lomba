@@ -28,7 +28,7 @@ export default function MobileButton() {
           <div className="h-screen max-w-md flex items-end justify-center mx-auto" style={{
             background: 'rgb(0,0,0,0.5)'
           }}>
-            <div className="w-full max-w-sm mb-20">
+            <div className="w-full max-w-[330px] mb-20">
               <div className="text-right mb-4">
                 <button onClick={() => setShowMenu(false)} className="bg-white rounded-full p-2 ml-auto">
                   <X className="w-4 h-4" />
@@ -55,7 +55,7 @@ export default function MobileButton() {
       }
       <div className="fixed bottom-5 left-0 right-0 z-50">
         <div className="h-14">
-          <div className="max-w-sm bg-white rounded-full shadow mx-auto">
+          <div className="max-w-[330px] bg-white rounded-full shadow mx-auto">
             <nav className="flex items-center justify-center text-center py-1">
               {navigationItems.map((item) => {
                 const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href || ""));

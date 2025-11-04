@@ -47,7 +47,7 @@ const InputItem = ({
                     onChange={(e) => updateItem(id, 'keterangan', e.target.value)}
                     className='w-full p-2 border-b focus:outline-none focus:border-blue-500'
                 />
-                <div className="flex gap-4">
+                <div className="flex gap-2">
                     <div className="relative w-1/4">
                         <label className="text-xs font-bold" htmlFor="jumlah">Jumlah</label>
                         <input
@@ -67,7 +67,7 @@ const InputItem = ({
                                 value={item.nominal ? new Intl.NumberFormat('id-ID').format(Number(item.nominal)) : ''}
                                 placeholder='0'
                                 onChange={(e) => updateItem(id, 'nominal', e.target.value.replace(/\D/g, ''))}
-                                className='w-full p-2 pl-8 focus:outline-none focus:border-blue-500 text-right text-sm font-medium'
+                                className='w-full p-2 focus:outline-none focus:border-blue-500 text-right text-sm font-medium'
                             />
                         </div>
                     </div>
