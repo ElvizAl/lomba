@@ -13,12 +13,6 @@ import { User } from "@/types";
 
 const menus = [
   {
-    name: "Sidik Jari",
-    href: "/profile/sidik-jari",
-    description: "Ganti sidik jari Anda",
-    icon: Fingerprint,
-  },
-  {
     name: "Kata Sandi",
     href: "/ganti-password",
     description: "Ganti kata sandi Anda",

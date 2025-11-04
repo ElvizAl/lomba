@@ -147,17 +147,6 @@ export default function LoginForm() {
             </span>
           </div>
         </div>
-
-        <div className="mt-6">
-          <Button
-            type="submit"
-            size="lg"
-            className="w-full bg-[#E6A709] rounded-full py-4 font-semibold"
-          >
-            <Fingerprint className="w-4 h-4" />
-            Sidik Jari
-          </Button>
-        </div>
       </form>
     </div>
   );
