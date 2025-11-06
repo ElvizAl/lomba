@@ -44,17 +44,17 @@ export default function Kategori({ type, title, onClick }: { type: string; title
   return (
     <>
       <div className="mt-10">
-        <h1 className="text-xl font-bold px-4">{title}</h1>
+        <h1 className="text-md font-bold px-4">{title}</h1>
         {/* Search bar */}
-        <div className="mt-5 px-4">
+        {/* <div className="mt-5 px-4">
           <input type="text" placeholder="Search" className="w-full border border-gray-300 rounded px-3 py-2" />
-        </div>
+        </div> */}
         <div className="mt-5 mb-20 bg-white">
           {Object.entries(data).map(([key, value]: any) => (
             <div key={key}>
-              <h2 className="text-lg font-bold mt-5 px-4">{key}</h2>
+              <h2 className="text-md font-bold mt-5 px-4">{key}</h2>
               {value.map((item: any, i: number) => (
-                <div onClick={() => onClick(item)} key={i} className="block border-b py-3 cursor-pointer px-4">
+                <div onClick={() => onClick(item)} key={i} className="block border-b py-3 cursor-pointer px-4 text-sm">
                   <div className="flex justify-between items-center">
                     <span key={item.id} className="font-semibold">{item.name}</span>
                     <div className="flex">
