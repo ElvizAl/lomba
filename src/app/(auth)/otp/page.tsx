@@ -3,6 +3,7 @@
 import React, { useState, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
+import apiClient from "@/lib/api-client";
 import { Button } from "@/components/ui/button";
 import {
   InputOTP,
@@ -44,7 +45,7 @@ function OTPContent() {
     setError("");
 
     try {
-      const response = await fetch(
+      const result = await apiClient(
         process.env.NEXT_PUBLIC_API_BASE_URL + "/api/auth/email/verify",
         {
           method: "POST",
@@ -57,25 +58,12 @@ function OTPContent() {
           }),
         }
       );
-      const contentType = response.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
-        try {
-          const result: OTPResponse = await response.json();
-          console.log("OTP verification response:", result);
 
-          if (response.ok && result.status === "success") {
-            toast.success("Verifikasi OTP berhasil!.");
-            router.push("/home");
-          } else {
-            setError(result.message || "Kode OTP tidak valid");
-          }
-        } catch (jsonError) {
-          console.error("JSON parsing error:", jsonError);
-          setError("Terjadi kesalahan pada server. Silakan coba lagi.");
-        }
+      if (result.status === "success") {
+        toast.success("Verifikasi OTP berhasil!");
+        router.push("/login");
       } else {
-        console.error("Server returned non-JSON response");
-        setError("Server sedang mengalami masalah. Silakan coba lagi.");
+        setError(result.message || "Kode OTP tidak valid atau sudah kadaluarsa");
       }
     } catch (error) {
       console.error("OTP verification error:", error);
@@ -90,7 +78,7 @@ function OTPContent() {
     setError("");
 
     try {
-      const response = await fetch(
+      const result = await apiClient(
         process.env.NEXT_PUBLIC_API_BASE_URL + "/api/auth/email/send",
         {
           method: "POST",
@@ -103,9 +91,7 @@ function OTPContent() {
         }
       );
 
-      const result = await response.json();
-
-      if (response.ok && result.status === "success") {
+      if (result.status === "success") {
         toast.success("Kode OTP telah dikirim ke email Anda");
       } else {
         setError(result.message || "Gagal mengirim OTP");
@@ -119,7 +105,7 @@ function OTPContent() {
   };
 
   return (
-    <div className="min-h-screen max-w-sm mx-auto flex flex-col bg-[#FBFCFF] font-sans py-10">
+    <div className="min-h-screen max-w-sm mx-auto flex flex-col bg-[#FBFCFF] font-sans py-10 px-4">
       <div className="flex-1">
         <div className="mb-6">
           <Link

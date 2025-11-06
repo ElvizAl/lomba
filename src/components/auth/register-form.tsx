@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { RegisterData, RegisterFormat } from "@/types";
+import apiClient from "@/lib/api-client";
 
 
 export default function RegisterForm() {
@@ -63,31 +64,19 @@ export default function RegisterForm() {
     setError("");
 
     try {
-      const response = await fetch(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/auth/register", {
+      const result = await apiClient(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
-
-      const contentType = response.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
-        try {
-          const result: RegisterFormat = await response.json();
-          localStorage.setItem("authToken", result.data?.token || "");
-          if (response.ok && result.status === "success") {
-            toast.success("Registrasi berhasil! Silakan verifikasi email Anda.");
-            router.push(`/otp?email=${encodeURIComponent(formData.email)}`);
-          } else {
-            setError(result.message || "Terjadi kesalahan saat registrasi");
-          }
-        } catch (jsonError) {
-          console.error("JSON parsing error:", jsonError);
-          setError("Terjadi kesalahan pada server. Silakan coba lagi.");
-        }
+      
+      if (result.status === "success") {
+        toast.success("Registrasi berhasil! Silakan verifikasi email Anda.");
+        router.push(`/otp?email=${encodeURIComponent(formData.email)}`);
       } else {
-        console.error("Server returned non-JSON response");
+        throw new Error(result.message || "Gagal melakukan registrasi");
         setError("Server sedang mengalami masalah. Silakan coba lagi.");
       }
     } catch (error) {

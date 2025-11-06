@@ -1,46 +1,32 @@
 import { UpdateProfileData, User } from "@/types";
-
+import apiClient from "@/lib/api-client";
 
 const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export const getUserData = async (): Promise<User> => {
-  const response = await fetch(baseURL + "/api/user", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-    },
-    cache: "no-store",
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch user data");
+  try {
+    const result = await apiClient(`${baseURL}/api/user`);
+    return result.data;
+  } catch (error) {
+    console.error('Get user data error:', error);
+    throw error;
   }
-
-  const result = await response.json();
-  return result.data;
 };
 
 export const updateUserProfile = async (data: UpdateProfileData): Promise<User> => {
-  const response = await fetch(`${baseURL}/api/user/update`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-    },
-    body: JSON.stringify({
-      name: data.name,
-      email: data.email
-    })
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || 'Failed to update profile');
+  try {
+    const result = await apiClient(`${baseURL}/api/user/update`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    return result.data;
+  } catch (error) {
+    console.error('Update profile error:', error);
+    throw error;
   }
-
-  const result = await response.json();
-  return result.data;
 };
 
 export const uploadAvatar = async (file: File) => {
@@ -48,15 +34,11 @@ export const uploadAvatar = async (file: File) => {
   formData.append("avatar", file);
 
   try {
-    const response = await fetch(baseURL + "/api/user/upload", {
+    const result = await apiClient(baseURL + "/api/user/upload", {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-      },
       body: formData,
     });
-    const result = await response.json();
-    return result;
+    return result.data;
   } catch (error) {
     console.error("Error uploading avatar:", error);
     throw error;

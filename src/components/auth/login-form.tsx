@@ -8,6 +8,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { LoginData, LoginResponse } from "@/types";
+import apiClient from "@/lib/api-client";
 
 
 export default function LoginForm() {
@@ -50,7 +51,7 @@ export default function LoginForm() {
     setError("");
 
     try {
-      const response = await fetch(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/auth/login", {
+      const result = await apiClient(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,12 +59,10 @@ export default function LoginForm() {
         body: JSON.stringify(formData),
       });
 
-      const result: LoginResponse = await response.json();
-
-      if (response.ok && result.status === "success") {
-        localStorage.setItem("authToken", result.data?.token || ""); // Menyimpan token
+      if (result.status === "success") {
+        localStorage.setItem("authToken", result.data.token);
         toast.success("Registrasi berhasil! Silakan login.");
-        router.push("/home");  // Mengalihkan ke halaman login
+        router.push("/home");  
       } else {
         setError(result?.message || "Terjadi kesalahan saat registrasi");
       }

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import apiClient from "@/lib/api-client";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, MailOpen, Loader2 } from "lucide-react";
@@ -32,7 +33,7 @@ export default function ForgotPasswordPage() {
     setError("");
 
     try {
-      const response = await fetch(
+      const result = await apiClient(
         process.env.NEXT_PUBLIC_API_BASE_URL + "/api/auth/password/forgot",
         {
           method: "POST",
@@ -45,26 +46,11 @@ export default function ForgotPasswordPage() {
         }
       );
 
-      const contentType = response.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
-        try {
-          const result = await response.json();
-
-          if (response.ok && result.status === "success") {
-            toast.success("Kode OTP telah dikirim ke email Anda");
-            router.push(
-              `/lupa-password/otp?email=${encodeURIComponent(email)}`
-            );
-          } else {
-            setError(result.message || "Gagal mengirim kode OTP");
-          }
-        } catch (jsonError) {
-          console.error("JSON parsing error:", jsonError);
-          setError("Terjadi kesalahan pada server. Silakan coba lagi.");
-        }
+      if (result.status === "success") {
+        toast.success("Kode OTP telah dikirim ke email Anda");
+        router.push(`/lupa-password/otp?email=${encodeURIComponent(email)}`);
       } else {
-        console.error("Server returned non-JSON response");
-        setError("Server sedang mengalami masalah. Silakan coba lagi.");
+        setError(result.message || "Gagal mengirim kode OTP");
       }
     } catch (error) {
       console.error("Forgot password error:", error);

@@ -1,61 +1,60 @@
+import apiClient from "@/lib/api-client";
+
 export const getHighlightInbox = async (): Promise<any> => {
-  const response = await fetch(
-    process.env.NEXT_PUBLIC_API_BASE_URL + "/api/inbox/highlight",
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-      },
-      cache: "no-store",
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch highlight inbox data");
+  try {
+    const result = await apiClient(
+      process.env.NEXT_PUBLIC_API_BASE_URL + "/api/inbox/highlight",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+        cache: "no-store",
+      }
+    );
+    return result.data;
+  } catch (error) {
+    console.error('Get highlight inbox error:', error);
+    throw error;
   }
-
-  const result = await response.json();
-  return result.data;
 };
 
 export const getInbox = async (): Promise<any> => {
-  const response = await fetch(
-    process.env.NEXT_PUBLIC_API_BASE_URL + "/api/inbox",
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-      },
-      cache: "no-store",
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch inbox data");
+  try {
+    const result = await apiClient(
+      process.env.NEXT_PUBLIC_API_BASE_URL + "/api/inbox",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+        cache: "no-store",
+      }
+    );
+    return result.data;
+  } catch (error) {
+    console.error('Get inbox error:', error);
+    throw error;
   }
-
-  const result = await response.json();
-  return result.data;
 };
 
 export const markAsRead = async (id: string): Promise<any> => {
-  const response = await fetch(
-    process.env.NEXT_PUBLIC_API_BASE_URL + "/api/inbox/" + id + "/read",
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-      },
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error("Failed to mark inbox as read");
+  try {
+    const result = await apiClient(
+      process.env.NEXT_PUBLIC_API_BASE_URL + "/api/inbox/" + id + "/read",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      }
+    );
+    return result.data;
+  } catch (error) {
+    console.error('Mark as read error:', error);
+    throw error;
   }
-
-  const result = await response.json();
-  return result.data;
 };

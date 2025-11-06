@@ -3,6 +3,7 @@
 import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
+import apiClient from "@/lib/api-client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -67,7 +68,7 @@ function ResetPasswordContent() {
     setError("");
 
     try {
-      const response = await fetch(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/auth/password/reset", {
+      const result = await apiClient(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/auth/password/reset", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -78,36 +79,22 @@ function ResetPasswordContent() {
         }),
       });
 
-      // Check if response is JSON
-      const contentType = response.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
-        try {
-          const result: ResetResponse = await response.json();
-
-          if (response.ok && result.status === "success") {
-            toast.success("Password berhasil direset! Silakan login dengan password baru.");
-            router.push("/login");
-          } else {
-            // Handle specific error messages
-            if (result.message && result.message.includes("Token tidak valid")) {
-              setError("Token tidak valid atau sudah kadaluarsa. Silakan coba lupa password lagi.");
-            } else if (result.message && result.message.includes("kadaluarsa")) {
-              setError("Token sudah kadaluarsa. Silakan coba lupa password lagi.");
-            } else {
-              setError(result.message || "Gagal mereset password");
-            }
-          }
-        } catch (jsonError) {
-          console.error("JSON parsing error:", jsonError);
-          setError("Terjadi kesalahan pada server. Silakan coba lagi.");
-        }
+      if (result.status === "success") {
+        toast.success("Password berhasil direset! Silakan login dengan password baru.");
+        router.push("/login");
       } else {
-        console.error("Server returned non-JSON response");
-        setError("Server sedang mengalami masalah. Silakan coba lagi.");
+        // Handle specific error messages
+        if (result.message && result.message.includes("Token tidak valid")) {
+          setError("Token tidak valid atau sudah kadaluarsa. Silakan coba lupa password lagi.");
+        } else if (result.message && result.message.includes("kadaluarsa")) {
+          setError("Token sudah kadaluarsa. Silakan coba lupa password lagi.");
+        } else {
+          setError(result.message || "Gagal mereset password");
+        }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Reset password error:", error);
-      setError("Terjadi kesalahan jaringan. Silakan coba lagi.");
+      setError(error.message || "Terjadi kesalahan jaringan. Silakan coba lagi.");
     } finally {
       setIsLoading(false);
     }

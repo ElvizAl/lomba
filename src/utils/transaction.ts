@@ -11,94 +11,91 @@ export const getTransaction = async (params: any) => {
   if (params.start_date) queryParams.append("start_date", params.start_date);
   if (params.end_date) queryParams.append("end_date", params.end_date);
 
-  const response = await fetch(
-    `${BASE_URL}/api/transactions?${queryParams.toString()}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-      },
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error("Failed to get transaction");
+  try {
+    const result = await apiClient(
+      `${BASE_URL}/api/transactions?${queryParams.toString()}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return result.data;
+  } catch (error) {
+    console.error('Get transaction error:', error);
+    throw error;
   }
-
-  const result = await response.json();
-  return result.data;
 };
 
 export const submitTransaction = async (transaction: any): Promise<any> => {
-  const response = await fetch(`${BASE_URL}/api/transactions/create`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-    },
-    body: JSON.stringify(transaction),
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to submit transaction");
+  try {
+    const result = await apiClient(`${BASE_URL}/api/transactions/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(transaction),
+    });
+    
+    return result.data.transaction;
+  } catch (error) {
+    console.error('Submit transaction error:', error);
+    throw error;
   }
-
-  const result = await response.json();
-  return result.data.transaction;
 };
+
+import apiClient from "@/lib/api-client";
 
 export const scanTransaction = async (image: any): Promise<any> => {
   const formData = new FormData();
   formData.append("image", image);
-  const response = await fetch(`${BASE_URL}/api/transactions/scan`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-    },
-    body: formData,
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to scan transaction");
+  
+  try {
+    const result = await apiClient(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/transactions/scan`, {
+      method: "POST",
+      body: formData,
+      // Don't set Content-Type header, let the browser set it with the correct boundary
+      headers: {
+        // Remove the Content-Type header to let the browser set it with the correct boundary
+      },
+    });
+    
+    return result.data.items;
+  } catch (error) {
+    console.error('Scan transaction error:', error);
+    throw error;
   }
-
-  const result = await response.json();
-  return result.data.items;
 };
 
 export const updateTransaction = async (transactions: any): Promise<any> => {
-  const response = await fetch(`${BASE_URL}/api/transactions/update`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-    },
-    body: JSON.stringify(transactions),
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to update transaction");
+  try {
+    const result = await apiClient(`${BASE_URL}/api/transactions/update`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(transactions),
+    });
+    return result.data;
+  } catch (error) {
+    console.error('Update transaction error:', error);
+    throw error;
   }
-
-  const result = await response.json();
-  return result.data;
 };
 
 export const deleteTransaction = async (transactionId: Array<string>) => {
-  const response = await fetch(`${BASE_URL}/api/transactions/delete`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-    },
-    body: JSON.stringify(transactionId),
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to delete transaction");
+  try {
+    const result = await apiClient(`${BASE_URL}/api/transactions/delete`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(transactionId),
+    });
+    return result.data;
+  } catch (error) {
+    console.error('Delete transaction error:', error);
+    throw error;
   }
-
-  const result = await response.json();
-  return result.data;
 };

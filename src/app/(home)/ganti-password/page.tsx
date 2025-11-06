@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import apiClient from "@/lib/api-client";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Navbar from "@/components/layout/navbar";
@@ -87,50 +88,30 @@ export default function ChangePasswordPage() {
     setError("");
 
     try {
-      const token = localStorage.getItem("authToken");
-
-      if (!token) {
-        setError("Anda harus login terlebih dahulu");
-        router.push("/login");
-        return;
-      }
-
-      const response = await fetch(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/user/change-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          current_password: formData.currentPassword,
-          new_password: formData.newPassword,
-          confirm_password: formData.confirmPassword,
-        }),
-      });
-
-      // Check if response is JSON
-      const contentType = response.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
-        try {
-          const result: ChangePasswordResponse = await response.json();
-
-          if (response.ok && result.status === "success") {
-            toast.success("Password berhasil diubah!");
-            router.push("/profile");
-          } else {
-            setError(result.message || "Gagal mengubah password");
-          }
-        } catch (jsonError) {
-          console.error("JSON parsing error:", jsonError);
-          setError("Terjadi kesalahan pada server. Silakan coba lagi.");
+      const result = await apiClient(
+        process.env.NEXT_PUBLIC_API_BASE_URL + "/api/user/change-password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            current_password: formData.currentPassword,
+            new_password: formData.newPassword,
+            confirm_password: formData.confirmPassword,
+          }),
         }
+      );
+
+      if (result.status === "success") {
+        toast.success("Password berhasil diubah!");
+        router.push("/profile");
       } else {
-        console.error("Server returned non-JSON response");
-        setError("Server sedang mengalami masalah. Silakan coba lagi.");
+        setError(result.message || "Gagal mengubah password");
       }
     } catch (error) {
       console.error("Change password error:", error);
-      setError("Terjadi kesalahan jaringan. Silakan coba lagi.");
+      setError("Terjadi kesalahan. Silakan coba lagi.");
     } finally {
       setIsLoading(false);
     }

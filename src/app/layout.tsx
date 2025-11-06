@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const nunito = Nunito({
@@ -32,6 +33,12 @@ export default function RootLayout({
         className={`${nunito.variable} antialiased`}
       >
         {children}
+        <Toaster 
+          position="top-center" 
+          richColors
+          duration={3000}
+          closeButton={true}
+        />
       </body>
     </html>
   );

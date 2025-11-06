@@ -1,6 +1,7 @@
 "use client";
 
 import { ProductCost } from "@/types";
+import apiClient from "@/lib/api-client";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -10,38 +11,31 @@ interface ProductCostPayload {
 }
 
 export const getProductCosts = async (): Promise<ProductCost[]> => {
-  const token = localStorage.getItem("authToken");
-  const response = await fetch(`${baseUrl}/api/product-costs`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error("Gagal mengambil data HPP");
+  try {
+    const result = await apiClient(`${baseUrl}/api/product-costs`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return result.data;
+  } catch (error) {
+    console.error('Get product costs error:', error);
+    throw error;
   }
-
-  const data = await response.json();
-  const items = data.data || [];
-  return items;
 };
 
 export const saveProductCosts = async (productCosts: ProductCostPayload[]) => {
-  const token = localStorage.getItem("authToken");
-  const response = await fetch(`${baseUrl}/api/product-costs`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(productCosts),
-  });
-
-  if (!response.ok) {
-    throw new Error("Gagal menyimpan data HPP");
+  try {
+    const result = await apiClient(`${baseUrl}/api/product-costs`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ products: productCosts }),
+    });
+    return result.data;
+  } catch (error) {
+    console.error('Save product costs error:', error);
+    throw error;
   }
-
-  const result = await response.json();
-  return result;
 };

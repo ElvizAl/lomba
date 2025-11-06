@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { cn } from "@/lib/utils"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 import Loading from "../ui/loading"
 import { scanTransaction } from "@/utils/transaction"
 import Image from "next/image"
@@ -156,6 +157,8 @@ export default function CameraScanner({ className, onCapture }: CameraScannerPro
 
   const handleScan = useCallback(async (file: File) => {
     setLoading(true)
+    const loadingToast = toast.loading('Memproses struk...')
+    
     try {
       const result = await scanTransaction(file)
       const mappedResult = result.map((item: any) => ({
@@ -164,14 +167,19 @@ export default function CameraScanner({ className, onCapture }: CameraScannerPro
         jumlah: item.qty,
         tanggal: item.date?.split("T")[0],
       }))
+      
       localStorage.setItem("transaction", JSON.stringify(mappedResult))
-
+      toast.success('Struk berhasil dipindai!', { id: loadingToast })
       router.push("/input-manual")
-    } catch (err) {
-      setLoading(false)
-      console.log(err)
+    } catch (error: any) {
+      console.error('Scan error:', error)
+      const errorMessage = error?.message || 'Gagal memindai struk. Pastikan gambar jelas dan coba lagi.'
+      toast.error(errorMessage, { id: loadingToast })
+      setError(errorMessage)
     } finally {
-      setLoading(false)
+      if (!error) {
+        setLoading(false)
+      }
     }
   }, [router])
 
@@ -219,21 +227,27 @@ export default function CameraScanner({ className, onCapture }: CameraScannerPro
     async (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0]
       if (!file) return
+      
+      // Validate file type
+      const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp']
+      if (!validTypes.includes(file.type)) {
+        toast.error('Format file tidak didukung. Harap unggah file gambar (JPEG, PNG, WebP)')
+        return
+      }
+      
+      // Validate file size (max 5MB)
+      const maxSize = 5 * 1024 * 1024 // 5MB
+      if (file.size > maxSize) {
+        toast.error('Ukuran file terlalu besar. Maksimal 5MB')
+        return
+      }
+      
+      // Reset file input
+      if (e.target) {
+        e.target.value = ''
+      }
+      
       handleScan(file)
-      // reader.onload = () => {
-      //   const dataUrl = String(reader.result || "")
-      //   setPreviewUrl(dataUrl)
-
-      //   const img = new Image()
-      //   img.crossOrigin = "anonymous"
-      //   img.onload = () => {
-      //     onPickFromGallery?.(file, dataUrl)
-      //     setLoading(false)
-      //   }
-      //   img.src = dataUrl
-      // }
-      // reader.readAsDataURL(file)
-      // e.currentTarget.value = ""
     },
     [handleScan],
   )

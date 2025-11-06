@@ -4,6 +4,7 @@ import React, { useState, useRef, useCallback, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import apiClient from "@/lib/api-client";
 import {
   InputOTP,
   InputOTPGroup,
@@ -28,7 +29,7 @@ function ForgotPasswordOTPContent() {
     setError("");
 
     try {
-      const response = await fetch(
+      const result = await apiClient(
         process.env.NEXT_PUBLIC_API_BASE_URL + "/api/auth/password/forgot",
         {
           method: "POST",
@@ -41,9 +42,7 @@ function ForgotPasswordOTPContent() {
         }
       );
 
-      const result = await response.json();
-
-      if (response.ok && result.status === "success") {
+      if (result.status === "success") {
         toast.success("Kode OTP telah dikirim ke email Anda");
       } else {
         setError(result.message || "Gagal mengirim OTP");
@@ -73,7 +72,7 @@ function ForgotPasswordOTPContent() {
     setError("");
 
     try {
-      const response = await fetch(
+      const result = await apiClient(
         process.env.NEXT_PUBLIC_API_BASE_URL + "/api/auth/password/verify",
         {
           method: "POST",
@@ -87,26 +86,12 @@ function ForgotPasswordOTPContent() {
         }
       );
 
-      const contentType = response.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
-        try {
-          const result = await response.json();
-          console.log("OTP verification response:", result);
-
-          if (response.ok && result.status === "success") {
-            toast.success("Kode OTP berhasil diverifikasi!");
-            const resetToken = result.data?.resetToken || result.token || "";
-            router.push(`/lupa-password/reset?email=${encodeURIComponent(email)}&token=${encodeURIComponent(resetToken)}`);
-          } else {
-            setError(result.message || "Kode OTP tidak valid");
-          }
-        } catch (jsonError) {
-          console.error("JSON parsing error:", jsonError);
-          setError("Terjadi kesalahan pada server. Silakan coba lagi.");
-        }
+      if (result.status === "success") {
+        toast.success("Kode OTP berhasil diverifikasi!");
+        const resetToken = result.data?.resetToken || result.token || "";
+        router.push(`/lupa-password/reset?email=${encodeURIComponent(email)}&token=${encodeURIComponent(resetToken)}`);
       } else {
-        console.error("Server returned non-JSON response");
-        setError("Server sedang mengalami masalah. Silakan coba lagi.");
+        setError(result.message || "Kode OTP tidak valid");
       }
     } catch (error) {
       console.error("OTP verification error:", error);
