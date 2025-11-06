@@ -2,7 +2,7 @@
 import Logout from "@/components/auth/logout";
 import Navbar from "@/components/layout/navbar";
 import ProfileAvatar from "@/components/profile/profile-avatar";
-import { Fingerprint, Lock } from "lucide-react";
+import { Lock } from "lucide-react";
 import Link from "next/link";
 import { getUserData } from "@/utils/user";
 import { useEffect, useState } from "react";

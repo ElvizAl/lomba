@@ -16,11 +16,6 @@ interface ChangePasswordData {
   confirmPassword: string;
 }
 
-interface ChangePasswordResponse {
-  status: string;
-  message?: string;
-}
-
 export default function ChangePasswordPage() {
   const router = useRouter();
   const [formData, setFormData] = useState<ChangePasswordData>({

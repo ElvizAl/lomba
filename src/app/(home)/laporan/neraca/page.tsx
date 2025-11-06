@@ -46,7 +46,7 @@ export default function BalanceSheet() {
                 <Items sections={balanceSheet} />
             </div>
 
-            <BottomButton isSubmitting={false} isFormValid={true} onSubmit={() => handleDownload()} text="Unduh" />
+            <BottomButton isSubmitting={isGenerating} isFormValid={true} onSubmit={() => handleDownload()} text="Unduh" />
         </div>
     );
 }

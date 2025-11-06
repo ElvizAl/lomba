@@ -2,12 +2,12 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Fingerprint, KeyRound, Loader2, MailOpen } from "lucide-react";
+import { KeyRound, Loader2, MailOpen } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { LoginData, LoginResponse } from "@/types";
+import { LoginData } from "@/types";
 import apiClient from "@/lib/api-client";
 
 

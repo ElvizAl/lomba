@@ -15,11 +15,6 @@ interface ResetPasswordData {
   password_confirmation: string;
 }
 
-interface ResetResponse {
-  status: string;
-  message?: string;
-}
-
 function ResetPasswordContent() {
   const router = useRouter();
   const searchParams = useSearchParams();

@@ -13,11 +13,6 @@ import {
 import { Loader2, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
-interface OTPResponse {
-  status: string;
-  message?: string;
-}
-
 function OTPContent() {
   const router = useRouter();
   const searchParams = useSearchParams();

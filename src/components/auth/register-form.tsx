@@ -7,7 +7,7 @@ import { KeyRound, MailOpen, Store, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { RegisterData, RegisterFormat } from "@/types";
+import { RegisterData } from "@/types";
 import apiClient from "@/lib/api-client";
 
 

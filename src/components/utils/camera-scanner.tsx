@@ -181,7 +181,7 @@ export default function CameraScanner({ className, onCapture }: CameraScannerPro
         setLoading(false)
       }
     }
-  }, [router])
+  }, [router, error])
 
   const flashOverlay = useCallback(() => {
     setIsFlashing(true)
