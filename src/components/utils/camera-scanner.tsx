@@ -176,6 +176,7 @@ export default function CameraScanner({ className, onCapture }: CameraScannerPro
       const errorMessage = error?.message || 'Gagal memindai struk. Pastikan gambar jelas dan coba lagi.'
       toast.error(errorMessage, { id: loadingToast })
       setError(errorMessage)
+      setLoading(false)
     } finally {
       if (!error) {
         setLoading(false)
@@ -292,7 +293,7 @@ export default function CameraScanner({ className, onCapture }: CameraScannerPro
         </TabsList>
       </Tabs>
 
-      <div className="relative w-full h-screen overflow-hidden">
+      <div className="relative max-w-md mx-auto h-screen overflow-hidden">
         <video
           ref={videoRef}
           className="h-full w-full object-cover"

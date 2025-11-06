@@ -44,7 +44,7 @@ export default function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
 
     setIsLoading(true);
@@ -62,13 +62,13 @@ export default function LoginForm() {
       if (result.status === "success") {
         localStorage.setItem("authToken", result.data.token);
         toast.success("Login berhasil!");
-        router.push("/home");  
+        router.push("/home");
       } else {
         setError(result?.message || "Terjadi kesalahan saat login");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login error:", error);
-      setError("Terjadi kesalahan jaringan. Silakan coba lagi.");
+      setError(error || "Terjadi kesalahan saat login");
     } finally {
       setIsLoading(false);
     }

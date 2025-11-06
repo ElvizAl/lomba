@@ -57,12 +57,12 @@ export default function MobileButton() {
         <div className="h-14">
           <div className="max-w-[330px] bg-white rounded-full shadow mx-auto">
             <nav className="flex items-center justify-around text-center py-1">
-              {navigationItems.map((item) => {
+              {navigationItems.map((item, i) => {
                 const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href || ""));
                 const Icon = item.icon;
 
                 return (
-                  <div key={item.name || item.href}>
+                  <div key={i}>
                     {!item.href ? (
                       <button
                         onClick={item.onclick}

@@ -54,7 +54,8 @@ const menus = [
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [userLoading, setUserLoading] = useState(true);
+  const [inboxLoading, setInboxLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [hInbox, setHInbox] = useState<InboxData | null>(null);
 
@@ -66,9 +67,8 @@ export default function Home() {
       } catch (err) {
         console.error('Error fetching user data:', err);
         setError('Failed to load user data');
-      } finally {
-        setLoading(false);
       }
+      setUserLoading(false);
     };
 
     const fetchHInbox = async () => {
@@ -76,10 +76,9 @@ export default function Home() {
         const inboxData: InboxData = await getHighlightInbox();
         setHInbox(inboxData);
       } catch (err) {
-        console.error('Error fetching highlight inbox:', err);
-      } finally {
-        setLoading(false);
+        setError('Failed to load highlight inbox');
       }
+      setInboxLoading(false);
     };
 
     fetchUser();
@@ -92,7 +91,7 @@ export default function Home() {
     markAsRead(hInbox?.id || '');
   }
 
-  if (loading) {
+  if (userLoading || inboxLoading) {
     return (
       <Loading />
     );
