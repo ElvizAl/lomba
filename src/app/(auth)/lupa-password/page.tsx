@@ -61,7 +61,7 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen max-w-sm mx-auto flex flex-col bg-[#FBFCFF] font-sans py-10">
+    <div className="min-h-screen max-w-md mx-auto flex flex-col bg-[#FBFCFF] font-sans py-10">
       <div className="flex-1">
         <div className="mb-6 p-4">
           <Link

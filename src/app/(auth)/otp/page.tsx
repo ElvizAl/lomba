@@ -105,7 +105,7 @@ function OTPContent() {
   };
 
   return (
-    <div className="min-h-screen max-w-sm mx-auto flex flex-col bg-[#FBFCFF] font-sans py-10 px-4">
+    <div className="min-h-screen max-w-md mx-auto flex flex-col bg-[#FBFCFF] font-sans py-10 px-4">
       <div className="flex-1">
         <div className="mb-6">
           <Link
@@ -189,7 +189,7 @@ function OTPContent() {
 export default function OTPPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen max-w-sm mx-auto flex flex-col bg-[#FBFCFF] font-sans py-10">
+      <div className="min-h-screen max-w-md mx-auto flex flex-col bg-[#FBFCFF] font-sans py-10">
         <div className="flex-1 flex items-center justify-center">
           <Loader2 className="w-8 h-8 animate-spin text-gray-500" />
         </div>

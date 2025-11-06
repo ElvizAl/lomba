@@ -317,7 +317,7 @@ export default function CameraScanner({ className, onCapture }: CameraScannerPro
 
         {previewUrl && (
           <div className="absolute inset-0 grid place-items-center bg-black/40 backdrop-blur-sm">
-            <div className="relative w-4/5 max-w-sm">
+            <div className="relative w-4/5 max-w-md">
               <div className="relative w-full aspect-square rounded-lg border-4 border-primary overflow-hidden">
                 <Image
                   src={previewUrl}

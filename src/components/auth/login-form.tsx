@@ -61,13 +61,13 @@ export default function LoginForm() {
 
       if (result.status === "success") {
         localStorage.setItem("authToken", result.data.token);
-        toast.success("Registrasi berhasil! Silakan login.");
+        toast.success("Login berhasil!");
         router.push("/home");  
       } else {
-        setError(result?.message || "Terjadi kesalahan saat registrasi");
+        setError(result?.message || "Terjadi kesalahan saat login");
       }
     } catch (error) {
-      console.error("Registration error:", error);
+      console.error("Login error:", error);
       setError("Terjadi kesalahan jaringan. Silakan coba lagi.");
     } finally {
       setIsLoading(false);

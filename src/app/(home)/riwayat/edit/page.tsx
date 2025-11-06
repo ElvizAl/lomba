@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { InputItem as InputItemType, Transaction } from "@/types";
 import InputItem from "@/components/ui/input-item";
 import { updateTransaction } from "@/utils/transaction";
+import BottomButton from "@/components/ui/bottom-button";
 
 export default function Edit() {
     const router = useRouter();
@@ -82,15 +83,7 @@ export default function Edit() {
                         ))}
                     </div>
 
-                    <div className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-white border-t">
-                        <button
-                            type="submit"
-                            className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full w-full transition-colors disabled:opacity-50'
-                            disabled={!isFormValid}
-                        >
-                            Simpan Semua
-                        </button>
-                    </div>
+                    <BottomButton isSubmitting={false} isFormValid={isFormValid} onSubmit={() => handleSubmit} text="Simpan Semua" />
                 </form>
             </div>
         </div>

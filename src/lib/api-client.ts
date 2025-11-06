@@ -1,10 +1,11 @@
 const apiClient = async (url: string, options: RequestInit = {}) => {
-  const token = typeof window !== 'undefined' ? localStorage.getItem("authToken") : null;
-  
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
+
   const headers = new Headers(options.headers || {});
-  
+
   if (token) {
-    headers.set('Authorization', `Bearer ${token}`);
+    headers.set("Authorization", `Bearer ${token}`);
   }
 
   const config: RequestInit = {
@@ -14,23 +15,31 @@ const apiClient = async (url: string, options: RequestInit = {}) => {
 
   try {
     const response = await fetch(url, config);
+
+    const result = await response.json();
+
+    if (response.status === 401 && window.location.pathname !== "/login") {
+      localStorage.removeItem("authToken");
+      window.location.href = "/login";
+      return Promise.reject(
+        new Error("Session expired. Please log in again.")
+      );
+    }
     
-    if (response.status === 401) {
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem("authToken");
-        window.location.href = '/login';
-        return Promise.reject(new Error('Session expired. Please log in again.'));
-      }
+    if (response.status == 403 && result.code == "EMAIL_NOT_VERIFIED" && window.location.pathname !== "/otp") {
+      localStorage.removeItem("authToken");
+      window.location.href =
+        "/otp?email=" + JSON.parse(config.body as string).email;
+      return Promise.reject(new Error("Session expired. Please log in again."));
     }
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      return Promise.reject(errorData.message || 'Something went wrong');
+      return Promise.reject(result.message || "Something went wrong");
     }
 
-    return response.json();
+    return result;
   } catch (error) {
-    console.error('API call failed:', error);
+    console.error("API call failed:", error);
     throw error;
   }
 };

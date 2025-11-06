@@ -33,7 +33,7 @@ export default function Navbar({
           </button>
         )}
 
-        <h1 className="absolute left-1/2 transform -translate-x-1/2 font-bold text-gray-900 text-lg">
+        <h1 className="absolute left-1/2 transform -translate-x-1/2 font-bold text-gray-900 text-md">
           {title}
         </h1>
 

@@ -6,7 +6,7 @@ const BottomButton = ({ isSubmitting, isFormValid, onSubmit = () => { }, text, t
                     type={type || "button"}
                     onClick={onSubmit}
                     disabled={isSubmitting || !isFormValid}
-                    className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full w-full transition-colors disabled:opacity-50 flex justify-center items-center gap-2'
+                    className='bg-blue-600 text-sm hover:bg-blue-700 text-white px-4 py-3 rounded-full w-full transition-colors disabled:opacity-50 flex justify-center items-center gap-2'
                 >
                     {isSubmitting ? (
                         <>

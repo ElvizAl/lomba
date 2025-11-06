@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen max-w-sm mx-auto flex flex-col bg-[#FBFCFF] font-sans">
+    <div className="min-h-screen max-w-md mx-auto flex flex-col bg-[#FBFCFF] font-sans">
       <div className="flex my-10 p-4">
         <Image
           src="/logo.png"

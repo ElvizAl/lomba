@@ -145,7 +145,7 @@ export default function Home() {
 
   if (error) {
     return (
-      <div className="min-h-screen max-w-sm mx-auto flex items-center justify-center text-red-500">
+      <div className="min-h-screen max-w-md mx-auto flex items-center justify-center text-red-500">
         {error}
       </div>
     );
@@ -153,7 +153,7 @@ export default function Home() {
 
   if (!user) {
     return (
-      <div className="min-h-screen max-w-sm mx-auto flex items-center justify-center">
+      <div className="min-h-screen max-w-md mx-auto flex items-center justify-center">
         No user data available
       </div>
     );

@@ -5,24 +5,37 @@ import { useEffect, useState } from "react";
 import { Items } from "@/components/report/items";
 import Loading from "@/components/ui/loading";
 import { ReportSection } from "@/types";
+import BottomButton from "@/components/ui/bottom-button";
+import generatePDF from "@/utils/generate-pdf";
 
 export default function BalanceSheet() {
     const [balanceSheet, setBalanceSheet] = useState<ReportSection[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [isGenerating, setIsGenerating] = useState(false);
     useEffect(() => {
         (async () => {
             const data = await getBalanceSheet()
             setBalanceSheet(data);
-            setLoading(false);
         })();
     }, []);
 
-    if (loading) {
-    return (
-      <Loading />
-    );
-  }
+    if (isGenerating) {
+        return (
+            <Loading />
+        );
+    }
 
+
+    const handleDownload = () => {
+        if (balanceSheet.length === 0) return;
+        setIsGenerating(true);
+        try {
+            generatePDF("Neraca", balanceSheet);
+        } catch (error) {
+            console.error('Error generating PDF:', error);
+        } finally {
+            setIsGenerating(false);
+        }
+    };
     return (
         <div className="min-h-screen bg-gray-50 px-4">
             <Navbar title="Neraca" />
@@ -30,14 +43,7 @@ export default function BalanceSheet() {
                 <Items sections={balanceSheet} />
             </div>
 
-            <div className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-white border-t">
-                <button
-                    type="submit"
-                    className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full w-full transition-colors disabled:opacity-50'
-                >
-                    Unduh
-                </button>
-            </div>
+            <BottomButton isSubmitting={false} isFormValid={true} onSubmit={() => handleDownload()} text="Unduh" />
         </div>
     );
 }

@@ -5,10 +5,13 @@ import { useEffect, useState } from "react";
 import { Items } from "@/components/report/items";
 import Loading from "@/components/ui/loading";
 import { ReportSection } from "@/types";
+import BottomButton from "@/components/ui/bottom-button";
+import generatePDF from "@/utils/generate-pdf";
 
 export default function ProfitAndLoss() {
     const [profitAndLoss, setProfitAndLoss] = useState<ReportSection[]>([]);
     const [loading, setLoading] = useState(true);
+    const [isGenerating, setIsGenerating] = useState(false);
     useEffect(() => {
         (async () => {
             const data = await getProfitAndLoss()
@@ -17,11 +20,23 @@ export default function ProfitAndLoss() {
         })();
     }, []);
 
+    const handleDownload = () => {
+        if (profitAndLoss.length === 0) return;
+        setIsGenerating(true);
+        try {
+            generatePDF("Laba Rugi", profitAndLoss);
+        } catch (error) {
+            console.error('Error generating PDF:', error);
+        } finally {
+            setIsGenerating(false);
+        }
+    };
+
     if (loading) {
-    return (
-      <Loading />
-    );
-  }
+        return (
+            <Loading />
+        );
+    }
 
     return (
         <div className="min-h-screen bg-gray-50 px-4">
@@ -29,14 +44,7 @@ export default function ProfitAndLoss() {
             <div className="pt-5">
                 <Items sections={profitAndLoss} />
             </div>
-             <div className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-white border-t">
-                <button
-                    type="submit"
-                    className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full w-full transition-colors disabled:opacity-50'
-                >
-                    Unduh
-                </button>
-            </div>
+            <BottomButton isSubmitting={isGenerating} isFormValid={true} onSubmit={() => handleDownload()} text="Unduh" />
         </div>
     );
 }
