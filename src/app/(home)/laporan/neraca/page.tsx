@@ -10,15 +10,18 @@ import generatePDF from "@/utils/generate-pdf";
 
 export default function BalanceSheet() {
     const [balanceSheet, setBalanceSheet] = useState<ReportSection[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
     const [isGenerating, setIsGenerating] = useState(false);
     useEffect(() => {
         (async () => {
+            setIsLoading(true);
             const data = await getBalanceSheet()
             setBalanceSheet(data);
+            setIsLoading(false);
         })();
     }, []);
 
-    if (isGenerating) {
+    if (isLoading) {
         return (
             <Loading />
         );
