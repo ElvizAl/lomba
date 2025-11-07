@@ -37,7 +37,7 @@ const InputItem = ({
                         type="date"
                         value={item.tanggal || ''}
                         onChange={(e) => updateItem(id, 'tanggal', e.target.value)}
-                        className='w-full p-2 border-b focus:outline-none focus:border-blue-500'
+                        className='w-full p-2 border-b focus:outline-none focus:border-blue-600'
                     />
                 </div>
                 <input
@@ -45,7 +45,7 @@ const InputItem = ({
                     value={item.keterangan}
                     placeholder='Keterangan / Nama Barang'
                     onChange={(e) => updateItem(id, 'keterangan', e.target.value)}
-                    className='w-full p-2 border-b focus:outline-none focus:border-blue-500'
+                    className='w-full p-2 border-b focus:outline-none focus:border-blue-600'
                 />
                 <div className="flex gap-2">
                     <div className="relative w-1/4">
@@ -55,7 +55,7 @@ const InputItem = ({
                             value={item.jumlah}
                             placeholder='0'
                             onChange={(e) => updateItem(id, 'jumlah', e.target.value.replace(/\D/g, ''))}
-                            className='w-full p-2 border rounded focus:outline-none focus:border-blue-500 text-right text-sm font-medium'
+                            className='w-full p-2 border rounded focus:outline-none focus:border-blue-600 text-right text-sm font-medium'
                         />
                     </div>
                     <div className="relative">
@@ -67,7 +67,7 @@ const InputItem = ({
                                 value={item.nominal ? new Intl.NumberFormat('id-ID').format(Number(item.nominal)) : ''}
                                 placeholder='0'
                                 onChange={(e) => updateItem(id, 'nominal', e.target.value.replace(/\D/g, ''))}
-                                className='w-full p-2 focus:outline-none focus:border-blue-500 text-right text-sm font-medium'
+                                className='w-full p-2 focus:outline-none focus:border-blue-600 text-right text-sm font-medium'
                             />
                         </div>
                     </div>
@@ -80,7 +80,7 @@ const InputItem = ({
                                 value={item.nominal && item.jumlah ? new Intl.NumberFormat('id-ID').format(Number(item.nominal) * Number(item.jumlah)) : ''}
                                 placeholder='0'
                                 readOnly={true}
-                                className='w-full p-2 bg-gray-50 focus:outline-none focus:border-blue-500 text-right text-sm font-medium'
+                                className='w-full p-2 bg-gray-50 focus:outline-none focus:border-blue-600 text-right text-sm font-medium'
                             />
                         </div>
                     </div>

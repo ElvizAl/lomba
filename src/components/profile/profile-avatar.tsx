@@ -76,7 +76,7 @@ export default function ProfileAvatar({
 
   return (
     <div className={cn(
-      "relative group inline-flex items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600 text-white font-semibold cursor-pointer",
+      "relative group inline-flex items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-purple-600 text-white font-semibold cursor-pointer",
       sizeClasses[size],
       className
     )}>

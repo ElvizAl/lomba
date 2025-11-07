@@ -104,7 +104,7 @@ export default function HPPPage() {
 
                 {loading ? (
                     <div className="flex justify-center items-center h-64">
-                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
                     </div>
                 ) : productCosts.length === 0 ? (
                     <div className="text-center py-12 bg-white rounded-lg shadow-sm border">
@@ -124,7 +124,7 @@ export default function HPPPage() {
                                     <input
                                         type="text"
                                         placeholder="Nama"
-                                        className="w-full outline-none focus:border-blue-500 border-b py-2"
+                                        className="w-full outline-none focus:border-blue-600 border-b py-2"
                                         value={cost.name}
                                         onChange={(e) => {
                                             const newItems = [...productCosts];
@@ -140,7 +140,7 @@ export default function HPPPage() {
                                         <input
                                             type="text"
                                             placeholder="Biaya"
-                                            className="w-full outline-none focus:border-blue-500 border-b py-2"
+                                            className="w-full outline-none focus:border-blue-600 border-b py-2"
                                             value={
                                                 cost.cost
                                                     ? new Intl.NumberFormat('id-ID').format(

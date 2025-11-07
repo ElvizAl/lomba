@@ -78,7 +78,7 @@ export default function Profile() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600"></div>
       </div>
     );
   }
@@ -94,7 +94,7 @@ export default function Profile() {
             <input
               type="text"
               id="name"
-              className="w-full px-3 py-2 border-0 focus:outline-none focus:border-blue-500"
+              className="w-full px-3 py-2 border-0 focus:outline-none focus:border-blue-600"
               value={formData.name}
               onChange={handleInputChange}
               required
@@ -107,7 +107,7 @@ export default function Profile() {
               <input
                 type="email"
                 id="email"
-                className="w-full px-3 py-2 border-0 focus:outline-none focus:border-blue-500"
+                className="w-full px-3 py-2 border-0 focus:outline-none focus:border-blue-600"
                 value={formData.email}
                 onChange={handleInputChange}
                 required

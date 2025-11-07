@@ -2,10 +2,11 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function SectionTwo() {
   return (
-    <section className="w-full bg-white pt-20 md:pt-28 relative overflow-hidden" id="section-two">
+    <section className="w-full bg-white pt-20 md:pt-28 relative overflow-hidden" id="fitur">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8 xl:gap-12">
           {/* Text Content */}
@@ -42,24 +43,23 @@ export default function SectionTwo() {
               viewport={{ once: true, margin: "-50px 0px -100px 0px" }}
               transition={{ delay: 0.2, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl">
                 {[
                   { text: 'Laporan Keuangan Real-time', icon: '📊' },
-                  { text: 'Analisis Bisnis Mendalam', icon: '📈' },
-                  { text: 'Manajemen Pengeluaran', icon: '💸' },
-                  { text: 'Integrasi Bank', icon: '🏦' }
+                  { text: 'Smart AI untuk Analisis', icon: '📈' },
+                  { text: 'Pencatatan Mudah dengan Fitur Pindai Struk', icon: '💸' },
                 ].map((feature, index) => (
-                  <div key={index} className="flex items-start gap-3 p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors">
-                    <span className="text-2xl">{feature.icon}</span>
-                    <span className="text-gray-800 font-medium">{feature.text}</span>
+                  <div key={index} className="items-start gap-3 rounded-xl hover:bg-gray-100 transition-colors text-center">
+                    <div className="text-2xl">{feature.icon}</div>
+                    <div className="text-gray-800 font-medium">{feature.text}</div>
                   </div>
                 ))}
               </div>
               
               <div className="mt-10">
-                <button className="px-6 py-3 bg-black text-white rounded-full font-medium hover:bg-black/80 transition-colors">
+                <Link href="/register" className="px-6 py-3 bg-black text-white rounded-full font-medium hover:bg-black/80 transition-colors">
                   Mulai Sekarang
-                </button>
+                </Link>
               </div>
             </motion.div>
           </motion.div>

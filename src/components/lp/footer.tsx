@@ -21,18 +21,9 @@ const footerData = {
         ]
     },
     quickLinks: [
-        { title: 'Tentang Kami', url: '/tentang-kami' },
-        { title: 'Fitur', url: '/fitur' },
-        { title: 'Harga', url: '/harga' },
-        { title: 'Blog', url: '/blog' },
+        { title: 'Tentang Kami', url: '/tentang' },
+        { title: 'Fitur', url: '/#fitur' },
         { title: 'Kontak', url: '/kontak' },
-    ],
-    support: [
-        { title: 'Pusat Bantuan', url: '/pusat-bantuan' },
-        { title: 'Panduan', url: '/panduan' },
-        { title: 'FAQ', url: '/faq' },
-        { title: 'Kebijakan Privasi', url: '/kebijakan-privasi' },
-        { title: 'Syarat & Ketentuan', url: '/syarat-ketentuan' },
     ],
     contact: [
         {
@@ -58,7 +49,7 @@ const footerData = {
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
-    const { company, quickLinks, support, contact } = footerData;
+    const { company, quickLinks, contact } = footerData;
 
     // Render social icons
     const renderSocialIcons = () => (
@@ -122,7 +113,7 @@ const Footer = () => {
     return (
         <footer className="w-full bg-gradient-to-b from-blue-50 to-white text-gray-900 pt-16 pb-8 md:pt-20 md:pb-12 relative z-10">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6">
                     {/* Company Info */}
                     <div className="space-y-4">
                         <div className="flex items-center gap-2">
@@ -145,12 +136,6 @@ const Footer = () => {
                     <div>
                         <h3 className="text-gray-900 font-semibold text-lg mb-4">Tautan Cepat</h3>
                         {renderMenuItems(quickLinks)}
-                    </div>
-
-                    {/* Support */}
-                    <div>
-                        <h3 className="text-gray-900 font-semibold text-lg mb-4">Dukungan</h3>
-                        {renderMenuItems(support)}
                     </div>
 
                     {/* Contact Info */}

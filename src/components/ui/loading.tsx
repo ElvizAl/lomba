@@ -4,7 +4,7 @@ import React from 'react';
 const Loading = () => {
     return (
         <>
-            <div className='flex justify-center items-center h-screen w-full bg-gradient-to-b from-blue-600 to-blue-500 fixed top-0 left-0 right-0 z-50'>
+            <div className='flex justify-center items-center h-screen w-full bg-gradient-to-b from-blue-600 to-blue-600 fixed top-0 left-0 right-0 z-50'>
                 <div className='flex flex-col items-center animate-pulse'>
                     <Image
                         src="/logo-white.png"
