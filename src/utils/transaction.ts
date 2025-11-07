@@ -1,11 +1,33 @@
+import apiClient from "@/lib/api-client";
+
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-export const getTransaction = async (params: any) => {
+export interface PaginationResponse {
+  page: number;
+  limit: number;
+  total: number;
+  total_pages: number;
+}
+
+export interface TransactionResponse {
+  data: any[];
+  pagination: PaginationResponse;
+}
+
+export const getTransaction = async (params: {
+  categoryId?: string;
+  page?: number;
+  limit?: number;
+  note?: string;
+  id?: string;
+  start_date?: string;
+  end_date?: string;
+}): Promise<TransactionResponse> => {
   const queryParams = new URLSearchParams();
 
   if (params.categoryId) queryParams.append("category_id", params.categoryId);
-  if (params.page) queryParams.append("page", params.page);
-  if (params.limit) queryParams.append("limit", params.limit);
+  if (params.page) queryParams.append("page", params.page.toString());
+  if (params.limit) queryParams.append("limit", params.limit.toString());
   if (params.note) queryParams.append("note", params.note);
   if (params.id) queryParams.append("id", params.id);
   if (params.start_date) queryParams.append("start_date", params.start_date);
@@ -18,10 +40,22 @@ export const getTransaction = async (params: any) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
+        cache: "no-store",
       }
     );
-    return result.data;
+    
+    // Ensure the response has the expected structure
+    return {
+      data: result.data || [],
+      pagination: result.pagination || {
+        page: params.page || 1,
+        limit: params.limit || 10,
+        total: result.data?.length || 0,
+        total_pages: 1
+      }
+    };
   } catch (error) {
     console.error('Get transaction error:', error);
     throw error;
@@ -44,8 +78,6 @@ export const submitTransaction = async (transaction: any): Promise<any> => {
     throw error;
   }
 };
-
-import apiClient from "@/lib/api-client";
 
 export const scanTransaction = async (image: any): Promise<any> => {
   const formData = new FormData();

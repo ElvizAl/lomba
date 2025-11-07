@@ -1,6 +1,19 @@
 import apiClient from "@/lib/api-client";
+import type { InboxData } from "@/types";
 
-export const getHighlightInbox = async (): Promise<any> => {
+export interface PaginationResponse {
+  page: number;
+  limit: number;
+  total: number;
+  total_pages: number;
+}
+
+export interface InboxResponse {
+  data: InboxData[];
+  pagination: PaginationResponse;
+}
+
+export const getHighlightInbox = async (): Promise<InboxData[]> => {
   try {
     const result = await apiClient(
       process.env.NEXT_PUBLIC_API_BASE_URL + "/api/inbox/highlight",
@@ -20,10 +33,10 @@ export const getHighlightInbox = async (): Promise<any> => {
   }
 };
 
-export const getInbox = async (): Promise<any> => {
+export const getInbox = async (page: number = 1, limit: number = 10): Promise<InboxResponse> => {
   try {
     const result = await apiClient(
-      process.env.NEXT_PUBLIC_API_BASE_URL + "/api/inbox",
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/inbox?page=${page}&limit=${limit}`,
       {
         method: "GET",
         headers: {
@@ -33,16 +46,26 @@ export const getInbox = async (): Promise<any> => {
         cache: "no-store",
       }
     );
-    return result.data;
+    
+    // Ensure the response has the expected structure
+    return {
+      data: result.data || [],
+      pagination: result.pagination || {
+        page,
+        limit,
+        total: result.data?.length || 0,
+        total_pages: 1
+      }
+    };
   } catch (error) {
     console.error('Get inbox error:', error);
     throw error;
   }
 };
 
-export const markAsRead = async (id: string): Promise<any> => {
+export const markAsRead = async (id: string): Promise<void> => {
   try {
-    const result = await apiClient(
+    await apiClient(
       process.env.NEXT_PUBLIC_API_BASE_URL + "/api/inbox/" + id + "/read",
       {
         method: "GET",
@@ -52,7 +75,6 @@ export const markAsRead = async (id: string): Promise<any> => {
         },
       }
     );
-    return result.data;
   } catch (error) {
     console.error('Mark as read error:', error);
     throw error;

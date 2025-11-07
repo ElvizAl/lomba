@@ -8,7 +8,7 @@ import { format, type Locale } from 'date-fns';
 import { id } from 'date-fns/locale';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { ListFilter, Trash, XIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ListFilter, Trash, XIcon } from 'lucide-react';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Label } from '@/components/ui/label';
@@ -23,9 +23,15 @@ export default function Riwayat({ params }: { params: Promise<{ categoryId: stri
 
     const router = useRouter();
 
-    const [category, setCategory] = useState({ name: "", balance: 0, total_debit: 0, total_kredit: 0 });
+    const [category, setCategory] = useState({ name: "", balance: 0, total_debit: 0, total_credit: 0 });
 
     const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const [pagination, setPagination] = useState({
+        page: 1,
+        limit: 10,
+        total: 0,
+        total_pages: 1
+    });
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [selectedTransaction, setSelectedTransaction] = useState<Array<string>>([]);
@@ -38,32 +44,35 @@ export default function Riwayat({ params }: { params: Promise<{ categoryId: stri
         endDate: null
     });
 
-    const loadTransactions = useCallback(async () => {
-        const data = await getTransaction({
-            page: 1,
+    const loadTransactions = useCallback(async (page: number = 1) => {
+        const response = await getTransaction({
+            page: page,
             limit: 10,
             note: "",
             start_date: filters.startDate ? format(filters.startDate, 'yyyy-MM-dd') : "",
             end_date: filters.endDate ? format(filters.endDate, 'yyyy-MM-dd') : "",
             categoryId: categoryId
-        })
-        setTransactions(data)
+        });
+        setTransactions(response.data);
+        setPagination(response.pagination);
     }, [categoryId, filters.startDate, filters.endDate])
 
+
+    const loadCategory = async () => {
+        const data = await getCategory({
+            page: 1,
+            limit: 10,
+            name: "",
+            start_date: "",
+            end_date: "",
+            id: categoryId,
+            state: "riwayat"
+        })
+        setCategory(data[0])
+        setLoading(false);
+    }
+
     useEffect(() => {
-        const loadCategory = async () => {
-            const data = await getCategory({
-                page: 1,
-                limit: 10,
-                name: "",
-                start_date: "",
-                end_date: "",
-                id: categoryId,
-                state: "riwayat"
-            } )
-            setCategory(data[0])
-            setLoading(false);
-        }
 
         loadCategory()
     }, [categoryId])
@@ -85,9 +94,10 @@ export default function Riwayat({ params }: { params: Promise<{ categoryId: stri
     }
 
     const handleDeleteTransactions = async () => {
+        setLoading(true);
         try {
             await deleteTransaction(selectedTransaction);
-            setLoading(true);
+            setLoading(false);
             setSelectedTransaction([]);
             setIsDeleteDialogOpen(false);
             toast.success('Transaksi berhasil dihapus');
@@ -97,6 +107,7 @@ export default function Riwayat({ params }: { params: Promise<{ categoryId: stri
         }
         setLoading(false);
         loadTransactions();
+        loadCategory();
     };
 
     const editTransactions = () => {
@@ -147,7 +158,7 @@ export default function Riwayat({ params }: { params: Promise<{ categoryId: stri
                             Kredit
                         </h6>
                         <h2 className='font-semibold text-xl'>
-                            Rp {numberWithCommas(category.total_kredit)}
+                            Rp {numberWithCommas(category.total_credit)}
                         </h2>
                     </div>
                 </div>
@@ -243,7 +254,7 @@ export default function Riwayat({ params }: { params: Promise<{ categoryId: stri
                     ) : null
                 }
             </div>
-            <div className="px-4">
+            <div className="px-4 pb-20">
                 {
                     transactions.length ? transactions.map((transaction, i) => (
                         <div className='rounded bg-white mb-3 p-4 border' key={i} data-select='false' data-id={transaction.id} onClick={e => selectTransaction(e)}>
@@ -270,6 +281,42 @@ export default function Riwayat({ params }: { params: Promise<{ categoryId: stri
                         </div>
                     )
                 }
+
+                {pagination.total_pages > 1 && (
+                    <div className="mt-6 flex items-center justify-between">
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => loadTransactions(pagination.page - 1)}
+                            disabled={pagination.page === 1 || loading}
+                            className="px-3 py-2 text-sm flex items-center gap-1.5"
+                        >
+                            <ChevronLeft className="h-4 w-4" />
+                            <span>Sebelumnya</span>
+                        </Button>
+
+                        <div className="flex items-center bg-gray-50 rounded-lg px-3 py-1.5">
+                            <span className="text-sm font-medium text-gray-700">
+                                {pagination.page}
+                            </span>
+                            <span className="mx-1 text-gray-400">/</span>
+                            <span className="text-sm text-gray-500">
+                                {pagination.total_pages}
+                            </span>
+                        </div>
+
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => loadTransactions(pagination.page + 1)}
+                            disabled={pagination.page === pagination.total_pages || loading}
+                            className="px-3 py-2 text-sm flex items-center gap-1.5"
+                        >
+                            <span>Selanjutnya</span>
+                            <ChevronRight className="h-4 w-4" />
+                        </Button>
+                    </div>
+                )}
             </div>
             <div className="fixed bottom-0 left-0 right-0 z-50 px-4 pb-4 pt-4 bg-white border-t">
                 <div className='flex items-center gap-2'>

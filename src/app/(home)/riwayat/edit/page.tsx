@@ -6,10 +6,13 @@ import { InputItem as InputItemType, Transaction } from "@/types";
 import InputItem from "@/components/ui/input-item";
 import { updateTransaction } from "@/utils/transaction";
 import BottomButton from "@/components/ui/bottom-button";
+import { toast } from "sonner";
 
 export default function Edit() {
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
     const [items, setItems] = useState<InputItemType[]>([]);
+    const [isFormValid, setIsFormValid] = useState(false);
 
     const updateItem = (id: string, field: string, value: string) => {
         setItems(prevItems =>
@@ -19,10 +22,11 @@ export default function Edit() {
         );
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         try {
+            setIsLoading(true);
             const category = JSON.parse(localStorage.getItem("kategori") || "{}");
             const type = localStorage.getItem("type");
 
@@ -38,11 +42,14 @@ export default function Edit() {
                 }
             ))
 
-            updateTransaction(transactions);
+            await updateTransaction(transactions);
 
             router.push("/riwayat/" + category.id);
         } catch (error) {
             console.error("Error submitting transaction:", error);
+            toast.error("Gagal menyimpan transaksi");
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -55,7 +62,7 @@ export default function Edit() {
                         id: transaction.id,
                         keterangan: transaction.note,
                         nominal: (transaction.amount / transaction.qty).toString(),
-                        tanggal: transaction.createdAt,
+                        tanggal: transaction.date,
                         jumlah: transaction.qty.toString()
                     }
                 })
@@ -64,7 +71,9 @@ export default function Edit() {
         )()
     }, [])
 
-    const isFormValid = items.some(item => item.keterangan && item.nominal && item.tanggal);
+    useEffect(() => {
+        setIsFormValid(items.some(item => item.keterangan && item.nominal && item.tanggal));
+    }, [items]);
 
     return (
         <div className="min-h-screen bg-gray-50 px-4">
@@ -83,7 +92,7 @@ export default function Edit() {
                         ))}
                     </div>
 
-                    <BottomButton isSubmitting={false} isFormValid={isFormValid} onSubmit={() => handleSubmit} text="Simpan Semua" />
+                    <BottomButton type="submit" isSubmitting={isLoading} isFormValid={isFormValid} onSubmit={() => handleSubmit} text="Simpan Semua" />
                 </form>
             </div>
         </div>

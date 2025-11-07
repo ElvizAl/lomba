@@ -79,6 +79,7 @@ export interface Transaction {
   id: string;
   note: string;
   amount: number;
+  date: string;
   qty: number;
   type: "debit" | "credit";
   createdAt: string;
