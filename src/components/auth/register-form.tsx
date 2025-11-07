@@ -71,17 +71,16 @@ export default function RegisterForm() {
         },
         body: JSON.stringify(formData),
       });
-      
+
       if (result.status === "success") {
         toast.success("Registrasi berhasil! Silakan verifikasi email Anda.");
         router.push(`/otp?email=${encodeURIComponent(formData.email)}`);
       } else {
-        throw new Error(result.message || "Gagal melakukan registrasi");
-        setError("Server sedang mengalami masalah. Silakan coba lagi.");
+        setError(result.message || "Gagal melakukan registrasi");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Registration error:", error);
-      setError("Terjadi kesalahan jaringan. Silakan coba lagi.");
+      setError(error || "Terjadi kesalahan saat registrasi");
     } finally {
       setIsLoading(false);
     }
