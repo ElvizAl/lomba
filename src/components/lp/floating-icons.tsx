@@ -48,13 +48,8 @@ const icons = [
 
 export default function FloatingIcons() {
   return (
-    <div className="fixed bottom-0 right-1/2 translate-x-1/2 lg:right-[10%] lg:translate-x-0 w-[600px] lg:w-[700px] h-[800px] pointer-events-none">
+    <div className="fixed inset-0 -z-10 pointer-events-none opacity-10">
       {icons.map((icon, index) => {
-        const floatAnimation = {
-          y: [0, -15, 0, 15, 0],
-          x: [0, 10, 0, -10, 0],
-        };
-
         return (
           <motion.div
             key={index}
@@ -63,41 +58,23 @@ export default function FloatingIcons() {
               opacity: 0,
               x: icon.position.x,
               y: icon.position.y,
-              scale: 0.9
             }}
             animate={{
-              opacity: 1,
-              scale: 1,
-              ...floatAnimation,
+              opacity: [0.05, 0.15, 0.05],
               x: icon.position.x,
-              y: icon.position.y
+              y: icon.position.y,
+              rotate: [0, 360]
             }}
             transition={{
-              duration: icon.duration,
-              ease: "easeInOut",
+              duration: 20 + (Math.random() * 10),
+              ease: "linear",
               repeat: Infinity,
               repeatType: "loop",
-              delay: icon.delay,
-              opacity: { duration: 0.8, ease: "easeOut" },
-              scale: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
-              x: {
-                duration: 10 + Math.random() * 5,
-                ease: "easeInOut",
-                repeat: Infinity,
-                repeatType: "reverse"
-              },
-              y: {
-                duration: 8 + Math.random() * 4,
-                ease: "easeInOut",
+              opacity: {
+                duration: 5 + (Math.random() * 5),
                 repeat: Infinity,
                 repeatType: "reverse"
               }
-            }}
-            style={{
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              willChange: 'transform, opacity'
             }}
           >
             <Image

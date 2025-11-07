@@ -120,9 +120,9 @@ const Footer = () => {
     );
 
     return (
-        <footer className="bg-gradient-to-b from-blue-50 to-white text-gray-800 border-t border-gray-200">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+        <footer className="w-full bg-gradient-to-b from-blue-50 to-white text-gray-900 pt-16 pb-8 md:pt-20 md:pb-12 relative z-10">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-6">
                     {/* Company Info */}
                     <div className="space-y-4">
                         <div className="flex items-center gap-2">
@@ -161,8 +161,8 @@ const Footer = () => {
                 </div>
 
                 {/* Copyright */}
-                <div className="border-t border-gray-200 mt-12 pt-8 text-center text-gray-500 text-sm">
-                    <p>© {currentYear} {company.logo.text}. Seluruh hak cipta dilindungi.</p>
+                <div className="border-t border-gray-800 mt-8 pt-6 text-center text-gray-400 text-sm">
+                    <p>{currentYear} {company.logo.text}. Seluruh hak cipta dilindungi.</p>
                 </div>
             </div>
         </footer>

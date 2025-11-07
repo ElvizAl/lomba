@@ -76,6 +76,7 @@ export default function Home() {
         const inboxData: InboxData = await getHighlightInbox();
         setHInbox(inboxData);
       } catch (err) {
+        console.error('Error fetching highlight inbox:', err);
         setError('Failed to load highlight inbox');
       }
       setInboxLoading(false);

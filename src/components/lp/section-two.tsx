@@ -1,36 +1,28 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 
 export default function SectionTwo() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"]
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], [50, 0]);
-  const opacity = useTransform(scrollYProgress, [0, 0.7], [0, 1]);
-
   return (
-    <motion.section
-      ref={ref}
-      style={{ y, opacity }}
-      className="w-full bg-white"
-    >
+    <section className="w-full bg-white pt-20 md:pt-28 relative overflow-hidden" id="section-two">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8 xl:gap-12">
           {/* Text Content */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            viewport={{ once: true, margin: "-50px 0px -100px 0px" }}
             className="w-full lg:w-1/2 text-center lg:text-left"
           >
-            <div className="space-y-4 md:space-y-6">
+            <motion.div 
+              className="space-y-4 md:space-y-6"
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px 0px -100px 0px" }}
+              transition={{ delay: 0.1, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            >
               <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 leading-tight">
                 Tampilan Bersih 
                 <span className="block text-blue-600">
@@ -41,9 +33,15 @@ export default function SectionTwo() {
                 Kelola keuangan bisnis dengan lebih efisien dan efektif bersama Glofin.
                 Dapatkan wawasan mendalam tentang arus kas dan kinerja bisnis Anda.
               </p>
-            </div>
+            </motion.div>
 
-            <div className="mt-8 md:mt-12">
+            <motion.div 
+              className="mt-8 md:mt-12"
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px 0px -100px 0px" }}
+              transition={{ delay: 0.2, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl">
                 {[
                   { text: 'Laporan Keuangan Real-time', icon: '📊' },
@@ -59,35 +57,35 @@ export default function SectionTwo() {
               </div>
               
               <div className="mt-10">
-                <button className="px-6 py-3 bg-black  text-white rounded-full font-medium hover:bg-black/80 transition-colors">
+                <button className="px-6 py-3 bg-black text-white rounded-full font-medium hover:bg-black/80 transition-colors">
                   Mulai Sekarang
                 </button>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
 
           {/* Image Mockup */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 30 }}
+            initial={{ opacity: 0, scale: 0.98, y: 20 }}
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            viewport={{ once: true, margin: "-50px 0px -100px 0px" }}
             className="w-full max-w-md lg:max-w-2xl mx-auto lg:mx-0 relative"
           >
             <div className="relative">
               <div className="absolute -z-10 blur-xl"></div>
-                <Image
-                  src="/img/mockups.png"
-                  alt="Tampilan Aplikasi Glofin"
-                  width={1200}
-                  height={1200}
-                  className="w-auto h-auto"
-                  priority
-                />
+              <Image
+                src="/img/mockups.png"
+                alt="Tampilan Aplikasi Glofin"
+                width={1200}
+                height={1200}
+                className="w-auto h-auto"
+                priority
+              />
             </div>
           </motion.div>
         </div>
       </div>
-    </motion.section>
+    </section>
   );
 }
