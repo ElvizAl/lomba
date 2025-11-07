@@ -2,13 +2,13 @@ import Image from "next/image";
 
 export default function PhoneMockup() {
   return (
-    <div className="mr-[200px] w-[280px] lg:w-[350px] h-auto z-[99]">
+    <div className="mr-[200px] w-[280px] lg:w-[350px] h-auto z-[99] mx-auto">
       <Image
         width={1000}
         height={1000}
         src="/mockups/laporan-screen.png"
         alt="Laporan Glofin"
-        className="rounded-[2rem] border border-gray-200 shadow-2xl w-full h-auto"
+        className="rounded-[2rem] border border-gray-200 shadow-2xl w-full h-auto mx-auto"
       />
     </div>
   );
