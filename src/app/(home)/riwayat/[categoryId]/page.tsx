@@ -318,8 +318,8 @@ export default function Riwayat({ params }: { params: Promise<{ categoryId: stri
                     </div>
                 )}
             </div>
-            <div className="fixed bottom-0 left-0 right-0 z-50 px-4 pb-4 pt-4 bg-white border-t">
-                <div className='flex items-center gap-2'>
+            <div className="fixed bottom-0 left-0 right-0 z-50">
+                <div className='flex items-center gap-2 max-w-md mx-auto px-4 pb-4 pt-4 bg-white border-t'>
                     <button
                         onClick={() => editTransactions()}
                         className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full w-full transition-colors disabled:opacity-50'
