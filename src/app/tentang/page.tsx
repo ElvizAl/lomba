@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
-import { Button } from '@/components/ui/button';
 import Footer from '@/components/lp/footer';
 import Navbar from '@/components/lp/navbar';
 

@@ -13,7 +13,7 @@ export interface InboxResponse {
   pagination: PaginationResponse;
 }
 
-export const getHighlightInbox = async (): Promise<InboxData[]> => {
+export const getHighlightInbox = async (): Promise<InboxData> => {
   try {
     const result = await apiClient(
       process.env.NEXT_PUBLIC_API_BASE_URL + "/api/inbox/highlight",

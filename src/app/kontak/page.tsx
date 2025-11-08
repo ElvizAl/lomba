@@ -1,7 +1,4 @@
 import { Metadata } from 'next';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Mail, Phone, MapPin, Clock } from 'lucide-react';
 import Navbar from '@/components/lp/navbar';
 import Footer from '@/components/lp/footer';

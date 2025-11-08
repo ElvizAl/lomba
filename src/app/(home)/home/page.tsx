@@ -73,7 +73,7 @@ export default function Home() {
 
     const fetchHInbox = async () => {
       try {
-        const inboxData: InboxData = await getHighlightInbox();
+        const inboxData = await getHighlightInbox();
         setHInbox(inboxData);
       } catch (err) {
         console.error('Error fetching highlight inbox:', err);
